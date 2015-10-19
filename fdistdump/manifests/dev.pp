@@ -1,5 +1,6 @@
 class fdistdump::dev() {
-	
+
+	#generic	
 	package { ["autoconf", "gcc", "make", "rake", "ruby-dev", "build-essential", "rpm"]: ensure => installed, }
 	package { "fpm":
 		ensure => installed,
@@ -7,7 +8,6 @@ class fdistdump::dev() {
 	}
 
 	#fdistdump
-	package { ["libopenmpi-dev"]: ensure => installed }
+	package { ["libopenmpi-dev", "openmpi-bin", "openmpi-common", "openmpi-doc"]: ensure => installed }
 
-	contain fdistdump::install
 }

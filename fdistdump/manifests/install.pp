@@ -1,6 +1,6 @@
 class fdistdump::install() {
 
-	package { ["openmpi-bin", "openmpi-common", "openmpi-doc"]:
+	package { ["openmpi-bin", "openmpi-common", "openmpi-doc", "libnf", "fdistdump"]:
 		ensure => installed,
 	}
 
