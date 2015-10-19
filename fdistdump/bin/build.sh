@@ -1,25 +1,33 @@
 #!/bin/sh
 
-BASE=/opt/fdistdump
-BUILD_AREA=${BASE}/build_area
+set -e
+
+BUILD_AREA=/opt/fdistdump/build_area
 git config --global user.name "bodik"
 git config --global user.email "bodik@cesnet.cz"
 #git commit --amend --author="Radoslav Bodo <bodik@cesnet.cz>"
 
-mkdir -p $BASE
 mkdir -p $BUILD_AREA
 
 cd $BUILD_AREA || exit 1
-wget http://libnf.net/packages/libnf-1.16.tar.gz
-tar xzf libnf-1.16.tar.gz
-cd libnf-1.16 || exit 1
-./configure --prefix=/opt/fdistdump
+VER=1.16
+wget http://libnf.net/packages/libnf-${VER}.tar.gz
+tar xzf libnf-${VER}.tar.gz
+cd libnf-${VER} 
+./configure
 make
-make install
-echo "/opt/fdistdump/lib" > /etc/ld.so.conf.d/fdistdump-libnf.conf
-ldconfig
+mkdir ${BUILD_AREA}/libnf-install
+make DESTDIR="${BUILD_AREA}/libnf-install" install
+cd ..
+for target in deb rpm; do 
+	fpm -s dir -t $target -C "${BUILD_AREA}/libnf-install" --name libnf --version ${VER} --iteration 1  \
+		--description "libnf package from libnf.net/packages" --maintainer "bodik@cesnet.cz" --vendor "" --url "http://libnf.net"
+done
+dpkg -i libnf_${VER}-1_$(dpkg --print-architecture).deb
+
 
 cd $BUILD_AREA || exit 1
+VER=0.1
 ##git clone https://github.com/CESNET/fdistdump
 ##cd fdistdump || exit 1
 ##git checkout develop
@@ -29,14 +37,16 @@ git clone https://github.com/bodik/fdistdump
 cd fdistdump || exit 1
 git checkout develop-bcompile
 autoreconf -i
-./configure --prefix=/opt/fdistdump --with-libnf-dir=/opt/fdistdump/
+./configure
 make
-make install
+mkdir ${BUILD_AREA}/fdistdump-install
+make DESTDIR="${BUILD_AREA}/fdistdump-install" install
+cd ..
+for target in deb rpm; do 
+	fpm -s dir -t $target -C "${BUILD_AREA}/fdistdump-install" --name fdistdump --version ${VER} --iteration 1  \
+		--description "fdistdump from https://github.com/CESNET/fdistdump" --maintainer "bodik@cesnet.cz" --vendor "" --url "https://github.com/CESNET/fdistdump"
+done
+dpkg -i fdistdump_${VER}-1_$(dpkg --print-architecture).deb
 
-cd ${BASE} || exit 1
-if [ ! -d data ]; then
-	mkdir data
-	cd data || exit 1
-	wget --no-parent -m --no-directories http://esb.metacentrum.cz/puppet-fdistdump.git-testdata/
-fi
 
+sh /puppet/fdistdump/bin/get_test_data.sh
