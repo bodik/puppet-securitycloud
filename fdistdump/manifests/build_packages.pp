@@ -1,7 +1,7 @@
 class fdistdump::build_packages() {
 	
 	#generic
-	package { ["autoconf", "gcc", "make"]: ensure => installed, }
+	package { ["autoconf", "gcc", "make", "rake"]: ensure => installed, }
 
 	#fdistdump
 	package { ["libopenmpi-dev"]: ensure => installed }
