@@ -1,4 +1,4 @@
-class fdistdump:dev() {
+class fdistdump::dev() {
 	
 	package { ["autoconf", "gcc", "make", "rake", "ruby-dev", "build-essential", "rpm"]: ensure => installed, }
 	package { "fpm":
