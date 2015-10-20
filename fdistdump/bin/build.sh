@@ -10,6 +10,7 @@ BUILD_AREA=/opt/fdistdump/build_area
 rm -r ${BUILD_AREA} || true
 dpkg --purge libnf fdistdump 2>/dev/null
 mkdir -p $BUILD_AREA
+mkdir -p $BUILD_AREA/compact-install
 
 cd $BUILD_AREA || exit 1
 VER=1.16
@@ -20,6 +21,7 @@ cd libnf-${VER}
 make
 mkdir ${BUILD_AREA}/libnf-install
 make DESTDIR="${BUILD_AREA}/libnf-install" install
+make DESTDIR="${BUILD_AREA}/compact-install" install
 cd ..
 for target in deb rpm; do 
 	fpm -s dir -t $target -C "${BUILD_AREA}/libnf-install" --name libnf --version ${VER} --iteration 1  \
@@ -44,6 +46,7 @@ autoreconf -i
 make
 mkdir ${BUILD_AREA}/fdistdump-install
 make DESTDIR="${BUILD_AREA}/fdistdump-install" install
+make DESTDIR="${BUILD_AREA}/compact-install" install
 cd ..
 for target in deb rpm; do 
 	fpm -s dir -t $target -C "${BUILD_AREA}/fdistdump-install" --name fdistdump --version ${VER} --iteration 1  \
@@ -51,5 +54,6 @@ for target in deb rpm; do
 done
 dpkg -i fdistdump_${VER}-1_$(dpkg --print-architecture).deb
 
+fpm -s dir -t tar -C "${BUILD_AREA}/compact-install/usr/local/" --name fdistdump-${VER}-1 
 
 sh /puppet/fdistdump/bin/get_test_data.sh
