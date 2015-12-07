@@ -1,0 +1,20 @@
+output {
+        elasticsearch {
+                cluster => "<%= @output_es_cluster_name %>"
+		bind_port => 39500
+                port => "39300-39400"
+		protocol => "node"
+                index => "logstash-%{+YYYY.MM.dd}"
+
+                #flush_size => 4000
+                #idle_flush_time => 10
+
+                manage_template => true
+                template => "/puppet/elk/files/elasticsearch-template.json"
+                template_overwrite => "true"
+        }
+
+	#stdout { codec => rubydebug }
+}
+
+
