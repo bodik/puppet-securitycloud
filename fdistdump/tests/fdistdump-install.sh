@@ -3,10 +3,7 @@
 . /puppet/metalib/bin/lib.sh
 
 
-#fdd dirs and packages
-BASE=/opt/fdistdump
-cd ${BASE} || exit 1
-
+#fdd packages
 dpkg -i libnf
 if [ $? -ne 0 ]; then
 	rreturn 1 "$0 missing libnf"

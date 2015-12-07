@@ -25,7 +25,12 @@ class metalib::base {
                 timeout => 900;
 	}
 
+	service { "puppet":
+		ensure => stopped,
+		enable => false,
+	}
+	file { "/etc/puppet/hiera.yaml":
+		ensure => file,
+	}
+
 }
-
-
-
