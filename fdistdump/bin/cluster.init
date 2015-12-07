@@ -50,14 +50,15 @@ case "$1" in
 	update)
 		update
 	;;
-
 	dist)
 		vm_all "ruby /puppet/fdistdump/bin/distribute_test_data.rb"
 	;;
 	distm)
 		vm_all "ruby /puppet/fdistdump/bin/distribute_test_data.rb --datasource http://minos.zcu.cz:45454"
 	;;
-
+	drop)
+		vm_all "rm -r /opt/fdistdump/data /scratch/fdistdump/data"
+	;;
 	*)
 		rreturn 1 "$0 wrong command"
 	;;

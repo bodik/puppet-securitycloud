@@ -89,8 +89,8 @@ end
 
 $logger.info("nodes #{nodes["nodes"].keys}")
 $logger.info("me #{me}")
-$logger.info("source_files #{source_files}")
-$logger.info("storage_files #{storage_files}")
+$logger.info("source_files #{source_files.length}")
+$logger.info("storage_files #{storage_files.length}")
 
 storage_files.each do |x|
 	if not me["my_data"].include?(x)
