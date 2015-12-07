@@ -24,7 +24,7 @@ $options = {}
 $options["esd_host"] = Facter.value("ipaddress")
 $options["esd_port"] = 39200
 $options["datasource"] = "http://esb.metacentrum.cz/puppet-fdistdump.git-testdata/"
-$options["datastorage"] = "/opt/fdistdump/data"
+$options["datastorage"] = "/scratch/fdistdump/data"
 $options["debug"] = false
 $options["test"] = false
 OptionParser.new do |opts|
@@ -64,6 +64,7 @@ storage_files = Array.new
 unless File.directory?($options["datastorage"])
   FileUtils.mkdir_p($options["datastorage"])
 end
+system("ln -sfT /scratch/fdistdump/data/ /opt/fdistdump/data")
 
 client = Elasticsearch::Client.new(log: false, host: "#{$options["esd_host"]}:#{$options["esd_port"]}")
 nodes = client.nodes.stats({metric: "jvm"})
@@ -80,7 +81,7 @@ doc.xpath("//html/body/ul/li/a/@href").each do |x| if x.value.start_with?("nfcap
 Dir.glob("#{$options["datastorage"]}/*").select{ |e| if File.file?(e) then storage_files << File.basename(e) end }
 
 me["my_data"] = Array.new
-source_files.each_slice(nodes.length) do |x|
+source_files.each_slice(nodes["nodes"].length) do |x|
 	if x.at(me["nodes_index"])
 		me["my_data"] << x[me["nodes_index"]]
 	end

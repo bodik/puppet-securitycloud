@@ -27,4 +27,9 @@ class fdistdump::install() {
 		cluster_name=>"fdd", 
 		esd_heap_size=>"32M", 
 	}
+	file { "/usr/local/bin/cluster.init":
+		ensure => link,
+		target => "/puppet/fdistdump/bin/cluster.init",
+	}
+
 }
