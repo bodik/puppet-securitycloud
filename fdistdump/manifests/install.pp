@@ -1,16 +1,21 @@
 class fdistdump::install() {
+	if !defined(Class['apt']) {
+	        class { 'apt': }
+	}
+	apt::source { 'fdistdump':
+	        location   => 'http://esb.metacentrum.cz/fdistdump-packages',
+	        release => './',
+	        repos => '',
+	        require => Apt::Source["jenkins"],
+	}
 
 	package { ["openmpi-bin", "openmpi-common", "openmpi-doc", "libnf", "fdistdump"]:
 		ensure => installed,
+		require => Apt::Source["fdistdump"],
 	}
 
-        #this is actually install, but for now it's here
-        contain metalib::avahi
-        file { "/etc/avahi/services/fdistdump.service":
-                source => "puppet:///modules/${module_name}/etc/avahi/fdistdump.service",
-                owner => "root", group => "root", mode => "0644",
-                require => Package["avahi-daemon"],
-                notify => Service["avahi-daemon"],
-        }
-
+	class { "elk::esd": 
+		cluster_name=>"fdd", 
+		esd_heap_size=>"32M", 
+	}
 }
