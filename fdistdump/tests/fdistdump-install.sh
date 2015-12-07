@@ -4,12 +4,12 @@
 
 
 #fdd packages
-dpkg -i libnf
+dpkg -l libnf
 if [ $? -ne 0 ]; then
 	rreturn 1 "$0 missing libnf"
 fi
 
-dpkg -i fdistdump
+dpkg -l fdistdump
 if [ $? -ne 0 ]; then
 	rreturn 1 "$0 missing fdistdump"
 fi
