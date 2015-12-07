@@ -98,7 +98,7 @@ end
 me["my_data"].each do |x|
 	if not storage_files.include?(x)
 		$logger.info("downloading #{x}")
-		system("/usr/bin/wget", "#{$options["datasource"]}/#{x}", "-O", "#{$options["datastorage"]}/#{x}")
+		system("/usr/bin/wget", "--no-verbose", "#{$options["datasource"]}/#{x}", "-O", "#{$options["datastorage"]}/#{x}")
 	end
 end
 
