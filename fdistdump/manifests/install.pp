@@ -1,5 +1,6 @@
 class fdistdump::install() {
 
+	#install
 	file { "/etc/apt/apt.conf.d/99auth":       
 		content => "APT::Get::AllowUnauthenticated yes;\n",
 		owner => "root", group => "root", mode => "0644",
@@ -17,6 +18,10 @@ class fdistdump::install() {
 		require => Apt::Source["fdistdump"],
 	}
 
+	#cluster coordination
+	package {"ruby-nokogiri":
+		ensure => installed,
+	}
 	class { "elk::esd": 
 		cluster_name=>"fdd", 
 		esd_heap_size=>"32M", 
