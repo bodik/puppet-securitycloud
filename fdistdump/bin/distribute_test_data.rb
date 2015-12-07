@@ -9,6 +9,7 @@ require 'elasticsearch'
 require 'rubygems'
 require 'facter'
 require 'nokogiri'
+require 'fileutils'
 
 
 ######################################################### init
