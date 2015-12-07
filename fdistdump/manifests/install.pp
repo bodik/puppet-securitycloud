@@ -10,6 +10,7 @@ class fdistdump::install() {
 	        location   => 'http://esb.metacentrum.cz/puppet-fdistdump-packages',
 	        release => './',
 	        repos => '',
+		include_src => false,
 		require => File["/etc/apt/apt.conf.d/99auth"],
 	}
 
