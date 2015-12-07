@@ -26,14 +26,16 @@ $options["esd_port"] = 39200
 $options["datasource"] = "http://esb.metacentrum.cz/puppet-fdistdump.git-testdata/"
 $options["datastorage"] = "/opt/fdistdump/data"
 $options["debug"] = false
+$options["test"] = false
 OptionParser.new do |opts|
 	opts.banner = "Usage: example.rb [options]"
-	opts.on("-h", "--esd-host HOST", "esd host") do |v|	$options["esd_host"] = v end
-	opts.on("-p", "--esd-port PORT", "esd port") do |v|	$options["esd_port"] = v.to_i end
-	opts.on("-r", "--datasource URL", "data source") do |v|	$options["datasource"] = v end
-	opts.on("-w", "--datastorage DIR", "data storage") do |v|	$options["datastorage"] = v end
-	opts.on("-s", "--syslog", "log to syslog") do |v| $options["syslog"] = v end
-	opts.on("-d", "--debug", "debug mode") do |v| $options["debug"] = v end
+	opts.on("-h", "--esd-host HOST", "esd host") do |v|		$options["esd_host"] = v end
+	opts.on("-p", "--esd-port PORT", "esd port") do |v|		$options["esd_port"] = v.to_i end
+	opts.on("-r", "--datasource URL", "data source") do |v|		$options["datasource"] = v end
+	opts.on("-w", "--datastorage DIR", "data storage") do |v| 	$options["datastorage"] = v end
+	opts.on("-t", "--test", "test only") do |v| 			$options["test"] = v end
+	opts.on("-s", "--syslog", "log to syslog") do |v| 		$options["syslog"] = v end
+	opts.on("-d", "--debug", "debug mode") do |v| 			$options["debug"] = v end
 end.parse!
 if $options["syslog"]
 	$logger = Syslog::Logger.new(Thread.current["name"])
@@ -64,13 +66,13 @@ unless File.directory?($options["datastorage"])
 end
 
 client = Elasticsearch::Client.new(log: false, host: "#{$options["esd_host"]}:#{$options["esd_port"]}")
-nodes = client.cluster.state["nodes"]
+nodes = client.nodes.stats({metric: "jvm"})
 
 me["ipaddress"] = Facter.value('ipaddress')
 
-nodes.each do |k,v| if v["transport_address"].start_with?("inet[/#{me["ipaddress"]}:") then me["node_name"] = k; break end end
+nodes["nodes"].each do |k,v| if v["transport_address"].start_with?("inet[/#{me["ipaddress"]}:") then me["node_name"] = k; break end end
 
-me["nodes_index"] = nodes.keys.index(me["node_name"])
+me["nodes_index"] = nodes["nodes"].keys.index(me["node_name"])
 
 doc = Nokogiri::HTML(Faraday.get($options["datasource"]).body)
 doc.xpath("//html/body/ul/li/a/@href").each do |x| if x.value.start_with?("nfcapd.") then source_files << x.value end end
@@ -84,7 +86,7 @@ source_files.each_slice(nodes.length) do |x|
 	end
 end
 
-$logger.info("nodes #{nodes.keys}")
+$logger.info("nodes #{nodes["nodes"].keys}")
 $logger.info("me #{me}")
 $logger.info("source_files #{source_files}")
 $logger.info("storage_files #{storage_files}")
@@ -92,13 +94,17 @@ $logger.info("storage_files #{storage_files}")
 storage_files.each do |x|
 	if not me["my_data"].include?(x)
 		$logger.info("deleting #{x}")
-		File.delete("#{$options["datastorage"]}/#{x}")
+		if $options["test"] == false
+			File.delete("#{$options["datastorage"]}/#{x}")
+		end
 	end
 end
 me["my_data"].each do |x|
 	if not storage_files.include?(x)
 		$logger.info("downloading #{x}")
-		system("/usr/bin/wget", "--no-verbose", "#{$options["datasource"]}/#{x}", "-O", "#{$options["datastorage"]}/#{x}")
+		if $options["test"] == false
+			system("/usr/bin/wget", "--no-verbose", "#{$options["datasource"]}/#{x}", "-O", "#{$options["datastorage"]}/#{x}")
+		end
 	end
 end
 
