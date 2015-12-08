@@ -88,7 +88,8 @@ source_files.each_slice(nodes["nodes"].length) do |x|
 end
 
 $logger.info("nodes #{nodes["nodes"].keys}")
-$logger.info("me #{me}")
+me1 = me; me["my_data_length"] = me["my_data"].length; me.delete("my_data")
+$logger.info("me #{me1}")
 $logger.info("source_files #{source_files.length}")
 $logger.info("storage_files #{storage_files.length}")
 
