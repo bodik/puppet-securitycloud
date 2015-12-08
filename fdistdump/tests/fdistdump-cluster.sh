@@ -7,6 +7,6 @@ cd ${BASE} || exit 1
 
 NODES=$(cluster.init list | awk '{printf $2","}')
 MASTER=$(echo $NODES | awk -F',' '{print $1}')
-mpirun --host $MASTER,$NODES fdistdump -r "${BASE}" -s dstport
+mpirun --host $MASTER,$NODE fdistdump -s dstport "${BASE}"
 
 rreturn $? "$0"

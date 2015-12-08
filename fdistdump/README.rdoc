@@ -1,0 +1,38 @@
+= fdistdump
+
+Module provides a way to install fdistdump node with simple cluster management
+tools based on elasticsearch multicast discovery.
+
+== Scripts
+
+[build*sh]
+  scripts for building packages for release
+[get_test_data.sh]
+  fetch test data for build purposes
+[distribute_test_data.rb]
+  distributes test data across all discovered nodes
+[cluster.init]
+  basic cluster management tool
+
+  cluster.init list
+  cluster.init ssh
+  cluster.init node
+  cluster.init dist
+  cluster.init drop
+
+== Class: fdistdump::dev
+
+Class will ensure installation of fdistdump build and packaging requirements
+
+=== Examples
+
+  class { "fdistdump::dev": }
+
+== Class: fdistdump::install
+
+Class will ensure installation of fdistdump binaries and basic cluster management scripts.
+
+=== Examples
+
+  class { "fdistdump::install": }
+

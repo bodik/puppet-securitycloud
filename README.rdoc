@@ -1,0 +1,40 @@
+= puppet-fdistdump - Packaging and basic cluster management for CESNET/fdistdump
+
+This software suite is designed to aid creating and maintaining netflow processing. 
+It is based on masterless puppet and bash automation.
+
+=== Acknowledgement
+
+Computational resources were provided by the MetaCentrum under the program
+LM2010005 and the CERIT-SC under the program Centre CERIT Scientific Cloud,
+part of the Operational Program Research and Development for Innovations, Reg.
+no. CZ.1.05/3.2.00/08.0144.
+
+=== Basic installation
+
+  echo 'deb http://esb.metacentrum.cz/puppet-fdistdump-packages ./' > /etc/apt/sources.list.d/fdistdump.list
+  #TODO: signing
+  apt-get update
+  apt-get install fdistdump
+  man fdistdump
+
+=== Cluster installation
+
+Deploy fdistdump and cluster suite with following commands on every managed node
+
+  echo 'deb http://esb.metacentrum.cz/puppet-fdistdump-packages ./' > /etc/apt/sources.list.d/fdistdump.list
+  #TODO: signing
+  apt-get update
+  apt-get install puppet-fdistdump
+  sh /puppet/fdistdump.install.sh
+
+
+=== Development installation
+
+Following commands will ensure installation of full devops environment.
+
+  $ wget http://esb.metacentrum.cz/puppet-fdistdump.git/bootstrap.install.sh && sh bootstrap.install.sh
+  $ cd /puppet && ls -l
+  $ sh fdistdump-dev.install.sh
+  $ sh fdistdump/bin/build.sh
+

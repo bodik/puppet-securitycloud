@@ -1,3 +1,11 @@
+# == Class: fdistdump::install
+#
+# Class will ensure installation of fdistdump binaries and basic cluster management scripts.
+#
+# === Examples
+#
+#   class { "fdistdump::install": }
+#
 class fdistdump::install() {
 
 	#install
@@ -14,7 +22,7 @@ class fdistdump::install() {
 		require => File["/etc/apt/apt.conf.d/99auth"],
 	}
 
-	package { ["openmpi-bin", "openmpi-common", "openmpi-doc", "libnf", "fdistdump"]:
+	package { ["fdistdump"]:
 		ensure => installed,
 		require => Apt::Source["fdistdump"],
 	}

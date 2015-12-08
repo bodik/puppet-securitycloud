@@ -1,3 +1,11 @@
+# == Class: fdistdump::dev
+#
+# Class will ensure installation of fdistdump build and packaging requirements
+#
+# === Examples
+#
+#   class { "fdistdump::dev": }
+#
 class fdistdump::dev() {
 
 	#generic	
