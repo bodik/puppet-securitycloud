@@ -2,7 +2,7 @@
 FRONT='bodik@esb.metacentrum.cz'
 REPO="/data/puppet-fdistdump-packages"
 
-cd /opt/fdistdump/build_area
+cd /tmp/build_area
 
 dpkg-scanpackages ./ /dev/null | gzip > Packages.gz
 

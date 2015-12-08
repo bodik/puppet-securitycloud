@@ -6,7 +6,7 @@ git config --global user.name "bodik"
 git config --global user.email "bodik@cesnet.cz"
 #git commit --amend --author="Radoslav Bodo <bodik@cesnet.cz>"
 
-BUILD_AREA=/opt/fdistdump/build_area
+BUILD_AREA=/tmp/build_area
 rm -r ${BUILD_AREA} || true
 dpkg --purge libnf fdistdump 2>/dev/null
 mkdir -p $BUILD_AREA
@@ -37,7 +37,6 @@ VER=0.1
 ##cd fdistdump || exit 1
 ##git checkout develop
 ##autoreconf -i
-##CFLAGS="-I/opt/libnf/include" LDFLAGS="-L/opt/libnf/lib" ./configure --prefix=/opt/fdistdump
 git clone https://github.com/bodik/fdistdump
 cd fdistdump || exit 1
 git checkout develop-bcompile

@@ -63,7 +63,7 @@ case "$1" in
 		wait
 	;;
 	drop)
-		vm_all "rm -r /opt/fdistdump/data /scratch/fdistdump/data"
+		vm_all "rm -r /scratch/fdistdump/data"
 	;;
 	*)
 		rreturn 1 "$0 wrong command"
