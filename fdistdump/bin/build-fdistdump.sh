@@ -21,7 +21,6 @@ autoreconf -i
 make
 mkdir ${BUILD_AREA}/fdistdump-install
 make DESTDIR="${BUILD_AREA}/fdistdump-install" install
-make DESTDIR="${BUILD_AREA}/compact-install" install
 cd ..
 for target in deb rpm; do 
 	fpm -s dir -t $target -C "${BUILD_AREA}/fdistdump-install" --name fdistdump --version ${VER} --iteration 1  \

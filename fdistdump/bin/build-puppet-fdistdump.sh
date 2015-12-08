@@ -8,12 +8,9 @@ cd $BUILD_AREA || exit 1
 VER=0.1
 
 mkdir -p "${BUILD_AREA}/puppet-fdistdump-install/puppet-fdistdump"
-mkdir -p "${BUILD_AREA}/compact-install/puppet-fdistdump"
 cd /puppet-fdistdump
 git archive HEAD --format tar | tar x -C  ${BUILD_AREA}/puppet-fdistdump-install/puppet-fdistdump
-git archive HEAD --format tar | tar x -C  ${BUILD_AREA}/compact-install/puppet-fdistdump
 ln -vsf /puppet-fdistdump ${BUILD_AREA}/puppet-fdistdump-install/puppet
-ln -vsf /puppet-fdistdump ${BUILD_AREA}/compact-install/puppet
 cd $BUILD_AREA || exit 1
 
 for target in deb rpm; do 

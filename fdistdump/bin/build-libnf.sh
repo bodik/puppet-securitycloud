@@ -13,7 +13,6 @@ cd libnf-${VER}
 make
 mkdir ${BUILD_AREA}/libnf-install
 make DESTDIR="${BUILD_AREA}/libnf-install" install
-make DESTDIR="${BUILD_AREA}/compact-install" install
 cd ..
 for target in deb rpm; do 
 	fpm -s dir -t $target -C "${BUILD_AREA}/libnf-install" --name libnf --version ${VER} --iteration 1  \
