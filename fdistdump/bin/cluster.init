@@ -56,6 +56,12 @@ case "$1" in
 	distm)
 		vm_all "ruby /puppet/fdistdump/bin/distribute_test_data.rb --datasource http://minos.zcu.cz:45454"
 	;;
+	distmp)
+		for all in $(/puppet/fdistdump/bin/cluster.init list| awk '{print $1}'); do
+			VMNAME=$all /puppet/fdistdump/bin/cluster.init ssh "ruby /puppet/fdistdump/bin/distribute_test_data.rb --datasource http://minos.zcu.cz:45454" | sed "s/^/$all /" &
+		done
+		wait
+	;;
 	drop)
 		vm_all "rm -r /opt/fdistdump/data /scratch/fdistdump/data"
 	;;
