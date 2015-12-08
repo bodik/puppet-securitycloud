@@ -10,13 +10,17 @@ LM2010005 and the CERIT-SC under the program Centre CERIT Scientific Cloud,
 part of the Operational Program Research and Development for Innovations, Reg.
 no. CZ.1.05/3.2.00/08.0144.
 
+
 === Basic installation
+
+Following will install basic fdistdump binaries with runtime requirements
 
   echo 'deb http://esb.metacentrum.cz/puppet-fdistdump-packages ./' > /etc/apt/sources.list.d/fdistdump.list
   #TODO: signing
   apt-get update
   apt-get install fdistdump
   man fdistdump
+
 
 === Cluster installation
 
@@ -26,7 +30,12 @@ Deploy fdistdump and cluster suite with following commands on every managed node
   #TODO: signing
   apt-get update
   apt-get install puppet-fdistdump
+  sh /puppet/phase2.install.sh
   sh /puppet/fdistdump.install.sh
+
+Finaly you can start manage your cluster with
+
+  cluster.init list
 
 
 === Development installation
