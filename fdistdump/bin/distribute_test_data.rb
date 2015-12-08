@@ -64,7 +64,6 @@ storage_files = Array.new
 unless File.directory?($options["datastorage"])
   FileUtils.mkdir_p($options["datastorage"])
 end
-system("ln -sfT /scratch/fdistdump/data/ /opt/fdistdump/data")
 
 client = Elasticsearch::Client.new(log: false, host: "#{$options["esd_host"]}:#{$options["esd_port"]}")
 nodes = client.nodes.stats({metric: "jvm"})

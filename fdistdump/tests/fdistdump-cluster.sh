@@ -2,11 +2,11 @@
 
 . /puppet/metalib/bin/lib.sh
 
-BASE=/opt/fdistdump
+BASE=/scratch/fdistdump/data
 cd ${BASE} || exit 1
 
-NODES=$(curl -s http://$(facter fqdn):39200/_cat/nodes | awk '{printf $1","}')
+NODES=$(cluster.init list | awk '{printf $2","}')
 MASTER=$(echo $NODES | awk -F',' '{print $1}')
-mpirun --host $MASTER,$NODES fdistdump -r "${BASE}/${flow_file}/data" -s dstport
+mpirun --host $MASTER,$NODES fdistdump -r "${BASE}" -s dstport
 
 rreturn $? "$0"
