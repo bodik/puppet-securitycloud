@@ -9,7 +9,7 @@
 class fdistdump::dev() {
 
 	#generic	
-	package { ["autoconf", "gcc", "make", "rake", "ruby-dev", "build-essential", "rpm"]: ensure => installed, }
+	package { ["autoconf", "gcc", "make", "rake", "ruby-dev", "build-essential", "rpm", "strace"]: ensure => installed, }
 	package { "fpm":
 		ensure => installed,
 		provider => gem,
@@ -17,5 +17,8 @@ class fdistdump::dev() {
 
 	#fdistdump
 	package { ["libopenmpi-dev", "openmpi-bin", "openmpi-common", "openmpi-doc"]: ensure => installed }
+
+        #ipfixcol
+	package { ["flex", "bison", "libxml2-dev", "libssl-dev", "pkg-config", "libsctp-dev", "xsltproc", "docbook-xsl", "doxygen"]: ensure => installed }
 
 }

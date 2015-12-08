@@ -26,12 +26,11 @@ Following will install basic fdistdump binaries with runtime requirements
 
 Deploy fdistdump and cluster suite with following commands on every managed node
 
-  $ echo 'deb http://esb.metacentrum.cz/puppet-fdistdump-packages ./' > /etc/apt/sources.list.d/fdistdump.list
-  $ #TODO: signing
-  $ apt-get update
-  $ apt-get install puppet-fdistdump
-  $ sh /puppet/fdistdump.install.sh
-  $ sh /puppet/fdistdump/tests/fdistdump-install.sh
+  $ wget http://esb.metacentrum.cz/puppet-fdistdump.git/bootstrap.install.sh && sh bootstrap.install.sh
+  $ cd /puppet && ls -l
+  $ sh phase2.install.sh
+  $ sh fdistdump.install.sh
+  $ sh fdistdump/tests/fdistdump-install.sh
 
 Finaly you can start manage your cluster with
 
@@ -39,12 +38,14 @@ Finaly you can start manage your cluster with
   $ cluster.init dist
   $ sh /puppet/fdistdump/tests/fdistdump-cluster.sh
 
+
 === Development installation
 
 Following commands will ensure installation of full devops environment.
 
   $ wget http://esb.metacentrum.cz/puppet-fdistdump.git/bootstrap.install.sh && sh bootstrap.install.sh
   $ cd /puppet && ls -l
+  $ sh phase2.install.sh
   $ sh fdistdump-dev.install.sh
   $ sh fdistdump/bin/build.sh
   $ sh fdistdump/tests/fdistdump-singlenode.sh

@@ -15,7 +15,7 @@ cd $BUILD_AREA || exit 1
 
 for target in deb rpm; do 
 	fpm -s dir -t $target -C "${BUILD_AREA}/puppet-fdistdump-install" --name puppet-fdistdump --version ${VER} --iteration 1  \
-		--depends puppet --depends git \
+		--depends puppet --depends git --depends nagios-plugins-basic --depends psmisc \
 		--description "fdistdump from https://github.com/bodik/puppet-fdistdump" --maintainer "bodik@cesnet.cz" --vendor "" --url "https://github.com/bodik/puppet-fdistdump"
 done
 
