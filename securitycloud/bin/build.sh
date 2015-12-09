@@ -10,7 +10,7 @@ rm -r ${BUILD_AREA} || true
 dpkg --purge libnf fdistdump ipfixcol-base ipfixcol-plugins 2>/dev/null
 mkdir -p $BUILD_AREA
 
-sh /puppet/fdistdump/bin/build-libnf.sh
-sh /puppet/fdistdump/bin/build-fdistdump.sh
-sh /puppet/fdistdump/bin/build-ipfixcol.sh
+sh /puppet/securitycloud/bin/build-libnf.sh
+sh /puppet/securitycloud/bin/build-fdistdump.sh
+sh /puppet/securitycloud/bin/build-ipfixcol.sh
 

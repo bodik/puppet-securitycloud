@@ -6,7 +6,7 @@ mkdir -p $BUILD_AREA
 
 
 cd $BUILD_AREA
-if [ ! -d ipfixcol ]; then
+if [ ! -d fdistdump ]; then
 	#git clone https://github.com/CESNET/fdistdump --branch develop
 	git clone https://github.com/bodik/fdistdump --branch develop-bcompile2
 fi
@@ -31,5 +31,5 @@ for target in deb rpm; do
 done
 dpkg -i fdistdump_${VER}-1_$(dpkg --print-architecture).deb
 
-sh /puppet/fdistdump/bin/get_test_data.sh
+sh /puppet/securitycloud/bin/get_test_data.sh
 

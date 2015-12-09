@@ -27,7 +27,7 @@ cd $BUILD_AREA
 for target in deb rpm; do 
 	fpm -f -s dir -t $target -C "${BUILD_AREA}/ipfixcol-base-install" --name ipfixcol-base --version ${VER} --iteration ${PKGITER}  \
 		--depends libxml2 --depends openssl \
-		--after-install /puppet/fdistdump/files/ipfixcol-base.postinst --after-remove /puppet/fdistdump/files/ipfixcol-base.postrm \
+		--after-install /puppet/securitycloud/files/ipfixcol-base.postinst --after-remove /puppet/securitycloud/files/ipfixcol-base.postrm \
 		--description "ipfixcol-base from https://github.com/CESNET/ipfixcol with HEAD at ${GREV}" --maintainer "bodik@cesnet.cz" --vendor "" --url "https://github.com/CESNET/ipfixcol"
 done
 dpkg -i ipfixcol-base_${VER}-1_$(dpkg --print-architecture).deb
