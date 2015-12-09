@@ -8,11 +8,11 @@ fi
 cd /tmp || exit 1
 
 vm_list() {
-	ruby /puppet/fdistdump/bin/show_nodes.rb
+	ruby /puppet/securitycloud/bin/show_nodes.rb
 }
 
 vm_ssh() {
-	VMIP=$(/puppet/fdistdump/bin/cluster.init list | grep "^$VMNAME " | awk '{print $2}')
+	VMIP=$(/puppet/securitycloud/bin/cluster.init list | grep "^$VMNAME " | awk '{print $2}')
 	if [ -z "$VMIP" ]; then
 		rreturn 1 "vm ip not detected from cluster"
 	fi
@@ -21,14 +21,14 @@ vm_ssh() {
 }
 
 vm_all() {
-	for all in $(/puppet/fdistdump/bin/cluster.init list| awk '{print $1}'); do
-		VMNAME=$all /puppet/fdistdump/bin/cluster.init ssh "$1"
+	for all in $(/puppet/securitycloud/bin/cluster.init list| awk '{print $1}'); do
+		VMNAME=$all /puppet/securitycloud/bin/cluster.init ssh "$1"
 	done
 }
 
 update() {
-	for all in $(/puppet/fdistdump/bin/cluster.init list| awk '{print $1}'); do
-		VMNAME=$all /puppet/fdistdump/bin/cluster.init ssh "cd /puppet && sh bootstrap.install.sh"
+	for all in $(/puppet/securitycloud/bin/cluster.init list| awk '{print $1}'); do
+		VMNAME=$all /puppet/securitycloud/bin/cluster.init ssh "cd /puppet && sh bootstrap.install.sh"
 	done
 }
 
@@ -41,7 +41,7 @@ case "$1" in
 		vm_ssh "$2"
 	;;
 	node)
-		VMNAME=$2 /puppet/fdistdump/bin/cluster.init ssh "$3"
+		VMNAME=$2 /puppet/securitycloud/bin/cluster.init ssh "$3"
 	;;
 	all)
 		vm_all "$2"
@@ -51,14 +51,14 @@ case "$1" in
 		update
 	;;
 	dist)
-		vm_all "ruby /puppet/fdistdump/bin/distribute_test_data.rb"
+		vm_all "ruby /puppet/securitycloud/bin/distribute_test_data.rb"
 	;;
 	distm)
-		vm_all "ruby /puppet/fdistdump/bin/distribute_test_data.rb --datasource http://minos.zcu.cz:45454"
+		vm_all "ruby /puppet/securitycloud/bin/distribute_test_data.rb --datasource http://minos.zcu.cz:45454"
 	;;
 	distmp)
-		for all in $(/puppet/fdistdump/bin/cluster.init list| awk '{print $1}'); do
-			VMNAME=$all /puppet/fdistdump/bin/cluster.init ssh "ruby /puppet/fdistdump/bin/distribute_test_data.rb --datasource http://minos.zcu.cz:45454" | sed "s/^/$all /" &
+		for all in $(/puppet/securitycloud/bin/cluster.init list| awk '{print $1}'); do
+			VMNAME=$all /puppet/securitycloud/bin/cluster.init ssh "ruby /puppet/securitycloud/bin/distribute_test_data.rb --datasource http://minos.zcu.cz:45454" | sed "s/^/$all /" &
 		done
 		wait
 	;;
