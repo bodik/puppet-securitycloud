@@ -1,12 +1,12 @@
-# == Class: fdistdump::dev
+# == Class: securitycloud::dev
 #
-# Class will ensure installation of fdistdump build and packaging requirements
+# Class will ensure installation of fdistdump and ipfixcol build and packaging requirements.
 #
 # === Examples
 #
-#   class { "fdistdump::dev": }
+#   class { "securitycloud::dev": }
 #
-class fdistdump::dev() {
+class securitycloud::dev() {
 
 	#generic	
 	package { ["autoconf", "gcc", "make", "rake", "ruby-dev", "build-essential", "rpm", "strace"]: ensure => installed, }

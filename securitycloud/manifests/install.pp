@@ -1,12 +1,12 @@
-# == Class: fdistdump::install
+# == Class: securitycloud::install
 #
-# Class will ensure installation of fdistdump binaries and basic cluster management scripts.
+# Class will ensure installation of fdistdump and ipfixcol binaries and basic cluster management scripts.
 #
 # === Examples
 #
-#   class { "fdistdump::install": }
+#   class { "securitycloud::install": }
 #
-class fdistdump::install() {
+class securitycloud::install() {
 
 	#install
 	file { "/etc/apt/apt.conf.d/99auth":       
@@ -14,8 +14,8 @@ class fdistdump::install() {
 		owner => "root", group => "root", mode => "0644",
  	}
 	if !defined(Class['apt']) { class { 'apt': } }
-	apt::source { 'fdistdump':
-	        location   => 'http://esb.metacentrum.cz/puppet-fdistdump-packages',
+	apt::source { 'securitycloud':
+	        location   => 'http://esb.metacentrum.cz/puppet-securitycloud-packages',
 	        release => './',
 	        repos => '',
 		include_src => false,
@@ -24,11 +24,11 @@ class fdistdump::install() {
 
 	package { ["fdistdump", "libnf"]:
 		ensure => installed,
-		require => Apt::Source["fdistdump"],
+		require => Apt::Source["securitycloud"],
 	}
 	package { ["ipfixcol-base", "ipfixcol-plugins"]:
 		ensure => installed,
-		require => Apt::Source["fdistdump"],
+		require => Apt::Source["securitycloud"],
 	}
 
 
@@ -37,11 +37,11 @@ class fdistdump::install() {
 		ensure => installed,
 	}
 	class { "elk::esd": 
-		cluster_name=>"fdd", 
+		cluster_name=>"sc", 
 		esd_heap_size=>"32M", 
 	}
 	file { "/usr/local/bin/cluster.init":
 		ensure => link,
-		target => "/puppet/fdistdump/bin/cluster.init",
+		target => "/puppet/securitycloud/bin/cluster.init",
 	}
 }

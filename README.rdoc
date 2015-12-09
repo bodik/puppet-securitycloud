@@ -1,6 +1,6 @@
-= puppet-fdistdump - Packaging and basic cluster management for CESNET/fdistdump
+= puppet-securitycloud - Packaging and basic cluster management for CESNET/fdistdump and CESNET/ipfixcol
 
-This software suite is designed to aid creating and maintaining netflow processing. 
+This software suite is designed to aid creating and maintaining netflow/ipfix processing. 
 It is based on masterless puppet and bash automation.
 
 === Acknowledgement
@@ -15,38 +15,38 @@ no. CZ.1.05/3.2.00/08.0144.
 
 Following will install basic fdistdump binaries with runtime requirements
 
-  $ echo 'deb http://esb.metacentrum.cz/puppet-fdistdump-packages ./' > /etc/apt/sources.list.d/fdistdump.list
-  $ #TODO: signing
+  $ echo 'deb http://esb.metacentrum.cz/puppet-securitycloud-packages ./' > /etc/apt/sources.list.d/securitycloud.list
   $ apt-get update
-  $ apt-get install fdistdump
+  $ apt-get install fdistdump ipfixcol-base ipfixcol-plugins
   $ man fdistdump
+  $ man ipfixcol
 
 
 === Cluster installation
 
-Deploy fdistdump and cluster suite with following commands on every managed node
+Deploy fdistdump, ipfixcol and cluster suite with following commands on every managed node
 
-  $ wget http://esb.metacentrum.cz/puppet-fdistdump.git/bootstrap.install.sh && sh bootstrap.install.sh
+  $ wget http://esb.metacentrum.cz/puppet-securitycloud.git/bootstrap.install.sh && sh bootstrap.install.sh
   $ cd /puppet && ls -l
   $ sh phase2.install.sh
-  $ sh fdistdump.install.sh
-  $ sh fdistdump/tests/fdistdump-install.sh
+  $ sh securitycloud.install.sh
+  $ sh securitycloud/tests/securitycloud-install.sh
 
 Finaly you can start manage your cluster with
 
   $ cluster.init list
   $ cluster.init dist
-  $ sh /puppet/fdistdump/tests/fdistdump-cluster.sh
+  $ sh /puppet/securitycloud/tests/fdistdump-cluster.sh
 
 
 === Development installation
 
 Following commands will ensure installation of full devops environment.
 
-  $ wget http://esb.metacentrum.cz/puppet-fdistdump.git/bootstrap.install.sh && sh bootstrap.install.sh
+  $ wget http://esb.metacentrum.cz/puppet-securitycloud.git/bootstrap.install.sh && sh bootstrap.install.sh
   $ cd /puppet && ls -l
   $ sh phase2.install.sh
-  $ sh fdistdump-dev.install.sh
-  $ sh fdistdump/bin/build.sh
-  $ sh fdistdump/tests/fdistdump-singlenode.sh
+  $ sh securitycloud-dev.install.sh
+  $ sh securitycloud/bin/build.sh
+  $ sh securitycloud/tests/fdistdump-singlenode.sh
 

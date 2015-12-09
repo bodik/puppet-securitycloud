@@ -1,6 +1,6 @@
-= fdistdump
+= securitycloud
 
-Module provides a way to install fdistdump node with simple cluster management
+Module provides a way to install fdistdump, ipfixcol and simple cluster management
 tools based on elasticsearch multicast discovery.
 
 == Scripts
@@ -20,19 +20,19 @@ tools based on elasticsearch multicast discovery.
   cluster.init dist
   cluster.init drop
 
-== Class: fdistdump::dev
+== Class: securitycloud::dev
 
-Class will ensure installation of fdistdump build and packaging requirements
-
-=== Examples
-
-  class { "fdistdump::dev": }
-
-== Class: fdistdump::install
-
-Class will ensure installation of fdistdump binaries and basic cluster management scripts.
+Class will ensure installation of fdistdump and ipfixcol build and packaging requirements.
 
 === Examples
 
-  class { "fdistdump::install": }
+  class { "securitycloud::dev": }
+
+== Class: securitycloud::install
+
+Class will ensure installation of fdistdump and ipfixcol binaries and basic cluster management scripts.
+
+=== Examples
+
+  class { "securitycloud::install": }
 

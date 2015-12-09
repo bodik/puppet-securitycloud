@@ -1,6 +1,6 @@
-= fdistdump
+= securitycloud
 
-Module provides a way to install fdistdump node with simple cluster management
+Module provides a way to install fdistdump, ipfixcol and simple cluster management
 tools based on elasticsearch multicast discovery.
 
 == Scripts
