@@ -22,10 +22,15 @@ class fdistdump::install() {
 		require => File["/etc/apt/apt.conf.d/99auth"],
 	}
 
-	package { ["fdistdump"]:
+	package { ["fdistdump", "libnf"]:
 		ensure => installed,
 		require => Apt::Source["fdistdump"],
 	}
+	package { ["ipfixcol-base", "ipfixcol-plugins"]:
+		ensure => installed,
+		require => Apt::Source["fdistdump"],
+	}
+
 
 	#cluster coordination
 	package {"ruby-nokogiri":
@@ -39,5 +44,4 @@ class fdistdump::install() {
 		ensure => link,
 		target => "/puppet/fdistdump/bin/cluster.init",
 	}
-
 }

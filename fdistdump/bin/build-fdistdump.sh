@@ -4,24 +4,26 @@ set -e
 BUILD_AREA=/tmp/build_area
 mkdir -p $BUILD_AREA
 
-cd $BUILD_AREA || exit 1
-VER=0.2
 
-#git clone https://github.com/CESNET/fdistdump
-#cd fdistdump || exit 1
-#git checkout develop
-#autoreconf -i
+cd $BUILD_AREA
+if [ ! -d ipfixcol ]; then
+	#git clone https://github.com/CESNET/fdistdump --branch develop
+	git clone https://github.com/bodik/fdistdump --branch develop-bcompile2
+fi
+cd fdistdump
+IVER=$(cat configure.ac | grep AC_INIT | awk '{print $2}' | sed 's/[^0-9\.]//g')
+GREV=$(git rev-parse --short HEAD)
+VER="${IVER}.${GREV}"
+cd $BUILD_AREA
 
-git clone https://github.com/bodik/fdistdump
-cd fdistdump || exit 1
-git checkout develop-bcompile2
+
+cd fdistdump
 autoreconf -i
-
 ./configure
 make
 mkdir ${BUILD_AREA}/fdistdump-install
 make DESTDIR="${BUILD_AREA}/fdistdump-install" install
-cd ..
+cd $BUILD_AREA
 for target in deb rpm; do 
 	fpm -s dir -t $target -C "${BUILD_AREA}/fdistdump-install" --name fdistdump --version ${VER} --iteration 1  \
 	        --depends libnf --depends openmpi-bin --depends openmpi-common --depends openmpi-doc \

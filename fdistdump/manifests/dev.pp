@@ -18,7 +18,9 @@ class fdistdump::dev() {
 	#fdistdump
 	package { ["libopenmpi-dev", "openmpi-bin", "openmpi-common", "openmpi-doc"]: ensure => installed }
 
-        #ipfixcol
-	package { ["flex", "bison", "libxml2-dev", "libssl-dev", "pkg-config", "libsctp-dev", "xsltproc", "docbook-xsl", "doxygen", "libbz2-dev", "libpq-dev", "libgeoip-dev", "libsqlite3-dev"]: ensure => installed }
+        #ipfixcol-base
+	package { ["flex", "bison", "xsltproc", "docbook-xsl", "doxygen", "libxml2-dev", "pkg-config", "libsctp-dev" ]: ensure => installed }
 
+	#ipfixcol-plugins
+	#package { ["libssl-dev", "libbz2-dev", "libpq-dev", "libgeoip-dev", "libsqlite3-dev"]: ensure => installed }
 }
