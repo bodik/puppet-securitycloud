@@ -14,6 +14,16 @@ if [ $? -ne 0 ]; then
 	rreturn 1 "$0 missing fdistdump"
 fi
 
+dpkg -l ipfixcol-base
+if [ $? -ne 0 ]; then
+	rreturn 1 "$0 missing ipfixcol-base"
+fi
+
+dpkg -l ipfixcol-plugins
+if [ $? -ne 0 ]; then
+	rreturn 1 "$0 missing ipfixcol-plugins"
+fi
+
 
 #coordiantion component
 /usr/lib/nagios/plugins/check_procs --argument-array=org.elasticsearch.bootstrap.Elasticsearch -c 1:1
