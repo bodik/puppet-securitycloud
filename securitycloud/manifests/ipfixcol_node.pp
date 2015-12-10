@@ -20,7 +20,7 @@ class securitycloud::ipfixcol_node (
 	if($role) {
 		$role_real = $role
 	} else {
-		$role_real = securitycloud_discover_role()
+		$role_real = securitycloud_discover_myrole()
 	}
 	case $role_real {
 		#######################
