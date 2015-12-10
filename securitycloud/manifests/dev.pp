@@ -22,5 +22,6 @@ class securitycloud::dev() {
 	package { ["flex", "bison", "xsltproc", "docbook-xsl", "doxygen", "libxml2-dev", "pkg-config", "libsctp-dev", "libssl-dev"]: ensure => installed }
 
 	#ipfixcol-plugins
+	package { ["liblzo2-dev"]: ensure => installed }
 	#package { ["libbz2-dev", "libpq-dev", "libgeoip-dev", "libsqlite3-dev"]: ensure => installed }
 }
