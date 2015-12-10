@@ -7,8 +7,8 @@ mkdir -p $BUILD_AREA
 
 cd $BUILD_AREA
 if [ ! -d fdistdump ]; then
-	#git clone https://github.com/CESNET/fdistdump --branch develop
-	git clone https://github.com/bodik/fdistdump --branch develop-bcompile2
+	git clone https://github.com/CESNET/fdistdump --branch develop
+	#git clone https://github.com/bodik/fdistdump --branch develop-bcompile2
 fi
 cd fdistdump
 VER=$(cat configure.ac | grep AC_INIT | awk '{print $2}' | sed 's/[^0-9\.]//g')
