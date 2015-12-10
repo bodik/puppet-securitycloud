@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ipfix xmlns="urn:ietf:params:xml:ns:yang:ietf-ipfix-psamp">
+
+	<collectingProcess>
+		<name>TCP collector</name>
+		<tcpCollector>
+			<name>Listening port 4739</name>
+			<localPort>4739</localPort>
+			<localIPAddress></localIPAddress>
+		</tcpCollector>
+		<exportingProcess>Forward TCP</exportingProcess>
+	</collectingProcess>
+
+
+	<!--## Exporting process configuration -->
+	<exportingProcess>
+		<name>Forward TCP</name>
+		<destination>
+			<name>send data</name>
+			<fileWriter>
+				<fileFormat>forwarding</fileFormat>
+				<distribution>RoundRobin</distribution>
+
+				<defaultPort>4739</defaultPort>
+				<protocol>tcp</protocol>
+
+				<templateLifeTime>1800</templateLifeTime>
+				<optionsTemplateLifeTime>1800</optionsTemplateLifeTime>
+				<templateLifePacket>2048</templateLifePacket>
+				<optionsTemplateLifePacket>2048</optionsTemplateLifePacket>
+
+				<destination>
+					<ip>192.168.0.1</ip>
+				</destination>
+				<destination>
+					<ip>192.168.0.2</ip>
+				</destination>
+				<destination>
+					<ip>192.168.0.3</ip>
+				</destination>
+			</fileWriter>
+		</destination>
+		<singleManager>yes</singleManager>
+	</exportingProcess>
+
+	<!-- List of active Intermediate Plugins -->
+	<intermediatePlugins>
+	</intermediatePlugins>
+</ipfix>
