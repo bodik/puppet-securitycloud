@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ipfix xmlns="urn:ietf:params:xml:ns:yang:ietf-ipfix-psamp">
+
+	<collectingProcess>
+		<name>TCP collector</name>
+		<tcpCollector>
+			<name>Listening port 4739</name>
+			<localPort>4739</localPort>
+			<localIPAddress></localIPAddress>
+		</tcpCollector>
+		<exportingProcess>File writer TCP</exportingProcess>
+	</collectingProcess>
+
+
+	<!--## Exporting process configuration -->
+
+	<exportingProcess>
+		<name>File writer TCP</name>
+		<destination>
+			<name>Translate data to nfdump format</name>
+			<fileWriter>
+				<fileFormat>lnfstore</fileFormat>
+				<storagePath>/var/lib/ipfixcol/lnfstore/</storagePath>
+				<profiles>no</profiles>
+				<compress>yes</compress>
+				<prefix>lnfdump.</prefix>
+				<suffixMask>%Y%m%d%H%M%S</suffixMask>
+				<identificatorField>liberouter</identificatorField>
+				<dumpInterval>
+					<timeWindow>300</timeWindow>
+					<align>yes</align>
+				</dumpInterval>
+			</fileWriter>
+		</destination>
+		<singleManager>yes</singleManager>
+	</exportingProcess>
+
+	<!--## List of active Intermediate Plugins -->
+	<intermediatePlugins>
+	</intermediatePlugins>
+</ipfix>

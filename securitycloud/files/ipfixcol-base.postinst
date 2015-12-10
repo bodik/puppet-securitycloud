@@ -1,6 +1,27 @@
 #!/bin/sh
 set -e
+
 if [ "$1" = "configure" ]; then
         ldconfig
+
+        addgroup --system --quiet ipfixcol
+        adduser --system --quiet --ingroup ipfixcol --no-create-home ipfixcol
+        chown -R ipfixcol:ipfixcol /var/lib/ipfixcol
 fi
 
+if [ -x "/etc/init.d/ipfixcol" ]; then
+        update-rc.d ipfixcol defaults 91 09 >/dev/null
+        if [ -n "$2" ]; then
+                _dh_action=restart
+        else
+                _dh_action=start
+        fi
+        invoke-rc.d apache2 $_dh_action || true
+fi
+
+
+# In case this system is running systemd, we make systemd reload the unit files
+# to pick up changes.
+if [ -d /run/systemd/system ] ; then
+        systemctl --system daemon-reload >/dev/null || true
+fi

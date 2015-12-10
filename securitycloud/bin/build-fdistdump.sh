@@ -31,5 +31,5 @@ for target in deb rpm; do
 done
 dpkg -i fdistdump_${VER}-1_$(dpkg --print-architecture).deb
 
-sh /puppet/securitycloud/bin/get_test_data.sh
+sh /puppet/securitycloud/bin/testdata-fdistdump-get.sh
 

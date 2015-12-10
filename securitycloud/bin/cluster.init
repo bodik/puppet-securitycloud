@@ -51,14 +51,14 @@ case "$1" in
 		update
 	;;
 	dist)
-		vm_all "ruby /puppet/securitycloud/bin/distribute_test_data.rb"
+		vm_all "ruby /puppet/securitycloud/bin/testdata-fdistdump-distribute.rb"
 	;;
 	distm)
-		vm_all "ruby /puppet/securitycloud/bin/distribute_test_data.rb --datasource http://minos.zcu.cz:45454"
+		vm_all "ruby /puppet/securitycloud/bin/testdata-fdistdump-distribute.rb --datasource http://minos.zcu.cz:45454"
 	;;
 	distmp)
 		for all in $(/puppet/securitycloud/bin/cluster.init list| awk '{print $1}'); do
-			VMNAME=$all /puppet/securitycloud/bin/cluster.init ssh "ruby /puppet/securitycloud/bin/distribute_test_data.rb --datasource http://minos.zcu.cz:45454" | sed "s/^/$all /" &
+			VMNAME=$all /puppet/securitycloud/bin/cluster.init ssh "ruby /puppet/securitycloud/bin/testdata-fdistdump-distribute.rb --datasource http://minos.zcu.cz:45454" | sed "s/^/$all /" &
 		done
 		wait
 	;;

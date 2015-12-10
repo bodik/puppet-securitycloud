@@ -1,0 +1,91 @@
+#!/bin/bash
+#
+# ipfixcol IPFIX collector
+#
+# chkconfig: - 90 60
+# description: IPFIX flow collector
+# processname: ipfixcol
+# pidfile: /var/run/ipfixcol.pid
+  
+prog="ipfixcol"
+params="-v 2"
+user="ipfixcol"
+
+start() {
+	# Check whether ipfixcol is running
+	if status; then
+		echo "$prog is already running"
+		return 1
+	fi
+
+	# Start ipfixcol
+	echo "Starting $prog..."
+	su -x "$prog $params -d > /dev/null" $user
+	retval=$?
+
+	return $retval
+}
+
+stop() {
+	if ! status; then
+		echo "$prog is NOT running"
+		return 1
+	fi
+
+	echo "Stopping $prog..."
+
+	# Stop ipfixcol; identify all involved PIDs and kill each of them
+	pids=( $(pgrep $prog) )
+	for pid in "${pids[@]}"; do
+		if [[ $pid != $$ ]]; then
+			kill "$pid"
+		fi
+	done
+
+	retval=$?
+
+	return $retval
+}
+
+# Prints output when first argument is '1'
+status() {
+	ps -eo command | grep "^$prog $params" > /dev/null
+	retval=$?
+	if [ "$#" -eq 1 ] && [ "$1" -eq 1 ]; then
+		if [ "$retval" -eq 0 ]; then
+			echo "$prog is running"
+		else
+			echo "$prog is NOT running"
+		fi
+	fi
+
+	return $retval
+}
+
+restart() {
+	stop
+	start
+}	
+
+case "$1" in
+	start)
+		start
+	;;
+	stop)
+		stop
+	;;
+	restart)
+		restart
+	;;
+	reload)
+		restart
+	;;
+	status)
+		status 1
+	;;
+	*)
+		echo "Usage: $0 {start|stop|status|restart}"
+		exit 1
+esac
+
+exit $?

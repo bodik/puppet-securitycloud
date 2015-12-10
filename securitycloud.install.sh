@@ -1,1 +1,1 @@
-sh /puppet/pa.sh -e "include securitycloud::install"
+sh /puppet/pa.sh -e "include securitycloud::cluster"
