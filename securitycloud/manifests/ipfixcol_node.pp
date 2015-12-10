@@ -15,7 +15,7 @@ class securitycloud::ipfixcol_node (
 	include securitycloud::install
 	include securitycloud::cluster
 
-	Class["securitycloud::ipfixcol"]->Class["securitycloud::cluster"]->Class["securitycloud::install"]
+	Class["securitycloud::ipfixcol_node"]->Class["securitycloud::cluster"]->Class["securitycloud::install"]
 
 	if($role) {
 		$role_real = $role
@@ -23,6 +23,7 @@ class securitycloud::ipfixcol_node (
 		$role_real = securitycloud_discover_role()
 	}
 	case $role_real {
+		#######################
 		'proxy': {
 			if($collectors) {
 				$collectors_real = $collectors
@@ -37,6 +38,7 @@ class securitycloud::ipfixcol_node (
 			notice("role ${role_real} with collectors at ${collectors}")
 		}
 
+		#######################
 		'collector': { 
 			file { "${install_dir}/etc/ipfixcol/startup.xml":
 				content => template("${module_name}/usr/local/etc/ipfixcol/collector.xml.erb"),
@@ -46,6 +48,7 @@ class securitycloud::ipfixcol_node (
 			notice("role ${role_real}")
 		}
 
+		#######################
   		default: { 
 			warning("role unknown") 
 		}

@@ -8,7 +8,7 @@ fi
 cd /tmp || exit 1
 
 vm_list() {
-	ruby /puppet/securitycloud/bin/show_nodes.rb
+	ruby /puppet/securitycloud/bin/discovery.rb
 }
 
 vm_ssh() {
@@ -26,14 +26,10 @@ vm_all() {
 	done
 }
 
-update() {
-	for all in $(/puppet/securitycloud/bin/cluster.init list| awk '{print $1}'); do
-		VMNAME=$all /puppet/securitycloud/bin/cluster.init ssh "cd /puppet && sh bootstrap.install.sh"
-	done
-}
-
 
 case "$1" in
+
+	#used for cluster management
 	list)
 		vm_list "$2"
 	;;
@@ -46,29 +42,42 @@ case "$1" in
 	all)
 		vm_all "$2"
 	;;
-
 	update)
-		update
+		vm_all "cd /puppet && sh bootstrap.install.sh"
 	;;
-	dist)
+
+
+
+	#used for cluster setup
+	myrole)
+		ruby /puppet/securitycloud/bin/discovery.rb --query myrole
+	;;
+	proxy)
+		ruby /puppet/securitycloud/bin/discovery.rb --query proxy
+	;;
+	collectors)
+		ruby /puppet/securitycloud/bin/discovery.rb --query collectors
+	;;
+
+	
+	
+	#used for testing during build process
+	fdddist)
 		vm_all "ruby /puppet/securitycloud/bin/testdata-fdistdump-distribute.rb"
 	;;
-	distm)
-		vm_all "ruby /puppet/securitycloud/bin/testdata-fdistdump-distribute.rb --datasource http://minos.zcu.cz:45454"
-	;;
-	distmp)
+	fdddistm)
 		for all in $(/puppet/securitycloud/bin/cluster.init list| awk '{print $1}'); do
 			VMNAME=$all /puppet/securitycloud/bin/cluster.init ssh "ruby /puppet/securitycloud/bin/testdata-fdistdump-distribute.rb --datasource http://minos.zcu.cz:45454" | sed "s/^/$all /" &
 		done
 		wait
 	;;
-	drop)
+	fdddrop)
 		vm_all "rm -r /scratch/fdistdump/data"
 	;;
+
+
 	*)
 		rreturn 1 "$0 wrong command"
 	;;
 esac
-
-
 

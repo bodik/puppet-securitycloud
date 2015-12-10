@@ -24,12 +24,17 @@ $options = {}
 $options["esd_host"] = Facter.value("ipaddress")
 $options["esd_port"] = 39200
 $options["debug"] = false
+$options["show_nodes"] = false
+$options["myrole"] = false
+
 OptionParser.new do |opts|
 	opts.banner = "Usage: example.rb [options]"
 	opts.on("-h", "--esd-host HOST", "esd host") do |v|		$options["esd_host"] = v end
 	opts.on("-p", "--esd-port PORT", "esd port") do |v|		$options["esd_port"] = v.to_i end
 	opts.on("-s", "--syslog", "log to syslog") do |v| 		$options["syslog"] = v end
 	opts.on("-d", "--debug", "debug mode") do |v| 			$options["debug"] = v end
+
+	opts.on("-q", "--query QUERY", "query disco -- myrole|proxy|collectors|show[default]") do |v| 		$options["query"] = v end
 end.parse!
 if $options["syslog"]
 	$logger = Syslog::Logger.new(Thread.current["name"])
@@ -69,21 +74,56 @@ def syscall1(*cmd)
 end
 
 
+def show_nodes()
+	$nodes["nodes"].each do |k,v|
+		#puts "#{k} #{v}"
+		if $cluster_state["master_node"] == k then role = "master" else role = "data" end
+		storage_size = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "du -shL /scratch/fdistdump/data | awk '{print $1}'")
+		storage_part = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "df -h | grep '/scratch' | awk '{print $5\"/\"$2}'")
+		puts "#{k} #{v["host"]} #{v["name"]} #{v["transport_address"]} #{v["os"]["load_average"]} heap #{v["jvm"]["mem"]["heap_used_percent"]}%/#{as_size(v["jvm"]["mem"]["heap_max_in_bytes"])} #{role} storage #{storage_size} #{storage_part}"
+	end
+end
+
+def collectors()
+	masterip = /inet\[\/(.*):[0-9]+\]/.match($nodes["nodes"][$cluster_state["master_node"]]["transport_address"])[1]
+	collectors = []
+	$nodes["nodes"].each do |k,v|
+		tmpip = /inet\[\/(.*):[0-9]+\]/.match(v["transport_address"])[1]
+		if ( tmpip != masterip )
+			collectors << tmpip
+		end
+	end
+	puts collectors.join(" ")
+end
+
+def proxy()
+	masterip = /inet\[\/(.*):[0-9]+\]/.match($nodes["nodes"][$cluster_state["master_node"]]["transport_address"])[1]
+	if masterip then puts masterip end
+end
+
+def myrole()
+	masterip = /inet\[\/(.*):[0-9]+\]/.match($nodes["nodes"][$cluster_state["master_node"]]["transport_address"])[1]
+	if (Facter.value("ipaddress") == masterip)
+		puts "proxy"
+	else
+		puts "collector"
+	end
+end
+
 ######################################################### main
 
-client = Elasticsearch::Client.new(log: false, host: "#{$options["esd_host"]}:#{$options["esd_port"]}")
-nodes = client.nodes.stats({metric: ["jvm", "os"]})
-cluster_state = client.cluster.state
+$client = Elasticsearch::Client.new(log: false, host: "#{$options["esd_host"]}:#{$options["esd_port"]}")
+$nodes = $client.nodes.stats({metric: ["jvm", "os"]})
+$cluster_state = $client.cluster.state
 
-if $options["debug"]
-	pp nodes
-end
-nodes["nodes"].each do |k,v|
-	#puts "#{k} #{v}"
-	if cluster_state["master_node"] == k then role = "master" else role = "data" end
-	storage_size = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "du -shL /scratch/fdistdump/data | awk '{print $1}'")
-	storage_part = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "df -h | grep '/scratch' | awk '{print $5\"/\"$2}'")
-	puts "#{k} #{v["host"]} #{v["name"]} #{v["transport_address"]} #{v["os"]["load_average"]} heap #{v["jvm"]["mem"]["heap_used_percent"]}%/#{as_size(v["jvm"]["mem"]["heap_max_in_bytes"])} #{role} storage #{storage_size} #{storage_part}"
-	
+case $options["query"]
+	when "myrole"
+		myrole()
+	when "proxy"
+		proxy()
+	when "collectors"
+		collectors()
+  	else
+		show_nodes()
 end
 
