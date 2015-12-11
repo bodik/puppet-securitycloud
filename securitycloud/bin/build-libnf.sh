@@ -16,7 +16,7 @@ make DESTDIR="${BUILD_AREA}/libnf-install" install
 cd ..
 for target in deb rpm; do 
 	fpm -s dir -t $target -C "${BUILD_AREA}/libnf-install" --name libnf --version ${VER} --iteration 1  \
-		--after-install /puppet/securitycloud/files/libnf.postinst --after-remove /puppet/securitycloud/files/libnf.postrm \
+		--after-install /puppet/securitycloud/files/packaging/libnf.postinst --after-remove /puppet/securitycloud/files/packaging/libnf.postrm \
 		--description "libnf package from libnf.net/packages" --maintainer "bodik@cesnet.cz" --vendor "" --url "http://libnf.net"
 done
 dpkg -i libnf_${VER}-1_$(dpkg --print-architecture).deb

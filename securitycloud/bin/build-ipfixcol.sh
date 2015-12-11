@@ -27,16 +27,16 @@ make DESTDIR="${BUILD_AREA}/ipfixcol-base-install" install
 mkdir -p ${BUILD_AREA}/ipfixcol-base-install/var/lib/ipfixcol/
 mkdir -p ${BUILD_AREA}/ipfixcol-base-install/var/lib/ipfixcol/lnfstore/
 mkdir -p ${BUILD_AREA}/ipfixcol-base-install/etc/init.d/
-cp /puppet/securitycloud/files/ipfixcol.init ${BUILD_AREA}/ipfixcol-base-install/etc/init.d/ipfixcol
+cp /puppet/securitycloud/files/packaging/ipfixcol.init ${BUILD_AREA}/ipfixcol-base-install/etc/init.d/ipfixcol
 mv ${BUILD_AREA}/ipfixcol-base-install/usr/local/etc/ipfixcol/startup.xml ${BUILD_AREA}/ipfixcol-base-install/usr/local/etc/ipfixcol/startup.xml.example
-cp /puppet/securitycloud/files/collector.xml.example ${BUILD_AREA}/ipfixcol-base-install/usr/local/etc/ipfixcol/
-cp /puppet/securitycloud/files/proxy.xml.example ${BUILD_AREA}/ipfixcol-base-install/usr/local/etc/ipfixcol/
+cp /puppet/securitycloud/files/packaging/collector.xml.example ${BUILD_AREA}/ipfixcol-base-install/usr/local/etc/ipfixcol/
+cp /puppet/securitycloud/files/packaging/proxy.xml.example ${BUILD_AREA}/ipfixcol-base-install/usr/local/etc/ipfixcol/
 
 cd $BUILD_AREA
 for target in deb rpm; do 
 	fpm -f -s dir -t $target -C "${BUILD_AREA}/ipfixcol-base-install" --name ipfixcol-base --version ${VER} --iteration ${PKGITER}  \
 		--depends libxml2 --depends openssl \
-		--after-install /puppet/securitycloud/files/ipfixcol-base.postinst --pre-uninstall /puppet/securitycloud/files/ipfixcol-base.prerm --after-remove /puppet/securitycloud/files/ipfixcol-base.postrm \
+		--after-install /puppet/securitycloud/files/packaging/ipfixcol-base.postinst --pre-uninstall /puppet/securitycloud/files/packaging/ipfixcol-base.prerm --after-remove /puppet/securitycloud/files/packaging/ipfixcol-base.postrm \
 		--description "ipfixcol-base from https://github.com/CESNET/ipfixcol with HEAD at ${GREV}" --maintainer "bodik@cesnet.cz" --vendor "" --url "https://github.com/CESNET/ipfixcol"
 done
 dpkg -i ipfixcol-base_${VER}-1_$(dpkg --print-architecture).deb
