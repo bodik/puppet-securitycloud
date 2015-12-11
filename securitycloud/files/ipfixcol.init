@@ -20,7 +20,7 @@ start() {
 
 	# Start ipfixcol
 	echo "Starting $prog..."
-	su -x "$prog $params -d > /dev/null" $user
+	su -c "$prog $params -d > /dev/null" $user
 	retval=$?
 
 	return $retval
