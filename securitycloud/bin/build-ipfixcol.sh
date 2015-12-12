@@ -38,7 +38,7 @@ for target in deb rpm; do
 	fpm -f -s dir -t $target -C "${BUILD_AREA}/ipfixcol-base-install" --name ipfixcol-base --version ${VER} --iteration ${PKGITER}  \
 		--depends libxml2 --depends openssl \
 		--after-install /puppet/securitycloud/files/packaging/ipfixcol-base.postinst --pre-uninstall /puppet/securitycloud/files/packaging/ipfixcol-base.prerm --after-remove /puppet/securitycloud/files/packaging/ipfixcol-base.postrm \
-		--description "ipfixcol-base from https://github.com/CESNET/ipfixcol with HEAD at ${GREV}" --maintainer "bodik@cesnet.cz" --vendor "" --url "https://github.com/CESNET/ipfixcol"
+		--description "ipfixcol-base from https://github.com/CESNET/ipfixcol with HEAD at ${GREV} (build SecurityCloud)" --maintainer "bodik@cesnet.cz" --vendor "" --url "https://github.com/CESNET/ipfixcol"
 done
 dpkg -i ipfixcol-base_${VER}-1_$(dpkg --print-architecture).deb
 
@@ -74,7 +74,7 @@ cd $BUILD_AREA
 for target in deb rpm; do 
 	fpm -f -s dir -t $target -C "${BUILD_AREA}/ipfixcol-plugins-install" --name ipfixcol-plugins --version ${VER} --iteration ${PKGITER} \
 		--depends libxml2 --depends ipfixcol-base --depends liblzo2-2 \
-		--description "ipfixcol-plugins from https://github.com/CESNET/ipfixcol with HEAD at ${GREV}" --maintainer "bodik@cesnet.cz" --vendor "" --url "https://github.com/CESNET/ipfixcol"
+		--description "ipfixcol-plugins from https://github.com/CESNET/ipfixcol with HEAD at ${GREV} (build SecurityCloud)" --maintainer "bodik@cesnet.cz" --vendor "" --url "https://github.com/CESNET/ipfixcol"
 done
 dpkg -i ipfixcol-plugins_${VER}-1_$(dpkg --print-architecture).deb
 
