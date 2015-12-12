@@ -16,7 +16,7 @@ if [ -x "/etc/init.d/ipfixcol" ]; then
         else
                 _dh_action=start
         fi
-        invoke-rc.d apache2 $_dh_action || true
+        invoke-rc.d ipfixcol $_dh_action || true
 fi
 
 
