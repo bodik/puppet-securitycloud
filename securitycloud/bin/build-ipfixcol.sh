@@ -29,6 +29,7 @@ mkdir -p ${BUILD_AREA}/ipfixcol-base-install/var/lib/ipfixcol/lnfstore/
 mkdir -p ${BUILD_AREA}/ipfixcol-base-install/etc/init.d/
 cp /puppet/securitycloud/files/packaging/ipfixcol.init ${BUILD_AREA}/ipfixcol-base-install/etc/init.d/ipfixcol
 mv ${BUILD_AREA}/ipfixcol-base-install/usr/local/etc/ipfixcol/startup.xml ${BUILD_AREA}/ipfixcol-base-install/usr/local/etc/ipfixcol/startup.xml.example
+cp /puppet/securitycloud/files/packaging/internalcfg.xml ${BUILD_AREA}/ipfixcol-base-install/usr/local/etc/ipfixcol/
 cp /puppet/securitycloud/files/packaging/collector.xml.example ${BUILD_AREA}/ipfixcol-base-install/usr/local/etc/ipfixcol/
 cp /puppet/securitycloud/files/packaging/proxy.xml.example ${BUILD_AREA}/ipfixcol-base-install/usr/local/etc/ipfixcol/
 

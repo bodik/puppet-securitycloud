@@ -5,7 +5,7 @@ if [ "$1" = "configure" ]; then
         ldconfig
 
         addgroup --system --quiet ipfixcol
-        adduser --system --quiet --ingroup ipfixcol --no-create-home ipfixcol
+        adduser --system --quiet --ingroup ipfixcol --home /var/lib/ipfixcol --no-create-home --disabled-password --shell /bin/false ipfixcol
         chown -R ipfixcol:ipfixcol /var/lib/ipfixcol
 fi
 
