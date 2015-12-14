@@ -9,17 +9,14 @@
 class securitycloud::install() {
 
 	#install
-	file { "/etc/apt/apt.conf.d/99auth":       
-		content => "APT::Get::AllowUnauthenticated yes;\n",
-		owner => "root", group => "root", mode => "0644",
- 	}
 	if !defined(Class['apt']) { class { 'apt': } }
 	apt::source { 'securitycloud':
-	        location   => 'http://esb.metacentrum.cz/puppet-securitycloud-packages',
-	        release => './',
+	        location   => 'http://esb.metacentrum.cz/puppet-securitycloud-packages/debian',
+	        release => 'jessie',
 	        repos => '',
+	        key => 'B71FA8D5849604DB73C4608F88139C4C0811EDEA',
+	        key_source => 'http://esb.metacentrum.cz/puppet-securitycloud-packages/securitycloud.asc',
 		include_src => false,
-		require => File["/etc/apt/apt.conf.d/99auth"],
 	}
 
 	package { ["fdistdump", "libnf"]:

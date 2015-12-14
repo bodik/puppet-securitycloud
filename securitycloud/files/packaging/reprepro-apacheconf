@@ -1,2 +1,7 @@
-Alias /puppet-securitycloud-packages/dists /tmp/test/dists
-Alias /puppet-securitycloud-packages/pool /tmp/test/pool
+# metacentrum's securitycloud released packages
+Alias /puppet-securitycloud-packages/ /data/puppet-securitycloud-packages/webroot/
+<Directory /data/puppet-securitycloud-packages/webroot>
+	Options +Indexes +FollowSymlinks
+        Require all granted
+</Directory>
+

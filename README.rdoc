@@ -13,13 +13,22 @@ no. CZ.1.05/3.2.00/08.0144.
 
 === Basic installation
 
-Following will install basic fdistdump binaries with runtime requirements
+Following will install basic fdistdump and ipfixcol binaries with runtime requirements
 
-  $ echo 'deb http://esb.metacentrum.cz/puppet-securitycloud-packages ./' > /etc/apt/sources.list.d/securitycloud.list
+  $ wget -qO - http://esb.metacentrum.cz/puppet-securitycloud-packages/securitycloud.asc | apt-key add -
+  $ echo 'deb http://esb.metacentrum.cz/puppet-securitycloud-packages/debian jessie main' > /etc/apt/sources.list.d/securitycloud.list
   $ apt-get update
-  $ apt-get install fdistdump ipfixcol-base ipfixcol-plugins
+  $ apt-get install fdistdump ipfixcol
   $ man fdistdump
   $ man ipfixcol
+
+==== ipfixcol configuration
+
+ipfixcol package comes with examples configurations for collector and proxy daemon both located in /usr/local/etc/ipfixcol directory.
+To configure daemon for desired role copy selected config file to startup.xml and restart the ipfixcol service
+  
+  $ cp /usr/local/etc/ipfixcol/collector.xml.example /usr/local/etc/ipfixcol/startup.xml
+  $ service ipfixcol restart
 
 
 === Cluster installation
@@ -30,7 +39,7 @@ Deploy fdistdump, ipfixcol and cluster suite with following commands on every ma
   $ cd /puppet && ls -l
   $ sh phase2.install.sh
   $ sh securitycloud.install.sh
-  $ sh securitycloud/tests/securitycloud-install.sh
+  $ sh securitycloud/tests/securitycloud-cluster.install.sh
 
 Finaly you can start manage your cluster with
 
