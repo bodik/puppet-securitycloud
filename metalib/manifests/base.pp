@@ -32,5 +32,8 @@ class metalib::base {
 	file { "/etc/puppet/hiera.yaml":
 		ensure => file,
 	}
-
+	file { "/usr/local/bin/pa.sh":
+		ensure => link,
+		target => "/puppet/metalib/bin/pa.sh",
+	}
 }

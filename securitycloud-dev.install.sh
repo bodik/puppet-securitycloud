@@ -1,1 +1,1 @@
-sh /puppet/pa.sh -e "include securitycloud::dev"
+pa.sh -e "include securitycloud::dev"

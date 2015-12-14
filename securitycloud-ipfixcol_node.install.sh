@@ -1,1 +1,1 @@
-sh /puppet/pa.sh -e "include securitycloud::ipfixcol_node"
+pa.sh -e "include securitycloud::ipfixcol_node"
