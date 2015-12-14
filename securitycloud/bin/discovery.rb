@@ -77,10 +77,10 @@ end
 def show_nodes()
 	$nodes["nodes"].each do |k,v|
 		#puts "#{k} #{v}"
-		if $cluster_state["master_node"] == k then role = "master" else role = "data" end
+		if $cluster_state["master_node"] == k then esrole = "master" else esrole = "data" end
 		storage_size = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "du -shL /scratch/fdistdump/data | awk '{print $1}'")
 		storage_part = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "df -h | grep '/scratch' | awk '{print $5\"/\"$2}'")
-		puts "#{k} #{v["host"]} #{v["name"]} #{v["transport_address"]} #{v["os"]["load_average"]} heap #{v["jvm"]["mem"]["heap_used_percent"]}%/#{as_size(v["jvm"]["mem"]["heap_max_in_bytes"])} #{role} storage #{storage_size} #{storage_part}"
+		puts "#{k} #{v["host"]} #{v["name"]} #{v["transport_address"]} #{v["os"]["load_average"]} heap #{v["jvm"]["mem"]["heap_used_percent"]}%/#{as_size(v["jvm"]["mem"]["heap_max_in_bytes"])} #{esrole} storage #{storage_size} #{storage_part}"
 	end
 end
 
