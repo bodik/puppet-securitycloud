@@ -1,6 +1,6 @@
 # == Class: securitycloud::install
 #
-# Class will ensure installation of fdistdump and ipfixcol binaries and basic cluster management scripts.
+# Class will ensure installation of fdistdump and ipfixcol binaries/packages from SecurityCloud repository.
 #
 # === Examples
 #

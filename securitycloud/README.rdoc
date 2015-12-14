@@ -7,18 +7,53 @@ tools based on elasticsearch multicast discovery.
 
 [build*sh]
   scripts for building packages for release
-[get_test_data.sh]
-  fetch test data for build purposes
-[distribute_test_data.rb]
-  distributes test data across all discovered nodes
+[deb-upload-*]
+  creates testing repository
+[discovery.rb]
+  used internally by clustersuite to display cluster state
 [securitycloud.init]
   basic cluster management tool
 
-  securitycloud.init list
-  securitycloud.init ssh
-  securitycloud.init node
-  securitycloud.init dist
-  securitycloud.init drop
+  securitycloud.init list		... lists all available nodes and their status
+  securitycloud.init ssh 'cmd'		... executes cmd on node selected by ENV["VMNAME"]
+  securitycloud.init node vmname 'cmd'	... executes cmd on node selected by vmname
+  securitycloud.init all 'cmd'		... executes cmd on all nodes
+  securitycloud.init update		... updates git repo on all nodes (bootstrap.install.sh)
+
+  securitycloud.init myrole		... displays current node role assigment
+  securitycloud.init proxy		... displays current proxy (eg. es master)
+  securitycloud.init collectors		... displays current collectors (eg. es non master nodes)
+  securitycloud.init makerole		... enforces securitycloud::ipfixcol_node class on all nodes
+
+  securitycloud.init fdddist		... distributes testing data across nodes from http URI
+  securitycloud.init fdddistm		... dtto
+  securitycloud.init fdddrop		... removes testdata from /scratch partition
+
+[standalone.sh]
+  pure packages installation helper
+[testdata-fdistdump-distribute.rb]
+  fetches or distributes build testdata
+[testdata-fdistdump-get.sh]
+  fetches or distributes build testdata
+[testdata-ipfixcol-get.sh]
+  fetches or distributes build testdata
+
+== Class: securitycloud::ipfixcol_node
+
+Class will ensure installation of fdistdump and ipfixcol binaries, and configures node as needed.
+
+=== Examples
+
+  class { "securitycloud::ipfixcol_node": }
+  class { "securitycloud::ipfixcol_node": role => "proxy", collectors => ["1.2.3.4", "5.6.7.8"] }
+
+== Class: securitycloud::cluster
+
+Class will ensure installation of SecurityCloud distributed test clustering suite.
+
+=== Examples
+
+  class { "securitycloud::cluster": }
 
 == Class: securitycloud::dev
 
@@ -30,7 +65,7 @@ Class will ensure installation of fdistdump and ipfixcol build and packaging req
 
 == Class: securitycloud::install
 
-Class will ensure installation of fdistdump and ipfixcol binaries and basic cluster management scripts.
+Class will ensure installation of fdistdump and ipfixcol binaries/packages from SecurityCloud repository.
 
 === Examples
 
