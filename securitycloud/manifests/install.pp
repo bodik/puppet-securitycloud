@@ -26,7 +26,7 @@ class securitycloud::install() {
 		ensure => installed,
 		require => Apt::Source["securitycloud"],
 	}
-	package { ["ipfixcol-base", "ipfixcol-plugins"]:
+	package { ["ipfixcol"]:
 		ensure => installed,
 		require => Apt::Source["securitycloud"],
 	}
