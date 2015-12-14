@@ -13,9 +13,8 @@ DESC="ipfixcol"
 NAME=ipfixcol
 
 IPFIXCOLD=ipfixcol
-IPFIXCOLD_OPTIONS="-v 2"
+IPFIXCOLD_OPTIONS="-v 2 -d"
 DAEMON=/usr/local/bin/ipfixcol
-PIDFILE=/var/run/ipfixcol.pid
 WORKDIR=/var/lib/ipfixcol
 USER="ipfixcol"
 
@@ -38,7 +37,7 @@ do_start()
 	#   0 if daemon has been started
 	#   1 if daemon was already running
 	#   other if daemon could not be started or a failure occured
-	start-stop-daemon --start --quiet --background --make-pidfile --pidfile $PIDFILE --exec $DAEMON --chuid $USER --chdir $WORKDIR -- $IPFIXCOLD_OPTIONS
+	start-stop-daemon --start --quiet --exec $DAEMON --chuid $USER --chdir $WORKDIR -- $IPFIXCOLD_OPTIONS
 }
 
 do_stop()
@@ -47,7 +46,7 @@ do_stop()
 	#   0 if daemon has been stopped
 	#   1 if daemon was already stopped
 	#   other if daemon could not be stopped or a failure occurred
-	start-stop-daemon --stop --quiet --remove-pidfile --retry=TERM/30/KILL/5 --pidfile $PIDFILE --exec $DAEMON
+	start-stop-daemon --stop --quiet --retry=TERM/30/KILL/5 --exec $DAEMON
 }
 
 case "$1" in
