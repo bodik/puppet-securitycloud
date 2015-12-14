@@ -1,10 +1,9 @@
 #!/bin/sh
 set -x
 
-echo 'deb http://esb.metacentrum.cz/puppet-securitycloud-packages ./' > /etc/apt/sources.list.d/securitycloud.list
-echo 'APT::Get::AllowUnauthenticated yes;' > /etc/apt/apt.conf.d/99auth
+wget -qO - http://esb.metacentrum.cz/puppet-securitycloud-packages/securitycloud.asc | apt-key add -
+echo 'deb http://esb.metacentrum.cz/puppet-securitycloud-packages/debian jessie main' > /etc/apt/sources.list.d/securitycloud.list
 apt-get update
-apt-get install -y fdistdump ipfixcol
-
+apt-get install fdistdump ipfixcol
 dpkg -l fdistdump libnf ipfixcol
 
