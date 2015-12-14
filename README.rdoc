@@ -55,16 +55,16 @@ Finaly you can start manage your cluster with securitycloud.init
   $ # distribute fdistdump testdata across all available nodes
   $ securitycloud.init dist
   $ # perform simple fdistdump mpi query
-  $ sh /puppet/securitycloud/tests/fdistdump-cluster.sh
+  $ sh securitycloud/tests/fdistdump-cluster.sh
 
   $ # enforce ipfixcol roles (proxy/collector)
   $ securitycloud.init makerole
   $ # fetch ipfixcol test data
-  $ sh /puppet/securitycloud/bin/testdata-ipfixcol-get.sh
+  $ sh securitycloud/bin/testdata-ipfixcol-get.sh
   $ # stream data to cloud through proxy
-  $ sh /puppet/securitycloud/tests/ipfixcol-stream.sh
+  $ sh securitycloud/tests/ipfixcol-stream.sh
   $ # perform simple fdistdump mpi query over ipfixcol dataset
-  $ sh /puppet/securitycloud/tests/ipfixcol-fdistdump.sh
+  $ sh securitycloud/tests/ipfixcol-fdistdump.sh
 
 
 === Development installation
