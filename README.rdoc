@@ -24,8 +24,10 @@ Following will install basic fdistdump and ipfixcol binaries with runtime requir
 
 ==== ipfixcol configuration
 
-ipfixcol package comes with examples configurations for collector and proxy daemon both located in /usr/local/etc/ipfixcol directory.
-To configure daemon for desired role copy selected config file to startup.xml and restart the ipfixcol service
+ipfixcol package comes with examples configurations for collector and proxy
+daemon both located in /usr/local/etc/ipfixcol directory.  To configure daemon
+for desired role copy selected config file to startup.xml and restart the
+ipfixcol service
   
   $ cp /usr/local/etc/ipfixcol/collector.xml.example /usr/local/etc/ipfixcol/startup.xml
   $ service ipfixcol restart
@@ -40,7 +42,13 @@ or
 
 === Cluster installation
 
-Deploy fdistdump, ipfixcol and cluster suite with following commands on every managed node
+Security Cloud cluster can be managed by standard puppet using module
+securitycloud (see securitycloud[link:securitycloud/README.rdoc]).
+Alternatively masterless puppet approach can be used as described in the next
+sections.
+
+Deploy fdistdump, ipfixcol and cluster suite with following commands on every
+managed node
 
   $ wget http://esb.metacentrum.cz/puppet-securitycloud.git/bootstrap.install.sh && sh bootstrap.install.sh
   $ cd /puppet && ls -l

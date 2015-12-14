@@ -1,6 +1,6 @@
 # == Class: securitycloud::cluster
 #
-# TODO
+# Class will ensure installation of SecurityCloud distributed test clustering suite.
 #
 # === Examples
 #
