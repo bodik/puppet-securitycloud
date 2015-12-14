@@ -14,14 +14,9 @@ if [ $? -ne 0 ]; then
 	rreturn 1 "$0 missing fdistdump"
 fi
 
-dpkg -l ipfixcol-base
+dpkg -l ipfixcol
 if [ $? -ne 0 ]; then
-	rreturn 1 "$0 missing ipfixcol-base"
-fi
-
-dpkg -l ipfixcol-plugins
-if [ $? -ne 0 ]; then
-	rreturn 1 "$0 missing ipfixcol-plugins"
+	rreturn 1 "$0 missing ipfixcol"
 fi
 
 
