@@ -1,11 +1,11 @@
-# == Class: securitycloud::cluster_ipfixcol
+# == Class: securitycloud::cluster_ipfixcol_node
 #
 # Class will ensure installation of fdistdump and ipfixcol binaries, and configures node as needed.
 #
 # === Examples
 #
-#   class { "securitycloud::cluster_ipfixcol": }
-#   class { "securitycloud::cluster_ipfixcol": role => "proxy", collectors => ["1.2.3.4", "5.6.7.8"] }
+#   class { "securitycloud::cluster_ipfixcol_node": }
+#   class { "securitycloud::cluster_ipfixcol_node": role => "proxy", collectors => ["1.2.3.4", "5.6.7.8"] }
 #
 class securitycloud::ipfixcol_node (
 	$install_dir = "/usr/local/",
