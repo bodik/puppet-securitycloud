@@ -38,7 +38,7 @@ Deploy fdistdump, ipfixcol and cluster suite with following commands on every ma
   $ wget http://esb.metacentrum.cz/puppet-securitycloud.git/bootstrap.install.sh && sh bootstrap.install.sh
   $ cd /puppet && ls -l
   $ sh phase2.install.sh
-  $ sh securitycloud.install.sh
+  $ sh securitycloud-cluster.install.sh
   $ sh securitycloud/tests/securitycloud-cluster.install.sh
 
 Finaly you can start manage your cluster with
