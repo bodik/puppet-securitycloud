@@ -1,0 +1,2 @@
+Alias /puppet-securitycloud-packages/dists /tmp/test/dists
+Alias /puppet-securitycloud-packages/pool /tmp/test/pool
