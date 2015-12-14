@@ -59,7 +59,7 @@ case "$1" in
 		ruby /puppet/securitycloud/bin/discovery.rb --query collectors
 	;;
 	irole)
-		vm_all 'cd /puppet && sh securitycloud-cluster_ipfixcol_node.install.sh'
+		vm_all 'cd /puppet && sh securitycloud-ipfixcol_node.install.sh'
 	;;
 
 	
