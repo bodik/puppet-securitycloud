@@ -19,6 +19,8 @@ PIDFILE=/var/run/ipfixcol.pid
 WORKDIR=/var/lib/ipfixcol
 USER="ipfixcol"
 
+ulimit -c unlimited
+
 SCRIPTNAME=/etc/init.d/$NAME
 
 # Exit if the package is not installed
