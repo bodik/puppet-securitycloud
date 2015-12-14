@@ -14,20 +14,20 @@ tools based on elasticsearch multicast discovery.
 [securitycloud.init]
   basic cluster management tool
 
-  securitycloud.init list		... lists all available nodes and their status
-  securitycloud.init ssh 'cmd'		... executes cmd on node selected by ENV["VMNAME"]
-  securitycloud.init node vmname 'cmd'	... executes cmd on node selected by vmname
-  securitycloud.init all 'cmd'		... executes cmd on all nodes
-  securitycloud.init update		... updates git repo on all nodes (bootstrap.install.sh)
+  * securitycloud.init list			... lists all available nodes and their status
+  * securitycloud.init ssh 'cmd'		... executes cmd on node selected by ENV["VMNAME"]
+  * securitycloud.init node vmname 'cmd'	... executes cmd on node selected by vmname
+  * securitycloud.init all 'cmd'		... executes cmd on all nodes
+  * securitycloud.init update			... updates git repo on all nodes (bootstrap.install.sh)
 
-  securitycloud.init myrole		... displays current node role assigment
-  securitycloud.init proxy		... displays current proxy (eg. es master)
-  securitycloud.init collectors		... displays current collectors (eg. es non master nodes)
-  securitycloud.init makerole		... enforces securitycloud::ipfixcol_node class on all nodes
+  * securitycloud.init myrole			... displays current node role assigment
+  * securitycloud.init proxy			... displays current proxy (eg. es master)
+  * securitycloud.init collectors		... displays current collectors (eg. es non master nodes)
+  * securitycloud.init makerole			... enforces securitycloud::ipfixcol_node class on all nodes
 
-  securitycloud.init fdddist		... distributes testing data across nodes from http URI
-  securitycloud.init fdddistm		... dtto
-  securitycloud.init fdddrop		... removes testdata from /scratch partition
+  * securitycloud.init fdddist			... distributes testing data across nodes from http URI
+  * securitycloud.init fdddistm			... dtto
+  * securitycloud.init fdddrop			... removes testdata from /scratch partition
 
 [standalone.sh]
   pure packages installation helper

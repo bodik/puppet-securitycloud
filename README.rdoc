@@ -43,7 +43,7 @@ or
 === Cluster installation
 
 Security Cloud cluster can be managed by standard puppet using module
-securitycloud (see securitycloud[link:securitycloud/README.rdoc].
+securitycloud (see securitycloud[link:securitycloud/README.rdoc]).
 Alternatively masterless puppet approach can be used as described in the next
 sections.
 
