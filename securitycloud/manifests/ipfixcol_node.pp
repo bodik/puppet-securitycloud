@@ -40,7 +40,7 @@ class securitycloud::ipfixcol_node (
 				owner => "root", group => "root", mode => "0644",
 				notify => Service["ipfixcol"],
 			}
-			notice("role ${role_real} with collectors at ${collectors}")
+			notice("role ${role_real} with collectors at ${collectors_real}")
 		}
 
 		#######################

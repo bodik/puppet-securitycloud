@@ -29,21 +29,17 @@
 				<templateLifePacket>2048</templateLifePacket>
 				<optionsTemplateLifePacket>2048</optionsTemplateLifePacket>
 
-				<destination>
-					<ip>192.168.0.1</ip>
-				</destination>
-				<destination>
-					<ip>192.168.0.2</ip>
-				</destination>
-				<destination>
-					<ip>192.168.0.3</ip>
-				</destination>
+				<% @collectors_real.each do |tmp| %>
+					<destination>
+						<ip><%= tmp %></ip>
+					</destination>
+				<% end %>
 			</fileWriter>
 		</destination>
 		<singleManager>yes</singleManager>
 	</exportingProcess>
 
 	<!-- List of active Intermediate Plugins -->
-	<intermediatePlugins>
-	</intermediatePlugins>
+	<!-- <intermediatePlugins>
+	</intermediatePlugins> -->
 </ipfix>
