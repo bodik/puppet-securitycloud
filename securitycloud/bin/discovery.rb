@@ -78,9 +78,11 @@ def show_nodes()
 	$nodes["nodes"].each do |k,v|
 		#puts "#{k} #{v}"
 		if $cluster_state["master_node"] == k then esrole = "master" else esrole = "data" end
-		storage_size = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "du -shL /scratch/fdistdump/data | awk '{print $1}'")
-		storage_part = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "df -h | grep '/scratch' | awk '{print $5\"/\"$2}'")
-		puts "#{k} #{v["host"]} #{v["name"]} #{v["transport_address"]} #{v["os"]["load_average"]} heap #{v["jvm"]["mem"]["heap_used_percent"]}%/#{as_size(v["jvm"]["mem"]["heap_max_in_bytes"])} #{esrole} storage #{storage_size} #{storage_part}"
+		fstorage_size = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "du -shL /scratch/fdistdump/data | awk '{print $1}'")
+		fstorage_part = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "df -h | grep '/scratch' | awk '{print $5\"/\"$2}'")
+		istorage_size = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "du -shL /var/lib/ipfixcol | awk '{print $1}'")
+		istorage_part = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "df -h | head -2 | tail -1 | awk '{print $5\"/\"$2}'")
+		puts "#{k} #{v["host"]} #{v["name"]} #{v["transport_address"]} #{v["os"]["load_average"]} heap #{v["jvm"]["mem"]["heap_used_percent"]}%/#{as_size(v["jvm"]["mem"]["heap_max_in_bytes"])} #{esrole} fstorage #{fstorage_size} #{fstorage_part} istorage #{istorage_size} #{istorage_part}"
 	end
 end
 
