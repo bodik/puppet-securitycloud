@@ -70,7 +70,7 @@ case "$1" in
 	;;
 	fdddistm)
 		for all in $(securitycloud.init list| awk '{print $1}'); do
-			VMNAME=$all securitycloud.init ssh "ruby /puppet/securitycloud/bin/testdata-fdistdump-distribute.rb --datasource http://minos.zcu.cz:45454" | sed "s/^/$all /" &
+			VMNAME=$all securitycloud.init ssh "ruby /puppet/securitycloud/bin/testdata-fdistdump-distribute.rb --datasource http://minos.zcu.cz:45454/" | sed "s/^/$all /" &
 		done
 		wait
 	;;
