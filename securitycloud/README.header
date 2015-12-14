@@ -11,12 +11,12 @@ tools based on elasticsearch multicast discovery.
   fetch test data for build purposes
 [distribute_test_data.rb]
   distributes test data across all discovered nodes
-[cluster.init]
+[securitycloud.init]
   basic cluster management tool
 
-  cluster.init list
-  cluster.init ssh
-  cluster.init node
-  cluster.init dist
-  cluster.init drop
+  securitycloud.init list
+  securitycloud.init ssh
+  securitycloud.init node
+  securitycloud.init dist
+  securitycloud.init drop
 

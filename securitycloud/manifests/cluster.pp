@@ -18,9 +18,9 @@ class securitycloud::cluster() {
 		cluster_name=>"sc", 
 		esd_heap_size=>"32M", 
 	}
-	file { "/usr/local/bin/cluster.init":
+	file { "/usr/local/bin/securitycloud.init":
 		ensure => link,
-		target => "/puppet/securitycloud/bin/cluster.init",
+		target => "/puppet/securitycloud/bin/securitycloud.init",
 	}
 
 }

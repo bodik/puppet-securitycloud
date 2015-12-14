@@ -12,7 +12,7 @@ vm_list() {
 }
 
 vm_ssh() {
-	VMIP=$(/puppet/securitycloud/bin/cluster.init list | grep "^$VMNAME " | awk '{print $2}')
+	VMIP=$(securitycloud.init list | grep "^$VMNAME " | awk '{print $2}')
 	if [ -z "$VMIP" ]; then
 		rreturn 1 "vm ip not detected from cluster"
 	fi
@@ -21,8 +21,8 @@ vm_ssh() {
 }
 
 vm_all() {
-	for all in $(/puppet/securitycloud/bin/cluster.init list| awk '{print $1}'); do
-		VMNAME=$all /puppet/securitycloud/bin/cluster.init ssh "$1"
+	for all in $(securitycloud.init list| awk '{print $1}'); do
+		VMNAME=$all securitycloud.init ssh "$1"
 	done
 }
 
@@ -37,7 +37,7 @@ case "$1" in
 		vm_ssh "$2"
 	;;
 	node)
-		VMNAME=$2 /puppet/securitycloud/bin/cluster.init ssh "$3"
+		VMNAME=$2 securitycloud.init ssh "$3"
 	;;
 	all)
 		vm_all "$2"
@@ -66,8 +66,8 @@ case "$1" in
 		vm_all "ruby /puppet/securitycloud/bin/testdata-fdistdump-distribute.rb"
 	;;
 	fdddistm)
-		for all in $(/puppet/securitycloud/bin/cluster.init list| awk '{print $1}'); do
-			VMNAME=$all /puppet/securitycloud/bin/cluster.init ssh "ruby /puppet/securitycloud/bin/testdata-fdistdump-distribute.rb --datasource http://minos.zcu.cz:45454" | sed "s/^/$all /" &
+		for all in $(securitycloud.init list| awk '{print $1}'); do
+			VMNAME=$all securitycloud.init ssh "ruby /puppet/securitycloud/bin/testdata-fdistdump-distribute.rb --datasource http://minos.zcu.cz:45454" | sed "s/^/$all /" &
 		done
 		wait
 	;;

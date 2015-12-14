@@ -43,8 +43,8 @@ Deploy fdistdump, ipfixcol and cluster suite with following commands on every ma
 
 Finaly you can start manage your cluster with
 
-  $ cluster.init list
-  $ cluster.init dist
+  $ securitycloud.init list
+  $ securitycloud.init dist
   $ sh /puppet/securitycloud/tests/fdistdump-cluster.sh
 
 

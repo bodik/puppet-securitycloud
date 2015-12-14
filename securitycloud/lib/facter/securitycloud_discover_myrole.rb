@@ -1,7 +1,7 @@
 require "puppet"
 module Puppet::Parser::Functions
 	newfunction(:securitycloud_discover_myrole, :type => :rvalue) do |args|
-		out= Facter::Util::Resolution.exec('cluster.init myrole')
+		out= Facter::Util::Resolution.exec('securitycloud.init myrole')
 		if out.nil?
 			return :undef
 		else
