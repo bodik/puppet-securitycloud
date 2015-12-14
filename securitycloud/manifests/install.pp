@@ -13,7 +13,7 @@ class securitycloud::install() {
 	apt::source { 'securitycloud':
 	        location   => 'http://esb.metacentrum.cz/puppet-securitycloud-packages/debian',
 	        release => 'jessie',
-	        repos => '',
+	        repos => 'main',
 	        key => 'B71FA8D5849604DB73C4608F88139C4C0811EDEA',
 	        key_source => 'http://esb.metacentrum.cz/puppet-securitycloud-packages/securitycloud.asc',
 		include_src => false,
