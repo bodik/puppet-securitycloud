@@ -58,6 +58,9 @@ case "$1" in
 	collectors)
 		ruby /puppet/securitycloud/bin/discovery.rb --query collectors
 	;;
+	irole)
+		vm_all 'cd /puppet && sh securitycloud-cluster_ipfixcol_node.install.sh'
+	;;
 
 	
 	
@@ -74,6 +77,7 @@ case "$1" in
 	fdddrop)
 		vm_all "rm -r /scratch/fdistdump/data"
 	;;
+
 
 
 	*)
