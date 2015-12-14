@@ -1,0 +1,17 @@
+[Unit]
+Description=Security Cloud ipfixcol
+Documentation=man:ipfixcol
+Documentation=https://github.com/CESNET/ipfixcol
+
+[Service]
+Type=forking
+User=ipfixcol
+Group=ipfixcol
+ExecStart=/usr/local/bin/ipfixcol -d -v 2
+StandardOutput=null
+
+TimeoutStopSec=30
+LimitCORE=infinity
+
+[Install]
+WantedBy=multi-user.target

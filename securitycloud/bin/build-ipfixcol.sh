@@ -27,7 +27,9 @@ make DESTDIR="${BUILD_AREA}/ipfixcol-install" install
 mkdir -p ${BUILD_AREA}/ipfixcol-install/var/lib/ipfixcol/
 mkdir -p ${BUILD_AREA}/ipfixcol-install/var/lib/ipfixcol/lnfstore/
 mkdir -p ${BUILD_AREA}/ipfixcol-install/etc/init.d/
+mkdir -p ${BUILD_AREA}/ipfixcol-install/lib/systemd/system
 cp /puppet/securitycloud/files/packaging/ipfixcol.init ${BUILD_AREA}/ipfixcol-install/etc/init.d/ipfixcol
+cp /puppet/securitycloud/files/packaging/ipfixcol.service ${BUILD_AREA}/ipfixcol-install/lib/systemd/system
 mv ${BUILD_AREA}/ipfixcol-install/usr/local/etc/ipfixcol/startup.xml ${BUILD_AREA}/ipfixcol-install/usr/local/etc/ipfixcol/startup.xml.example
 cp /puppet/securitycloud/files/packaging/internalcfg.xml ${BUILD_AREA}/ipfixcol-install/usr/local/etc/ipfixcol/
 cp /puppet/securitycloud/files/packaging/collector.xml.example ${BUILD_AREA}/ipfixcol-install/usr/local/etc/ipfixcol/
