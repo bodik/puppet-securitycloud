@@ -7,8 +7,9 @@ Documentation=https://github.com/CESNET/ipfixcol
 Type=forking
 User=ipfixcol
 Group=ipfixcol
-ExecStart=/usr/local/bin/ipfixcol -d -v 2
+WorkingDirectory=/var/lib/ipfixcol
 StandardOutput=null
+ExecStart=/usr/local/bin/ipfixcol -d -v 2
 
 TimeoutStopSec=30
 LimitCORE=infinity
