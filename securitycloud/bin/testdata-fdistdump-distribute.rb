@@ -1,4 +1,4 @@
-#!/usr/bin/ruby.rb
+#!/usr/bin/ruby
 
 require 'logger'                
 require 'syslog/logger'
