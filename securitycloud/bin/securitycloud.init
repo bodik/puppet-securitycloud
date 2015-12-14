@@ -58,7 +58,7 @@ case "$1" in
 	collectors)
 		ruby /puppet/securitycloud/bin/discovery.rb --query collectors
 	;;
-	irole)
+	makerole)
 		vm_all 'cd /puppet && sh securitycloud-ipfixcol_node.install.sh'
 	;;
 

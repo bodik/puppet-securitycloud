@@ -30,6 +30,13 @@ To configure daemon for desired role copy selected config file to startup.xml an
   $ cp /usr/local/etc/ipfixcol/collector.xml.example /usr/local/etc/ipfixcol/startup.xml
   $ service ipfixcol restart
 
+or 
+
+  $ cp /usr/local/etc/ipfixcol/proxy.xml.example /usr/local/etc/ipfixcol/startup.xml
+  $ # customize list of available collectors
+  $ edit /usr/local/etc/ipfixcol/startup.xml
+  $ service ipfixcol restart
+
 
 === Cluster installation
 
@@ -41,11 +48,23 @@ Deploy fdistdump, ipfixcol and cluster suite with following commands on every ma
   $ sh securitycloud-cluster.install.sh
   $ sh securitycloud/tests/securitycloud-cluster.install.sh
 
-Finaly you can start manage your cluster with
+Finaly you can start manage your cluster with securitycloud.init
 
   $ securitycloud.init list
+
+  $ # distribute fdistdump testdata across all available nodes
   $ securitycloud.init dist
+  $ # perform simple fdistdump mpi query
   $ sh /puppet/securitycloud/tests/fdistdump-cluster.sh
+
+  $ # enforce ipfixcol roles (proxy/collector)
+  $ securitycloud.init makerole
+  $ # fetch ipfixcol test data
+  $ sh /puppet/securitycloud/bin/testdata-ipfixcol-get.sh
+  $ # stream data to cloud through proxy
+  $ sh /puppet/securitycloud/tests/ipfixcol-stream.sh
+  $ # perform simple fdistdump mpi query over ipfixcol dataset
+  $ sh /puppet/securitycloud/tests/ipfixcol-fdistdump.sh
 
 
 === Development installation
