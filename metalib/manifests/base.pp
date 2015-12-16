@@ -16,9 +16,22 @@ class metalib::base {
 	# generic debianization from next,next,next,... install
 	package { ["nfs-common","rpcbind"]: ensure => absent, }
 	package { ["joe","nano", "pico"]: ensure => absent, }
-	package { ["vim", "mc", "git", "puppet", "augeas-lenses", "nagios-plugins-basic", "screen", "psmisc"]: ensure => installed, }
+	package { ["mc", "git", "puppet", "screen", "psmisc"]: ensure => installed, }
 
-	package { "krb5-user": ensure => installed, }
+	case $::osfamily {
+		'Debian': {
+			package { ["vim", "augeas-lenses", "nagios-plugins-basic"]: ensure => installed, }
+			package { "krb5-user": ensure => installed, }
+		}
+		'RedHat': {
+			package { ["vim-enhancedm", "augeas-libs", "nagios-plugins-procs"]: ensure => installed, }
+			package { "krb5-workstation": ensure => installed, }
+		}
+		default: {
+			fail("\"${module_name}\" is probably not supported for OSfamily \"${::osfamily}\"")
+		}
+	}
+
 	metalib::wget::download { "/etc/krb5.conf":
                 uri => "https://download.zcu.cz/public/config/krb5/krb5.conf",
                 owner => "root", group => "root", mode => "0644",

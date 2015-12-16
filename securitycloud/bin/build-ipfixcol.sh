@@ -1,10 +1,12 @@
 #!/bin/sh
 
+#prologue
 set -e
 BUILD_AREA=/tmp/build_area
 mkdir -p $BUILD_AREA
 
 
+#fetch sources
 cd $BUILD_AREA
 if [ ! -d ipfixcol ]; then
 	git clone https://github.com/CESNET/ipfixcol --branch devel
@@ -17,6 +19,7 @@ PKGITER="1"
 cd $BUILD_AREA
 
 
+#compile
 cd ipfixcol/base 
 autoreconf -i
 ./configure
@@ -45,7 +48,6 @@ for target in deb rpm; do
 done
 dpkg -i ipfixcol-buildstub_${VER}-1_$(dpkg --print-architecture).deb
 
-
 cd ${BUILD_AREA}/ipfixcol/plugins/input/nfdump
 autoreconf -i
 ./configure
@@ -71,6 +73,8 @@ make
 mkdir -p ${BUILD_AREA}/ipfixcol-plugins-install
 make DESTDIR="${BUILD_AREA}/ipfixcol-install" install
 
+
+#make package
 cd $BUILD_AREA
 for target in deb rpm; do 
 	fpm -f -s dir -t $target -C "${BUILD_AREA}/ipfixcol-install" --name ipfixcol --version ${VER} --iteration ${PKGITER} \
