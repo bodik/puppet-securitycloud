@@ -37,13 +37,13 @@ make
 mkdir ${BUILD_AREA}/libnf-install
 make DESTDIR="${BUILD_AREA}/libnf-install" install
 mkdir -p ${BUILD_AREA}/libnf-install/etc/ld.so.conf.d/
-cp /puppet/securitycloud/files/packaging/libnf.ld.so.conf ${BUILD_AREA}/libnf-install/etc/ld.so.conf.d/
+cp /puppet/securitycloud/files/packaging/libnf/libnf.ld.so.conf ${BUILD_AREA}/libnf-install/etc/ld.so.conf.d/
 
 
 #make package
 cd $BUILD_AREA
 fpm -f -s dir -t ${TGT} -C "${BUILD_AREA}/libnf-install" --name libnf --version ${VER} --iteration ${PKGITER}  \
-	--after-install /puppet/securitycloud/files/packaging/libnf.postinst --after-remove /puppet/securitycloud/files/packaging/libnf.postrm \
+	--after-install /puppet/securitycloud/files/packaging/libnf/postinst --after-remove /puppet/securitycloud/files/packaging/libnf/postrm \
 	--description "libnf package from libnf.net/packages (build SecurityCloud)" --maintainer "bodik@cesnet.cz" --vendor "" --url "http://libnf.net"
 
 ${PKGMANAGER} -i ${RESULT}

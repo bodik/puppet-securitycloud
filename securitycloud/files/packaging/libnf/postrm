@@ -1,0 +1,30 @@
+#!/bin/sh
+set -e
+# like elastciserach
+# This script is executed in the post-installation phase
+#
+#   On Debian,
+#       $1=configure : is set to 'configure' and if $2 is set, it is an upgrade
+#
+#   On RedHat,
+#       $1=0         : indicates a removal
+#       $1=1         : indicates an upgrade
+
+case "$1" in
+
+    # Debian ####################################################
+    remove)
+	ldconfig
+    ;;
+    abort-upgrade|abort-remove|abort-deconfigure)
+    ;;
+
+    # RedHat ####################################################
+    0)
+    ;;
+
+    *)
+        echo "post install script called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
