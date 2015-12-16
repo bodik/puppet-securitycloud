@@ -24,11 +24,16 @@ make
 mkdir -p ${BUILD_AREA}/fdistdump-install
 make DESTDIR="${BUILD_AREA}/fdistdump-install" install
 cd $BUILD_AREA
-for target in deb rpm; do 
-	fpm -f -s dir -t $target -C "${BUILD_AREA}/fdistdump-install" --name fdistdump --version ${VER} --iteration ${PKGITER}  \
-	        --depends libnf --depends openmpi-bin --depends openmpi-common --depends openmpi-doc \
-		--description "fdistdump from https://github.com/CESNET/fdistdump with HEAD at ${GREV} (build SecurityCloud)" --maintainer "bodik@cesnet.cz" --vendor "" --url "https://github.com/CESNET/fdistdump"
-done
+
+
+fpm -f -s dir -t deb -C "${BUILD_AREA}/fdistdump-install" --name fdistdump --version ${VER} --iteration ${PKGITER}  \
+        --depends libnf --depends openmpi-bin --depends openmpi-common --depends openmpi-doc \
+	--description "fdistdump from https://github.com/CESNET/fdistdump with HEAD at ${GREV} (build SecurityCloud)" --maintainer "bodik@cesnet.cz" --vendor "" --url "https://github.com/CESNET/fdistdump"
+
+fpm -f -s dir -t rpm -C "${BUILD_AREA}/fdistdump-install" --name fdistdump --version ${VER} --iteration ${PKGITER}  \
+        --depends libnf --depends openmpi \
+	--description "fdistdump from https://github.com/CESNET/fdistdump with HEAD at ${GREV} (build SecurityCloud)" --maintainer "bodik@cesnet.cz" --vendor "" --url "https://github.com/CESNET/fdistdump"
+
 dpkg -i fdistdump_${VER}-1_$(dpkg --print-architecture).deb
 
 sh /puppet/securitycloud/bin/testdata-fdistdump-get.sh

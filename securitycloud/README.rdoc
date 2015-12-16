@@ -7,10 +7,12 @@ tools based on elasticsearch multicast discovery.
 
 [build*sh]
   scripts for building packages for release
-[deb-upload-*]
+[deb-upload-simple.sh]
   creates testing repository
 [discovery.rb]
   used internally by clustersuite to display cluster state
+[pkg-upload-repo.sh]
+  creates testing repository
 [securitycloud.init]
   basic cluster management tool
 
