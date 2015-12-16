@@ -24,7 +24,7 @@ class metalib::base {
 			package { "krb5-user": ensure => installed, }
 		}
 		'RedHat': {
-			package { ["vim-enhancedm", "augeas-libs", "nagios-plugins-procs"]: ensure => installed, }
+			package { ["vim-enhanced", "augeas-libs", "nagios-plugins-procs"]: ensure => installed, }
 			package { "krb5-workstation": ensure => installed, }
 		}
 		default: {
