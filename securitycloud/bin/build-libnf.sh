@@ -43,7 +43,7 @@ cp /puppet/securitycloud/files/packaging/libnf/libnf.ld.so.conf ${BUILD_AREA}/li
 #make package
 cd $BUILD_AREA
 fpm -f -s dir -t ${TGT} -C "${BUILD_AREA}/libnf-install" --name libnf --version ${VER} --iteration ${PKGITER}  \
-	--after-install /puppet/securitycloud/files/packaging/libnf/postinst --after-remove /puppet/securitycloud/files/packaging/libnf/postrm \
+	--after-install /puppet/securitycloud/files/packaging/libnf/libnf.postinst --after-remove /puppet/securitycloud/files/packaging/libnf/libnf.postrm \
 	--description "libnf package from libnf.net/packages (build SecurityCloud)" --maintainer "bodik@cesnet.cz" --vendor "" --url "http://libnf.net"
 
 ${PKGMANAGER} -i ${RESULT}

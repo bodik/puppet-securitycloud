@@ -1,6 +1,0 @@
-#!/bin/sh
-set -e
-
-if [ -x "/etc/init.d/ipfixcol" ] && [ "$1" = remove ]; then
-        invoke-rc.d ipfixcol stop || true
-fi

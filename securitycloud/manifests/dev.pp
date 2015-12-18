@@ -16,7 +16,7 @@ class securitycloud::dev() {
 			package { ["rake", "ruby-dev"]: ensure => installed, }
 		}
 		'RedHat': {
-			package { ["rpm-build", "automake"]: ensure => installed, }
+			package { ["rpm-build", "automake", "gcc-c++"]: ensure => installed, }
 			package { ["rubygem-rake", "ruby-devel"]: ensure => installed, }
 		}
 		default: { fail("\"${module_name}\" is probably not supported for OSfamily \"${::osfamily}\"") }
