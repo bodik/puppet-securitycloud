@@ -50,6 +50,8 @@ mkdir -p ${BUILD_AREA}/ipfixcol-install/var/lib/ipfixcol/
 mkdir -p ${BUILD_AREA}/ipfixcol-install/var/lib/ipfixcol/lnfstore/
 mkdir -p ${BUILD_AREA}/ipfixcol-install/etc/init.d/
 mkdir -p ${BUILD_AREA}/ipfixcol-install/lib/systemd/system
+mkdir -p ${BUILD_AREA}/ipfixcol-install/etc/ld.so.conf.d/
+cp /puppet/securitycloud/files/packaging/ipfixcol/ipfixcol.ld.so.conf ${BUILD_AREA}/ipfixcol-install/etc/ld.so.conf.d/
 cp /puppet/securitycloud/files/packaging/ipfixcol/ipfixcol.init ${BUILD_AREA}/ipfixcol-install/etc/init.d/ipfixcol
 cp /puppet/securitycloud/files/packaging/ipfixcol/ipfixcol.service ${BUILD_AREA}/ipfixcol-install/lib/systemd/system
 mv ${BUILD_AREA}/ipfixcol-install/usr/local/etc/ipfixcol/startup.xml ${BUILD_AREA}/ipfixcol-install/usr/local/etc/ipfixcol/startup.xml.example
