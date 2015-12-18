@@ -4,7 +4,7 @@ SOURCE="/tmp/build_area"
 FRONT='bodik@esb.metacentrum.cz'
 BASE="/data/puppet-securitycloud-packages"
 GPGDIR="${BASE}/keys"
-TARGET="${BASE}/redhat"
+TARGET="${BASE}/redhat/centos7"
 
 ssh $FRONT "rm -r ${TARGET}; mkdir -p ${TARGET}"
 scp ${SOURCE}/*rpm ${FRONT}:${TARGET}

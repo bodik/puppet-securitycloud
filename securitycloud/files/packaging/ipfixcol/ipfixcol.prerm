@@ -1,5 +1,5 @@
 #!/bin/sh
-set -x
+set -e
 # This script is executed in the pre-remove phase
 #   On Debian,
 #       $1=remove    : indicates a removal

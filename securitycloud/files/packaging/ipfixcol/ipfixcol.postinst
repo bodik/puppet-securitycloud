@@ -1,5 +1,5 @@
 #!/bin/sh
-set -x
+set -e
 # This script is executed in the post-installation phase
 #   On Debian,
 #       $1=configure : is set to 'configure' and if $2 is set, it is an upgrade

@@ -12,12 +12,16 @@ class securitycloud::dev() {
 	package { ["autoconf", "gcc", "make", "rpm", "strace"]: ensure => installed, }
 	case $::osfamily {
 		'Debian': {
-			package { ["build-essential"]: ensure => installed, }
-			package { ["rake", "ruby-dev"]: ensure => installed, }
+			package { ["build-essential", "rake", "ruby-dev"]: 
+				ensure => installed,
+				before => Package["fpm"],
+			}
 		}
 		'RedHat': {
-			package { ["rpm-build", "automake", "gcc-c++"]: ensure => installed, }
-			package { ["rubygem-rake", "ruby-devel"]: ensure => installed, }
+			package { ["rpm-build", "automake", "gcc-c++", "libtool", "rubygem-rake", "ruby-devel"]: 
+				ensure => installed, 
+				before => Package["fpm"],
+			}
 		}
 		default: { fail("\"${module_name}\" is probably not supported for OSfamily \"${::osfamily}\"") }
 	}
