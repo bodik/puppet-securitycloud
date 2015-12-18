@@ -15,7 +15,7 @@ case "$1" in
 	remove)
 		ldconfig
 	;;
-	abort-upgrade|abort-remove|abort-deconfigure)
+	abort-upgrade|abort-remove|abort-deconfigure|failed-upgrade)
 	;;
 
 	# RedHat ####################################################
