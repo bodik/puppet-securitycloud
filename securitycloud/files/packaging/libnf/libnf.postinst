@@ -18,7 +18,7 @@ case "$1" in
 		if [ -n $2 ]; then
 			IS_UPGRADE=true
 		fi
-		lconfig
+		ldconfig
 	;;
 	abort-upgrade|abort-remove|abort-deconfigure)
 	;;
@@ -27,12 +27,12 @@ case "$1" in
 	1)
 		# If $1=1 this is an install
 		IS_UPGRADE=false
-		lconfig
+		ldconfig
 	;;
 	2)
 		# If $1=1 this is an upgrade
 		IS_UPGRADE=true
-		ldconfig
+		lddconfig
 	;;
 
 	*)

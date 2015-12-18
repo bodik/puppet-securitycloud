@@ -13,7 +13,7 @@ case "$1" in
 
 	# Debian ####################################################
 	remove)
-		lconfig
+		ldconfig
 	;;
 	abort-upgrade|abort-remove|abort-deconfigure)
 	;;
