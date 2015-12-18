@@ -6,6 +6,7 @@ BUILD_AREA=/tmp/build_area
 mkdir -p $BUILD_AREA
 
 
+
 #fetch sources
 cd $BUILD_AREA
 if [ ! -d fdistdump ]; then
@@ -35,17 +36,21 @@ case "$(facter osfamily)" in
 esac
 
 
+
 #compile
+cd $BUILD_AREA
+
 cd fdistdump
 autoreconf -i
 ./configure
 make
 mkdir -p ${BUILD_AREA}/fdistdump-install
 make DESTDIR="${BUILD_AREA}/fdistdump-install" install
-cd $BUILD_AREA
+
 
 
 #make package
+cd $BUILD_AREA
 fpm -f -s dir -t ${TGT} -C "${BUILD_AREA}/fdistdump-install" --name fdistdump --version ${VER} --iteration ${PKGITER}  \
         ${DEPENDS} \
 	--description "fdistdump from https://github.com/CESNET/fdistdump with HEAD at ${GREV} (build SecurityCloud)" --maintainer "bodik@cesnet.cz" --vendor "" --url "https://github.com/CESNET/fdistdump"

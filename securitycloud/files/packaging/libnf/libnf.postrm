@@ -1,6 +1,5 @@
 #!/bin/sh
 set -e
-# like elastciserach
 # This script is executed in the post-installation phase
 #
 #   On Debian,
@@ -12,19 +11,20 @@ set -e
 
 case "$1" in
 
-    # Debian ####################################################
-    remove)
-	ldconfig
-    ;;
-    abort-upgrade|abort-remove|abort-deconfigure)
-    ;;
+	# Debian ####################################################
+	remove)
+		lconfig
+	;;
+	abort-upgrade|abort-remove|abort-deconfigure)
+	;;
 
-    # RedHat ####################################################
-    0)
-    ;;
+	# RedHat ####################################################
+	0)
+		ldconfig
+	;;
 
-    *)
-        echo "post install script called with unknown argument \`$1'" >&2
-        exit 1
-    ;;
+	*)
+		echo "post install script called with unknown argument \`$1'" >&2
+		exit 1
+	;;
 esac

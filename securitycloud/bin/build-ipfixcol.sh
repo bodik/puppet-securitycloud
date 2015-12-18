@@ -7,6 +7,7 @@ mkdir -p $BUILD_AREA
 puppet apply -e 'package { ["ipfixcol", "ipfixcol-buildstub"]: ensure => absent }'
 
 
+
 #fetch sources
 cd $BUILD_AREA
 if [ ! -d ipfixcol ]; then
@@ -17,7 +18,6 @@ cd ipfixcol/base
 VER=$(cat configure.ac | grep AC_INIT | awk '{print $2}' | sed 's/[^0-9\.]//g')
 GREV=$(git rev-parse --short HEAD)
 PKGITER="1"
-cd $BUILD_AREA
 
 case "$(facter osfamily)" in
     "Debian")	
@@ -39,6 +39,8 @@ esac
 
 
 #compile
+cd $BUILD_AREA
+
 cd ipfixcol/base 
 autoreconf -i
 ./configure
@@ -93,6 +95,7 @@ mkdir -p ${BUILD_AREA}/ipfixcol-plugins-install
 make DESTDIR="${BUILD_AREA}/ipfixcol-install" install
 
 
+
 #make package
 cd $BUILD_AREA
 fpm -f -s dir -t ${TGT} -C "${BUILD_AREA}/ipfixcol-install" --name ipfixcol --version ${VER} --iteration ${PKGITER} \
@@ -100,6 +103,7 @@ fpm -f -s dir -t ${TGT} -C "${BUILD_AREA}/ipfixcol-install" --name ipfixcol --ve
 	--conflicts ipfixcol-buildstub \
 	--after-install /puppet/securitycloud/files/packaging/ipfixcol/ipfixcol.postinst --pre-uninstall /puppet/securitycloud/files/packaging/ipfixcol/ipfixcol.prerm --after-remove /puppet/securitycloud/files/packaging/ipfixcol/ipfixcol.postrm \
 	--description "ipfixcol from https://github.com/CESNET/ipfixcol with HEAD at ${GREV} (build SecurityCloud)" --maintainer "bodik@cesnet.cz" --vendor "" --url "https://github.com/CESNET/ipfixcol"
+
 puppet apply -e 'package { "ipfixcol-buildstub": ensure => absent }'
 ${PKGMANAGER} -i ${RESULT2}
 

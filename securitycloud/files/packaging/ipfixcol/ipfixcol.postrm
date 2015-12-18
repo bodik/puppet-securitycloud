@@ -1,14 +1,12 @@
-#
+#!/bin/sh
+set -x
 # This script is executed in the post-removal phase
-#
 #   On Debian,
 #       $1=remove    : indicates a removal
 #       $1=purge     : indicates an upgrade
-#
 #   On RedHat,
 #       $1=0         : indicates a removal
 #       $1=1         : indicates an upgrade
-
 
 REMOVE_SERVICE=false
 REMOVE_USER_AND_GROUP=false
@@ -16,62 +14,64 @@ REMOVE_DIRS=false
 
 case "$1" in
 
-    # Debian ####################################################
-    remove)
-        REMOVE_SERVICE=true
-	ldconfig
-    ;;
-    purge)
-        REMOVE_SERVICE=true
-        REMOVE_USER_AND_GROUP=true
-	REMOVE_DIRS=true
-	ldconfig
-    ;;
-    failed-upgrade|abort-install|abort-upgrade|disappear|upgrade)
-    ;;
+	# Debian ####################################################
+	remove)
+		REMOVE_SERVICE=true
+		lconfig
+	;;
+	purge)
+		REMOVE_SERVICE=true
+		REMOVE_USER_AND_GROUP=true
+		REMOVE_DIRS=true
+		lconfig
+	;;
+	failed-upgrade|abort-install|abort-upgrade|disappear|upgrade)
+	;;
 
-    # RedHat ####################################################
-    0)
-        REMOVE_SERVICE=true
-        REMOVE_USER_AND_GROUP=true
-	REMOVE_DIRS=true
-	ldconfig
-    ;;
+	# RedHat ####################################################
+	0)
+		REMOVE_SERVICE=true
+		REMOVE_USER_AND_GROUP=true
+		REMOVE_DIRS=true
+		lconfig
+	;;
 
-    *)
-        echo "post remove script called with unknown argument \`$1'" >&2
-        exit 1
-    ;;
+	*)
+		echo "post remove script called with unknown argument \`$1'" >&2
+		exit 1
+	;;
 esac
-
-if [ "$REMOVE_SERVICE" = "true" ]; then
-    if command -v systemctl >/dev/null; then
-        systemctl disable ipfixcol.service > /dev/null 2>&1 || true
-    fi
-
-    if command -v update-rc.d >/dev/null; then
-        update-rc.d ipfixcol remove >/dev/null || true
-    fi
-fi
-
-if [ "$REMOVE_USER_AND_GROUP" = "true" ]; then
-    if id "ipfixcol" > /dev/null 2>&1 ; then
-        userdel "ipfixcol"
-    fi
-
-    if getent group "ipfixcol" > /dev/null 2>&1 ; then
-        groupdel "ipfixcol"
-    fi
-fi
-
-if [ "$REMOVE_DIRS" = "true" ]; then
-    rm -rf /var/lib/ipfixcol/
-fi
-
 
 # In case this system is running systemd, we make systemd reload the unit files
 # to pick up changes.
 if [ -d /run/systemd/system ] ; then
         systemctl --system daemon-reload >/dev/null || true
 fi
+
+
+if [ "$REMOVE_SERVICE" = "true" ]; then
+	if command -v systemctl >/dev/null; then
+		systemctl disable ipfixcol.service > /dev/null 2>&1 || true
+	fi
+
+	if command -v update-rc.d >/dev/null; then
+		update-rc.d ipfixcol remove >/dev/null || true
+	fi
+fi
+
+if [ "$REMOVE_USER_AND_GROUP" = "true" ]; then
+	if id "ipfixcol" > /dev/null 2>&1 ; then
+		userdel "ipfixcol"
+	fi
+
+	if getent group "ipfixcol" > /dev/null 2>&1 ; then
+		groupdel "ipfixcol"
+	fi
+fi
+
+if [ "$REMOVE_DIRS" = "true" ]; then
+	rm -rf /var/lib/ipfixcol/
+fi
+
+
 

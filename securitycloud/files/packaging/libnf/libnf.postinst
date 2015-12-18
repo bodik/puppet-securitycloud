@@ -1,6 +1,5 @@
 #!/bin/sh
 set -e
-# like elastciserach
 # This script is executed in the post-installation phase
 #
 #   On Debian,
@@ -12,33 +11,33 @@ set -e
 
 case "$1" in
 
-    # Debian ####################################################
-    configure)
+	# Debian ####################################################
+	configure)
 
-        # If $1=configure and $2 is set, this is an upgrade
-        if [ -n $2 ]; then
-            IS_UPGRADE=true
-        fi
-	ldconfig
-    ;;
-    abort-upgrade|abort-remove|abort-deconfigure)
-    ;;
+	        # If $1=configure and $2 is set, this is an upgrade
+		if [ -n $2 ]; then
+			IS_UPGRADE=true
+		fi
+		lconfig
+	;;
+	abort-upgrade|abort-remove|abort-deconfigure)
+	;;
 
-    # RedHat ####################################################
-    1)
-        # If $1=1 this is an install
-        IS_UPGRADE=false
-	ldconfig
-    ;;
-    2)
-        # If $1=1 this is an upgrade
-        IS_UPGRADE=true
-	ldconfig
-    ;;
+	# RedHat ####################################################
+	1)
+		# If $1=1 this is an install
+		IS_UPGRADE=false
+		lconfig
+	;;
+	2)
+		# If $1=1 this is an upgrade
+		IS_UPGRADE=true
+		ldconfig
+	;;
 
-    *)
-        echo "post install script called with unknown argument \`$1'" >&2
-        exit 1
-    ;;
+	*)
+		echo "post install script called with unknown argument \`$1'" >&2
+		exit 1
+	;;
 esac
 

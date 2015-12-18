@@ -6,6 +6,7 @@ BUILD_AREA=/tmp/build_area
 mkdir -p $BUILD_AREA
 
 
+
 #fetch sources
 cd $BUILD_AREA
 VER=1.16
@@ -30,7 +31,10 @@ case "$(facter osfamily)" in
 esac
 
 
+
 #compile
+cd $BUILD_AREA
+
 cd libnf-${VER} 
 ./configure
 make
@@ -40,6 +44,7 @@ mkdir -p ${BUILD_AREA}/libnf-install/etc/ld.so.conf.d/
 cp /puppet/securitycloud/files/packaging/libnf/libnf.ld.so.conf ${BUILD_AREA}/libnf-install/etc/ld.so.conf.d/
 
 
+
 #make package
 cd $BUILD_AREA
 fpm -f -s dir -t ${TGT} -C "${BUILD_AREA}/libnf-install" --name libnf --version ${VER} --iteration ${PKGITER}  \
@@ -47,3 +52,4 @@ fpm -f -s dir -t ${TGT} -C "${BUILD_AREA}/libnf-install" --name libnf --version 
 	--description "libnf package from libnf.net/packages (build SecurityCloud)" --maintainer "bodik@cesnet.cz" --vendor "" --url "http://libnf.net"
 
 ${PKGMANAGER} -i ${RESULT}
+

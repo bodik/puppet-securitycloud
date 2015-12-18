@@ -1,87 +1,81 @@
-
-#
+#!/bin/sh
+set -x
 # This script is executed in the post-installation phase
-#
 #   On Debian,
 #       $1=configure : is set to 'configure' and if $2 is set, it is an upgrade
-#
 #   On RedHat,
 #       $1=0         : indicates a removal
 #       $1=1         : indicates an upgrade
-
 
 IS_UPGRADE=false
 
 case "$1" in
 
-    # Debian ####################################################
-    configure)
+	# Debian ####################################################
+	configure)
+		# If $1=configure and $2 is set, this is an upgrade
+		if [ -n $2 ]; then
+			IS_UPGRADE=true
+		fi
+		
+		# Create group if not existing
+		if ! getent group "ipfixcol" > /dev/null 2>&1 ; then
+			echo -n "Creating ipfixcol group..."
+			addgroup --system "ipfixcol"
+			echo " OK"
+		fi
+		
+		# Create user if not existing
+		if ! id "ipfixcol" > /dev/null 2>&1 ; then
+			echo -n "Creating ipfixcol user..."
+			adduser --system \
+				--ingroup ipfixcol \
+				--disabled-password \
+				--shell /bin/false \
+				--no-create-home \
+				--home /var/lib/ipfixcol \
+				"ipfixcol"
+			echo " OK"
+		fi
+	;;
+	abort-upgrade|abort-remove|abort-deconfigure)
+	;;
 
-        # If $1=configure and $2 is set, this is an upgrade
-        if [ -n $2 ]; then
-            IS_UPGRADE=true
-        fi
+	# RedHat ####################################################
+	1)
+		# If $1=1 this is an install
+		IS_UPGRADE=false
 
-        # Create group if not existing
-        if ! getent group ipfixcol > /dev/null 2>&1 ; then
-		echo -n "Creating ipfixcol group..."
-		addgroup --quiet --system "ipfixcol"
-		echo " OK"
-        fi
+		# Create group if not existing
+		if ! getent group "ipfixcol" > /dev/null 2>&1 ; then
+			echo -n "Creating ipfixcol group..."
+			groupadd --system "ipfixcol"
+			echo " OK"
+		fi
 
-        # Create user if not existing
-        if ! id ipfixcol > /dev/null 2>&1 ; then
-		echo -n "Creating ipfixcol user..."
-		adduser --quiet \
-			--system \
-			--ingroup ipfixcol \
-			--disabled-password \
-			--shell /bin/false \
-			--no-create-home \
-			--home /var/lib/ipfixcol \
-			ipfixcol
-		echo " OK"
-        fi
-    ;;
-    abort-upgrade|abort-remove|abort-deconfigure)
-    ;;
+		# Create user if not existing
+		if ! id "ipfixcol" > /dev/null 2>&1 ; then
+			echo -n "Creating ipfixcol user..."
+			useradd --system \
+				--gid "ipfixcol" \
+				--shell /sbin/nologin \
+				--comment "ipfixcol" \
+				--no-create-home \
+				--home-dir /var/lib/ipfixcol \
+				"ipfixcol"
+			echo " OK"
+		fi
+		;;
+		2)
+			# If $1=1 this is an upgrade
+			IS_UPGRADE=true
+		;;
 
-    # RedHat ####################################################
-    1)
-        # If $1=1 this is an install
-        IS_UPGRADE=false
-
-        # Create group if not existing
-        if ! getent group ipfixcol > /dev/null 2>&1 ; then
-		echo -n "Creating ipfixcol group..."
-		groupadd -r ipfixcol
-		echo " OK"
-        fi
-
-        # Create user if not existing
-        if ! id ipfixcol > /dev/null 2>&1 ; then
-		echo -n "Creating ipfixcol user..."
-		useradd --system \
-			--gid ipfixcol \
-			--shell /sbin/nologin \
-			--comment "ipfixcol" \
-			--no-create-home \
-			--home-dir /var/lib/ipfixcol \
-			ipfixcol
-		echo " OK"
-        fi
-    ;;
-    2)
-        # If $1=1 this is an upgrade
-        IS_UPGRADE=true
-    ;;
-
-    *)
-        echo "post install script called with unknown argument \`$1'" >&2
-        exit 1
-    ;;
+	*)
+        	echo "post install script called with unknown argument \`$1'" >&2
+		exit 1
+	;;
 esac
-
 
 chown -R ipfixcol:ipfixcol /var/lib/ipfixcol
 ldconfig
@@ -91,6 +85,7 @@ ldconfig
 if [ -d /run/systemd/system ] ; then
         systemctl --system daemon-reload >/dev/null || true
 fi
+
 
 if command -v systemctl >/dev/null; then
 	systemctl restart ipfixcol.service > /dev/null 2>&1 || true
