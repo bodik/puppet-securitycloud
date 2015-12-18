@@ -12,13 +12,8 @@ set -e
 case "$1" in
 
 	# Debian ####################################################
-	configure)
-
-	        # If $1=configure and $2 is set, this is an upgrade
-		if [ -n $2 ]; then
-			IS_UPGRADE=true
-		fi
-		ldconfig
+	configure|upgrade)
+	        ldconfig
 	;;
 	abort-upgrade|abort-remove|abort-deconfigure)
 	;;
