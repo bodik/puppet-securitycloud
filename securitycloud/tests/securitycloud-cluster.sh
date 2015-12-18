@@ -1,20 +1,28 @@
 #!/bin/sh
 
 . /puppet/metalib/bin/lib.sh
+case "$(facter osfamily)" in
+    "Debian")
+	PKGMANAGER="dpkg -l"
+	;;
+    "RedHat")	
+	PKGMANAGER="rpm -qa"
+	;;
+esac
 
 
 #fdd packages
-dpkg -l libnf
+${PKGMANAGER} libnf
 if [ $? -ne 0 ]; then
 	rreturn 1 "$0 missing libnf"
 fi
 
-dpkg -l fdistdump
+${PKGMANAGER} fdistdump
 if [ $? -ne 0 ]; then
 	rreturn 1 "$0 missing fdistdump"
 fi
 
-dpkg -l ipfixcol
+${PKGMANAGER} ipfixcol
 if [ $? -ne 0 ]; then
 	rreturn 1 "$0 missing ipfixcol"
 fi
