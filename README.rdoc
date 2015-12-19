@@ -15,12 +15,28 @@ no. CZ.1.05/3.2.00/08.0144.
 
 Following will install basic fdistdump and ipfixcol binaries with runtime requirements
 
-  $ wget -qO - http://esb.metacentrum.cz/puppet-securitycloud-packages/securitycloud.asc | apt-key add -
-  $ echo 'deb http://esb.metacentrum.cz/puppet-securitycloud-packages/debian jessie main' > /etc/apt/sources.list.d/securitycloud.list
-  $ apt-get update
-  $ apt-get install fdistdump ipfixcol
-  $ man fdistdump
-  $ man ipfixcol
+==== Debian
+
+  wget -qO - http://esb.metacentrum.cz/puppet-securitycloud-packages/securitycloud.asc | apt-key add -
+  echo 'deb http://esb.metacentrum.cz/puppet-securitycloud-packages/debian jessie main' > /etc/apt/sources.list.d/securitycloud.list
+  apt-get update
+  apt-get install fdistdump ipfixcol
+  man fdistdump
+  man ipfixcol
+
+==== Centos
+
+  rpm --import http://esb.metacentrum.cz/puppet-securitycloud-packages/securitycloud.asc
+  cat << __EOF__ > /etc/yum.repos.d/securitycloud.repo
+  [securitycloud]
+  name=securitycloud repo
+  baseurl=http://esb.metacentrum.cz/puppet-securitycloud-packages/redhat/centos7
+  enabled=1
+  gpgcheck=1
+  gpgkey=http://esb.metacentrum.cz/puppet-securitycloud-packages/securitycloud.asc
+  __EOF__
+  yum -y install fdistdump ipfixcol
+
 
 ==== ipfixcol configuration
 
@@ -29,15 +45,15 @@ daemon both located in /usr/local/etc/ipfixcol directory.  To configure daemon
 for desired role copy selected config file to startup.xml and restart the
 ipfixcol service
   
-  $ cp /usr/local/etc/ipfixcol/collector.xml.example /usr/local/etc/ipfixcol/startup.xml
-  $ service ipfixcol restart
+  cp /usr/local/etc/ipfixcol/collector.xml.example /usr/local/etc/ipfixcol/startup.xml
+  service ipfixcol restart
 
 or 
 
-  $ cp /usr/local/etc/ipfixcol/proxy.xml.example /usr/local/etc/ipfixcol/startup.xml
-  $ # customize list of available collectors
-  $ edit /usr/local/etc/ipfixcol/startup.xml
-  $ service ipfixcol restart
+  cp /usr/local/etc/ipfixcol/proxy.xml.example /usr/local/etc/ipfixcol/startup.xml
+  # customize list of available collectors
+  edit /usr/local/etc/ipfixcol/startup.xml
+  service ipfixcol restart
 
 
 === Cluster installation
@@ -50,39 +66,39 @@ sections.
 Deploy fdistdump, ipfixcol and cluster suite with following commands on every
 managed node
 
-  $ wget http://esb.metacentrum.cz/puppet-securitycloud.git/bootstrap.install.sh && sh bootstrap.install.sh
-  $ cd /puppet && ls -l
-  $ sh phase2.install.sh
-  $ sh securitycloud-cluster.install.sh
-  $ sh securitycloud/tests/securitycloud-cluster.install.sh
+  wget http://esb.metacentrum.cz/puppet-securitycloud.git/bootstrap.install.sh && sh bootstrap.install.sh
+  cd /puppet && ls -l
+  sh phase2.install.sh
+  sh securitycloud-cluster.install.sh
+  sh securitycloud/tests/securitycloud-cluster.install.sh
 
 Finaly you can start manage your cluster with securitycloud.init
 
-  $ securitycloud.init list
+  securitycloud.init list
 
-  $ # distribute fdistdump testdata across all available nodes
-  $ securitycloud.init dist
-  $ # perform simple fdistdump mpi query
-  $ sh securitycloud/tests/fdistdump-cluster.sh
+  # distribute fdistdump testdata across all available nodes
+  securitycloud.init dist
+  # perform simple fdistdump mpi query
+  sh securitycloud/tests/fdistdump-cluster.sh
 
-  $ # enforce ipfixcol roles (proxy/collector)
-  $ securitycloud.init makerole
-  $ # fetch ipfixcol test data
-  $ sh securitycloud/bin/testdata-ipfixcol-get.sh
-  $ # stream data to cloud through proxy
-  $ sh securitycloud/tests/ipfixcol-stream.sh
-  $ # perform simple fdistdump mpi query over ipfixcol dataset
-  $ sh securitycloud/tests/ipfixcol-fdistdump.sh
+  # enforce ipfixcol roles (proxy/collector)
+  securitycloud.init makerole
+  # fetch ipfixcol test data
+  sh securitycloud/bin/testdata-ipfixcol-get.sh
+  # stream data to cloud through proxy
+  sh securitycloud/tests/ipfixcol-stream.sh
+  # perform simple fdistdump mpi query over ipfixcol dataset
+  sh securitycloud/tests/ipfixcol-fdistdump.sh
 
 
 === Development installation
 
 Following commands will ensure installation of full devops environment.
 
-  $ wget http://esb.metacentrum.cz/puppet-securitycloud.git/bootstrap.install.sh && sh bootstrap.install.sh
-  $ cd /puppet && ls -l
-  $ sh phase2.install.sh
-  $ sh securitycloud-dev.install.sh
-  $ sh securitycloud/bin/build.sh
-  $ sh securitycloud/tests/fdistdump-singlenode.sh
+  wget http://esb.metacentrum.cz/puppet-securitycloud.git/bootstrap.install.sh && sh bootstrap.install.sh
+  cd /puppet && ls -l
+  sh phase2.install.sh
+  sh securitycloud-dev.install.sh
+  sh securitycloud/bin/build.sh
+  sh securitycloud/tests/fdistdump-singlenode.sh
 

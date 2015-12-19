@@ -23,7 +23,7 @@ enabled=1
 gpgcheck=1
 gpgkey=http://esb.metacentrum.cz/puppet-securitycloud-packages/securitycloud.asc
 __EOF__
-yum install -y fdistdump libnf ipfixcol
+yum -y install fdistdump ipfixcol
 rpm -q fdistdump libnf ipfixcol
 
 fi
