@@ -4,9 +4,11 @@
 case "$(facter osfamily)" in
     "Debian")
 	PKGMANAGER="dpkg -l"
+	PATH="${PATH}:/usr/lib/nagios/plugins"
 	;;
     "RedHat")	
 	PKGMANAGER="rpm -qa"
+	PATH="${PATH}:/usr/lib64/nagios/plugins"
 	;;
 esac
 
@@ -29,7 +31,7 @@ fi
 
 
 #coordiantion component
-/usr/lib/nagios/plugins/check_procs --argument-array=org.elasticsearch.bootstrap.Elasticsearch -c 1:1
+check_procs --argument-array=org.elasticsearch.bootstrap.Elasticsearch -c 1:1
 if [ $? -ne 0 ]; then
 	rreturn 1 "$0 org.elasticsearch.bootstrap.Elasticsearch check_procs"
 fi
