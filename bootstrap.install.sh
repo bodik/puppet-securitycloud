@@ -7,9 +7,9 @@ if command -v yum >/dev/null; then
 fi
 
 if [ ! -d /puppet ]; then
-	cd /
+	cd /usr/local/
 	git clone http://esb.metacentrum.cz/puppet-securitycloud.git
-	ln -sf /puppet-securitycloud /puppet
+	ln -sf /usr/local/puppet-securitycloud /puppet
 else
 	cd /puppet
 	git remote set-url origin http://esb.metacentrum.cz/puppet-securitycloud.git
