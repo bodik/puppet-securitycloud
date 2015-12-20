@@ -17,6 +17,11 @@ class securitycloud::cluster() {
 		}
 		'RedHat': {
 			package {"rubygem-nokogiri": ensure => installed, }
+	
+			service { "firewalld":
+				ensure => stopped,
+				enable => false,
+			}
 		}
 		default: {
 			fail("\"${module_name}\" provides no repository information for OSfamily \"${::osfamily}\"")
