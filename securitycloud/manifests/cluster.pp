@@ -29,7 +29,7 @@ class securitycloud::cluster() {
 	}
 
 	class { "elk::esd": 
-		cluster_name=>"sc", 
+		cluster_name=>"sc-${::osfamily}", 
 		esd_heap_size=>"32M", 
 	}
 	file { "/usr/local/bin/securitycloud.init":
