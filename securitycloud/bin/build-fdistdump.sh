@@ -10,7 +10,8 @@ mkdir -p $BUILD_AREA
 #fetch sources
 cd $BUILD_AREA
 if [ ! -d fdistdump ]; then
-	git clone https://github.com/CESNET/fdistdump --branch develop
+	git clone https://github.com/CESNET/fdistdump --branch master
+	#git clone https://github.com/CESNET/fdistdump --branch develop
 	#git clone https://github.com/bodik/fdistdump --branch develop-bcompile2
 fi
 cd fdistdump
