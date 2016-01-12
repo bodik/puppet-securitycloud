@@ -17,13 +17,13 @@ case "$1" in
 	# Debian ####################################################
 	remove)
 		REMOVE_SERVICE=true
-		lconfig
+		ldconfig
 	;;
 	purge)
 		REMOVE_SERVICE=true
 		REMOVE_USER_AND_GROUP=true
 		REMOVE_DIRS=true
-		lconfig
+		ldconfig
 	;;
 	failed-upgrade|abort-install|abort-upgrade|disappear|upgrade)
 	;;
@@ -33,7 +33,7 @@ case "$1" in
 		REMOVE_SERVICE=true
 		REMOVE_USER_AND_GROUP=true
 		REMOVE_DIRS=true
-		lconfig
+		ldconfig
 	;;
 
 	*)
