@@ -10,6 +10,22 @@ LM2010005 and the CERIT-SC under the program Centre CERIT Scientific Cloud,
 part of the Operational Program Research and Development for Innovations, Reg.
 no. CZ.1.05/3.2.00/08.0144.
 
+=== Introduction
+
+SecurityCloud is a distributed flow-based processing software based on master,
+slaves and proxy architecture. Proxy serves to receive flow records and
+distributes (round-robin) these flow records to the slaves while master serves
+as a central point to query the stored flow records. Please note that a node
+may serve as master, proxy or slave at the same time.
+
+SecurityCloud collector consists of two core tools -
+IPFIXcol[link:https://github.com/CESNET/ipfixcol] and
+fdistdump[link:https://github.com/CESNET/fdistdump]. IPFIXcol receives,
+distributes and stores flow data while fdistdump executes an ad hoc user
+queries over the stored data. IPFIXcol must be instantiated as PROXY
+(proxy.xml) at proxy node and as COLLECTOR (collector.xml) at slave nodes.
+Fdistdump is a command line tool that utilizes MPI to communicate with slaves
+during query execution.
 
 === Basic installation
 
