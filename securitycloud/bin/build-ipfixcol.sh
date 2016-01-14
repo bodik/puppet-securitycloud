@@ -11,8 +11,7 @@ puppet apply -e 'package { ["ipfixcol", "ipfixcol-buildstub"]: ensure => absent 
 #fetch sources
 cd $BUILD_AREA
 if [ ! -d ipfixcol ]; then
-	git clone https://github.com/CESNET/ipfixcol && cd ipfixcol && git checkout b4599aa && cd .. # fix specific point, devel is moving
-	#git clone https://github.com/CESNET/ipfixcol --branch devel
+	git clone https://github.com/CESNET/ipfixcol --branch devel
 	#git clone https://github.com/bodik/ipfixcol --branch devel-bcompile
 fi
 cd ipfixcol/base 
