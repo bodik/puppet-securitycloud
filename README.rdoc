@@ -98,7 +98,7 @@ Finaly you can start manage your cluster with securitycloud.init
   sh securitycloud/tests/fdistdump-cluster.sh
 
   # enforce ipfixcol roles (proxy/collector)
-  securitycloud.init makerole
+  securitycloud.init makeroles
   # fetch ipfixcol test data
   sh securitycloud/bin/testdata-ipfixcol-get.sh
   # stream data to cloud through proxy
