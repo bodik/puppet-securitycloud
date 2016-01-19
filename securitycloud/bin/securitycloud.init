@@ -63,7 +63,7 @@ case "$1" in
 	;;
 	idrop)
 		vm_all "service ipfixcol stop"
-		vm_all "rm -r /var/lib/iptfixcol/*"
+		vm_all "rm -r /var/lib/ipfixcol/*"
 		vm_all "service ipfixcol start"
 	;;
 
