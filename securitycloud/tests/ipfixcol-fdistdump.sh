@@ -5,8 +5,8 @@
 BASE=/var/lib/ipfixcol/lnfstore/
 cd ${BASE} || exit 1
 
-NODES=$(securitycloud.init list | awk '{printf $2","}')
-MASTER=$(echo $NODES | awk -F',' '{print $1}')
-mpirun --host $MASTER,$NODES fdistdump -s dstport "${BASE}"
+DATA=$(securitycloud.init list | grep " data " | awk '{printf $2","}')
+MASTER=$(securitycloud.init list | grep " master " | awk '{print $2}')
+mpirun --host $MASTER,$DATA fdistdump -s dstport "${BASE}"
 
 rreturn $? "$0"
