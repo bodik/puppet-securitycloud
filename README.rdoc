@@ -93,7 +93,7 @@ Finaly you can start manage your cluster with securitycloud.init
   securitycloud.init list
 
   # distribute fdistdump testdata across all available nodes
-  securitycloud.init dist
+  securitycloud.init fdddist
   # perform simple fdistdump mpi query
   sh securitycloud/tests/fdistdump-cluster.sh
 
