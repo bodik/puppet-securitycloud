@@ -23,6 +23,7 @@ case "$(facter osfamily)" in
 	PKGMANAGER="dpkg"
 	DEPENDS=""
 	RESULT="libnf_${VER}-${PKGITER}_$(facter architecture).${TGT}"
+	LIBDIR="/usr/lib/x86_64-linux-gnu/"
 	;;
     "RedHat")	
 	TGT="rpm"
@@ -30,6 +31,7 @@ case "$(facter osfamily)" in
 	PATH="${PATH}:/usr/lib64/openmpi/bin"
 	DEPENDS=""
 	RESULT="libnf-${VER}-${PKGITER}.$(facter architecture).${TGT}"
+	LIBDIR="/usr/lib64/"
 	;;
 esac
 
@@ -41,12 +43,10 @@ cd $BUILD_AREA
 cd nf-tools/libnf/c/
 ./prepare-nfdump.sh
 autoreconf -i
-./configure --prefix=/usr/ --libdir=/usr/local/lib
+./configure --prefix=/usr/ --libdir=$LIBDIR
 make
 mkdir ${BUILD_AREA}/libnf-install
 make DESTDIR="${BUILD_AREA}/libnf-install" install
-mkdir -p ${BUILD_AREA}/libnf-install/etc/ld.so.conf.d/
-cp /puppet/securitycloud/files/packaging/libnf/libnf.ld.so.conf ${BUILD_AREA}/libnf-install/etc/ld.so.conf.d/
 
 
 
