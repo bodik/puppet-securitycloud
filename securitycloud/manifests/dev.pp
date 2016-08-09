@@ -47,10 +47,10 @@ class securitycloud::dev() {
 	package { ["bison", "flex", "doxygen"]: ensure => installed }
 	case $::osfamily {
 		'Debian': {
-			package { ["pkg-config", "libssl-dev", "xsltproc", "libxml2-dev", "libxml2-utils", "libsctp-dev", "docbook-xsl"]: ensure => installed, }
+			package { ["pkg-config", "libssl-dev", "xsltproc", "libxml2-dev", "libxml2-utils", "libsctp-dev", "docbook-xsl", "corosync-dev"]: ensure => installed, }
 		}
 		'RedHat': {
-			package { ["pkgconfig", "openssl-devel", "libxslt", "libxml2-devel", "lksctp-tools-devel", "docbook-style-xsl"]: ensure => installed, }
+			package { ["pkgconfig", "openssl-devel", "libxslt", "libxml2-devel", "lksctp-tools-devel", "docbook-style-xsl", "corosync-devel"]: ensure => installed, }
 		}
 		default: { fail("\"${module_name}\" is probably not supported for OSfamily \"${::osfamily}\"") }
 	}
