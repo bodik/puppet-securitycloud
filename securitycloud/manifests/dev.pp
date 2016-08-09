@@ -44,7 +44,7 @@ class securitycloud::dev() {
 
 
         #ipfixcol-base
-	package { ["bison", "flex"]: ensure => installed }
+	package { ["bison", "flex", "doxygen"]: ensure => installed }
 	case $::osfamily {
 		'Debian': {
 			package { ["pkg-config", "libssl-dev", "xsltproc", "libxml2-dev", "libxml2-utils", "libsctp-dev", "docbook-xsl"]: ensure => installed, }
