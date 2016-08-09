@@ -14,7 +14,7 @@ NAME=ipfixcol
 
 IPFIXCOLD=ipfixcol
 IPFIXCOLD_OPTIONS="-v 2 -d"
-DAEMON=/usr/local/bin/ipfixcol
+DAEMON=/usr/bin/ipfixcol
 WORKDIR=/var/lib/ipfixcol
 USER="ipfixcol"
 

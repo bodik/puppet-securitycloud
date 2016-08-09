@@ -57,18 +57,18 @@ Following will install basic fdistdump and ipfixcol binaries with runtime requir
 ==== ipfixcol configuration
 
 ipfixcol package comes with examples configurations for collector and proxy
-daemon both located in /usr/local/etc/ipfixcol directory.  To configure daemon
+daemon both located in /etc/ipfixcol directory.  To configure daemon
 for desired role copy selected config file to startup.xml and restart the
 ipfixcol service
   
-  cp /usr/local/etc/ipfixcol/collector.xml.example /usr/local/etc/ipfixcol/startup.xml
+  cp /etc/ipfixcol/collector.xml.example /etc/ipfixcol/startup.xml
   service ipfixcol restart
 
 or 
 
-  cp /usr/local/etc/ipfixcol/proxy.xml.example /usr/local/etc/ipfixcol/startup.xml
+  cp /etc/ipfixcol/proxy.xml.example /etc/ipfixcol/startup.xml
   # customize list of available collectors
-  edit /usr/local/etc/ipfixcol/startup.xml
+  edit /etc/ipfixcol/startup.xml
   service ipfixcol restart
 
 

@@ -8,7 +8,7 @@
 #   class { "securitycloud::ipfixcol_node": role => "proxy", collectors => ["1.2.3.4", "5.6.7.8"] }
 #
 class securitycloud::ipfixcol_node (
-	$install_dir = "/usr/local/",
+	$install_dir = "",
 
 	$role = undef,
 	$collectors = undef,
@@ -36,7 +36,7 @@ class securitycloud::ipfixcol_node (
 				$collectors_real = securitycloud_discover_collectors()
 			}
 			file { "${install_dir}/etc/ipfixcol/startup.xml":
-				content => template("${module_name}/usr/local/etc/ipfixcol/proxy.xml.erb"),
+				content => template("${module_name}/etc/ipfixcol/proxy.xml.erb"),
 				owner => "root", group => "root", mode => "0644",
 				notify => Service["ipfixcol"],
 			}
@@ -46,7 +46,7 @@ class securitycloud::ipfixcol_node (
 		#######################
 		'collector': { 
 			file { "${install_dir}/etc/ipfixcol/startup.xml":
-				content => template("${module_name}/usr/local/etc/ipfixcol/collector.xml.erb"),
+				content => template("${module_name}/etc/ipfixcol/collector.xml.erb"),
 				owner => "root", group => "root", mode => "0644",
 				notify => Service["ipfixcol"],
 			}

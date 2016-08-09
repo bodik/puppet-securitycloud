@@ -9,7 +9,7 @@ User=ipfixcol
 Group=ipfixcol
 WorkingDirectory=/var/lib/ipfixcol
 StandardOutput=null
-ExecStart=/usr/local/bin/ipfixcol -d -v 2
+ExecStart=/usr/bin/ipfixcol -d -v 2
 
 TimeoutStopSec=30
 LimitCORE=infinity

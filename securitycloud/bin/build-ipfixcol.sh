@@ -11,8 +11,8 @@ puppet apply -e 'package { ["ipfixcol", "ipfixcol-buildstub"]: ensure => absent 
 #fetch sources
 cd $BUILD_AREA
 if [ ! -d ipfixcol ]; then
-	git clone https://github.com/CESNET/ipfixcol --branch master
-	#git clone https://github.com/CESNET/ipfixcol --branch devel
+	#git clone https://github.com/CESNET/ipfixcol --branch master
+	git clone https://github.com/CESNET/ipfixcol --branch devel
 	#git clone https://github.com/bodik/ipfixcol --branch devel-bcompile
 fi
 cd ipfixcol/base 
@@ -27,6 +27,7 @@ case "$(facter osfamily)" in
 	DEPENDS="--depends libxml2 --depends openssl --depends liblzo2-2"
 	RESULT1="ipfixcol-buildstub_${VER}-${PKGITER}_$(facter architecture).${TGT}"
 	RESULT2="ipfixcol_${VER}-${PKGITER}_$(facter architecture).${TGT}"
+	LIBDIR="/usr/lib/x86_64-linux-gnu/"
 	;;
     "RedHat")	
 	TGT="rpm"
@@ -35,6 +36,7 @@ case "$(facter osfamily)" in
 	DEPENDS="--depends libxml2 --depends openssl --depends lzo"
 	RESULT1="ipfixcol-buildstub-${VER}-${PKGITER}.$(facter architecture).${TGT}"
 	RESULT2="ipfixcol-${VER}-${PKGITER}.$(facter architecture).${TGT}"
+	LIBDIR="/usr/lib64/"
 	;;
 esac
 
@@ -44,7 +46,7 @@ cd $BUILD_AREA
 
 cd ipfixcol/base 
 autoreconf -i
-./configure
+./configure --prefix=/usr/ --libdir=$LIBDIR --sysconfdir=/etc/
 make
 mkdir -p ${BUILD_AREA}/ipfixcol-install
 make DESTDIR="${BUILD_AREA}/ipfixcol-install" install
@@ -53,14 +55,11 @@ mkdir -p ${BUILD_AREA}/ipfixcol-install/var/lib/ipfixcol/
 mkdir -p ${BUILD_AREA}/ipfixcol-install/var/lib/ipfixcol/lnfstore/
 mkdir -p ${BUILD_AREA}/ipfixcol-install/etc/init.d/
 mkdir -p ${BUILD_AREA}/ipfixcol-install/lib/systemd/system
-mkdir -p ${BUILD_AREA}/ipfixcol-install/etc/ld.so.conf.d/
-cp /puppet/securitycloud/files/packaging/ipfixcol/ipfixcol.ld.so.conf ${BUILD_AREA}/ipfixcol-install/etc/ld.so.conf.d/
 cp /puppet/securitycloud/files/packaging/ipfixcol/ipfixcol.init ${BUILD_AREA}/ipfixcol-install/etc/init.d/ipfixcol
 cp /puppet/securitycloud/files/packaging/ipfixcol/ipfixcol.service ${BUILD_AREA}/ipfixcol-install/lib/systemd/system
-mv ${BUILD_AREA}/ipfixcol-install/usr/local/etc/ipfixcol/startup.xml ${BUILD_AREA}/ipfixcol-install/usr/local/etc/ipfixcol/startup.xml.example
-cp /puppet/securitycloud/files/packaging/ipfixcol/internalcfg.xml ${BUILD_AREA}/ipfixcol-install/usr/local/etc/ipfixcol/
-cp /puppet/securitycloud/files/packaging/ipfixcol/collector.xml.example ${BUILD_AREA}/ipfixcol-install/usr/local/etc/ipfixcol/
-cp /puppet/securitycloud/files/packaging/ipfixcol/proxy.xml.example ${BUILD_AREA}/ipfixcol-install/usr/local/etc/ipfixcol/
+mv ${BUILD_AREA}/ipfixcol-install/etc/ipfixcol/startup.xml ${BUILD_AREA}/ipfixcol-install/etc/ipfixcol/startup.xml.example
+cp /puppet/securitycloud/files/packaging/ipfixcol/collector.xml.example ${BUILD_AREA}/ipfixcol-install/etc/ipfixcol/
+cp /puppet/securitycloud/files/packaging/ipfixcol/proxy.xml.example ${BUILD_AREA}/ipfixcol-install/etc/ipfixcol/
 
 cd $BUILD_AREA
 fpm -f -s dir -t ${TGT} -C "${BUILD_AREA}/ipfixcol-install" --name ipfixcol-buildstub --version ${VER} --iteration ${PKGITER}  \
@@ -70,30 +69,42 @@ fpm -f -s dir -t ${TGT} -C "${BUILD_AREA}/ipfixcol-install" --name ipfixcol-buil
 	--description "ipfixcol-buildstub from https://github.com/CESNET/ipfixcol with HEAD at ${GREV} (build SecurityCloud)" --maintainer "bodik@cesnet.cz" --vendor "" --url "https://github.com/CESNET/ipfixcol"
 ${PKGMANAGER} -i ${RESULT1}
 
-cd ${BUILD_AREA}/ipfixcol/plugins/input/nfdump
+#UDP-CPG input plugin
+cd ${BUILD_AREA}/ipfixcol/plugins/input/udp_cpg
 autoreconf -i
-./configure
+./configure --prefix=/usr/ --libdir=$LIBDIR --sysconfdir=/etc/
 make
 make DESTDIR="${BUILD_AREA}/ipfixcol-install" install
 
-cd ${BUILD_AREA}/ipfixcol/plugins/intermediate/profiler
+#libnf storage plugin
+cd ${BUILD_AREA}/ipfixcol/plugins/storage/lnfstore 
 autoreconf -i
-./configure
+./configure --prefix=/usr/ --libdir=$LIBDIR --sysconfdir=/etc/
 make
 make DESTDIR="${BUILD_AREA}/ipfixcol-install" install
 
+#JSON storage plugin (optional, for flow streaming in JSON)
 cd ${BUILD_AREA}/ipfixcol/plugins/storage/json
 autoreconf -i
 ./configure
 make
 make DESTDIR="${BUILD_AREA}/ipfixcol-install" install
 
-cd ${BUILD_AREA}/ipfixcol/plugins/storage/lnfstore 
+# release01 legacy
+cd ${BUILD_AREA}/ipfixcol/plugins/input/nfdump
 autoreconf -i
-./configure
+./configure --prefix=/usr/ --libdir=$LIBDIR --sysconfdir=/etc/
 make
-mkdir -p ${BUILD_AREA}/ipfixcol-plugins-install
 make DESTDIR="${BUILD_AREA}/ipfixcol-install" install
+
+# release01 legacy
+cd ${BUILD_AREA}/ipfixcol/plugins/intermediate/profiler
+autoreconf -i
+./configure --prefix=/usr/ --libdir=$LIBDIR --sysconfdir=/etc/
+make
+make DESTDIR="${BUILD_AREA}/ipfixcol-install" install
+
+
 
 
 
