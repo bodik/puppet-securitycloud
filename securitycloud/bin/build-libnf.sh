@@ -9,7 +9,7 @@ mkdir -p $BUILD_AREA
 
 #fetch sources
 cd $BUILD_AREA
-VER=1.17
+VER=1.24
 PKGITER="1"
 wget http://libnf.net/packages/libnf-${VER}.tar.gz
 tar xzf libnf-${VER}.tar.gz
