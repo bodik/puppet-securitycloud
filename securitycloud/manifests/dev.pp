@@ -9,7 +9,7 @@
 class securitycloud::dev() {
 
 	#generic	
-	package { ["autoconf", "gcc", "make", "rpm", "strace"]: ensure => installed, }
+	package { ["autoconf", "automake", "gcc", "libtool", "make", "rpm", "strace"]: ensure => installed, }
 	case $::osfamily {
 		'Debian': {
 			package { ["build-essential", "rake", "ruby-dev"]: 
@@ -18,7 +18,7 @@ class securitycloud::dev() {
 			}
 		}
 		'RedHat': {
-			package { ["rpm-build", "automake", "gcc-c++", "libtool", "rubygem-rake", "ruby-devel"]: 
+			package { ["rpm-build", "gcc-c++", "rubygem-rake", "ruby-devel"]: 
 				ensure => installed, 
 				before => Package["fpm"],
 			}
@@ -44,10 +44,10 @@ class securitycloud::dev() {
 
 
         #ipfixcol-base
-	package { ["flex", "bison", "doxygen"]: ensure => installed }
+	package { ["bison", "flex"]: ensure => installed }
 	case $::osfamily {
 		'Debian': {
-			package { ["pkg-config", "libssl-dev", "xsltproc", "libxml2-dev", "libsctp-dev", "docbook-xsl"]: ensure => installed, }
+			package { ["pkg-config", "libssl-dev", "xsltproc", "libxml2-dev", "libxml2-utils", "libsctp-dev", "docbook-xsl"]: ensure => installed, }
 		}
 		'RedHat': {
 			package { ["pkgconfig", "openssl-devel", "libxslt", "libxml2-devel", "lksctp-tools-devel", "docbook-style-xsl"]: ensure => installed, }
