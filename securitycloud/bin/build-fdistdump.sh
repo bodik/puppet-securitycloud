@@ -24,14 +24,14 @@ case "$(facter osfamily)" in
     "Debian")	
 	TGT="deb"
 	PKGMANAGER="dpkg"
-	DEPENDS="--depends libnf --depends openmpi-bin --depends openmpi-common --depends openmpi-doc"
+	DEPENDS="--depends libnf --depends mpich"
 	RESULT="fdistdump_${VER}-${PKGITER}_$(facter architecture).${TGT}"
 	;;
     "RedHat")	
 	TGT="rpm"
 	PKGMANAGER="rpm"
 	PATH="${PATH}:/usr/lib64/openmpi/bin"
-	DEPENDS="--depends libnf --depends openmpi"
+	DEPENDS="--depends libnf --depends mpich --depends mpich-autoload"
 	RESULT="fdistdump-${VER}-${PKGITER}.$(facter architecture).${TGT}"
 	;;
 esac
