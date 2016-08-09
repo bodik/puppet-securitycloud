@@ -8,9 +8,10 @@ git config --global user.email "bodik@cesnet.cz"
 BUILD_AREA=/tmp/build_area
 rm -r ${BUILD_AREA} || true
 mkdir -p $BUILD_AREA
-puppet apply -e 'package { ["libnf", "fdistdump", "ipfixcol", "ipfixcol-buildstub"]: ensure => absent }'
+puppet apply -e 'package { ["libnf", "fdistdump", "ipfixcol", "ipfixcol-buildstub", "pcs"]: ensure => absent }'
 
 sh /puppet/securitycloud/bin/build-libnf.sh
 sh /puppet/securitycloud/bin/build-fdistdump.sh
 sh /puppet/securitycloud/bin/build-ipfixcol.sh
+sh /puppet/securitycloud/bin/build-pcs.sh
 

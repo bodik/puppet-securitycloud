@@ -66,5 +66,12 @@ class securitycloud::dev() {
 		}
 		default: { fail("\"${module_name}\" is probably not supported for OSfamily \"${::osfamily}\"") }
 	}
-	#package { ["libbz2-dev", "libpq-dev", "libgeoip-dev", "libsqlite3-dev"]: ensure => installed }
+
+	#pcs
+	case $::osfamily {
+		'Debian': {
+			package { ["python-setuptools", "python-lxml"]: ensure => installed }
+		}
+		default: { fail("\"${module_name}\" is probably not supported for OSfamily \"${::osfamily}\"") }
+	}
 }
