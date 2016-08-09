@@ -14,6 +14,7 @@ if [ ! -d nf-tools ]; then
 fi
 cd nf-tools/libnf/c/
 VER=$(cat configure.ac | grep AC_INIT | awk '{print $2}' | sed 's/[^0-9\.]//g')
+GREV=$(git rev-parse --short HEAD)
 PKGITER="1"
 
 case "$(facter osfamily)" in
@@ -53,7 +54,7 @@ cp /puppet/securitycloud/files/packaging/libnf/libnf.ld.so.conf ${BUILD_AREA}/li
 cd $BUILD_AREA
 fpm -f -s dir -t ${TGT} -C "${BUILD_AREA}/libnf-install" --name libnf --version ${VER} --iteration ${PKGITER}  \
 	--after-install /puppet/securitycloud/files/packaging/libnf/libnf.postinst --after-remove /puppet/securitycloud/files/packaging/libnf/libnf.postrm \
-	--description "libnf package from https://github.com/VUTBR/nf-tools.git (build SecurityCloud)" --maintainer "bodik@cesnet.cz" --vendor "" --url "https://github.com/VUTBR/nf-tools.git"
+	--description "libnf package from https://github.com/VUTBR/nf-tools.git with HEAD at ${GREV} (build SecurityCloud)" --maintainer "bodik@cesnet.cz" --vendor "" --url "https://github.com/VUTBR/nf-tools.git"
 
 ${PKGMANAGER} -i ${RESULT}
 
