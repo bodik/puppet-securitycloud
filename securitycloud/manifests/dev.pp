@@ -34,10 +34,10 @@ class securitycloud::dev() {
 	#fdistdump
 	case $::osfamily {
 		'Debian': {
-			package { ["libopenmpi-dev", "openmpi-bin", "openmpi-common", "openmpi-doc"]: ensure => installed, }
+			package { ["libbz2-dev", "libopenmpi-dev", "openmpi-bin", "openmpi-common", "openmpi-doc"]: ensure => installed, }
 		}
 		'RedHat': {
-			package { ["openmpi", "openmpi-devel"]: ensure => installed, }
+			package { ["bzip2-devel", "openmpi", "openmpi-devel"]: ensure => installed, }
 		}
 		default: { fail("\"${module_name}\" is probably not supported for OSfamily \"${::osfamily}\"") }
 	}
