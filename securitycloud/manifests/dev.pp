@@ -50,7 +50,7 @@ class securitycloud::dev() {
 			package { ["pkg-config", "libssl-dev", "xsltproc", "libxml2-dev", "libxml2-utils", "libsctp-dev", "docbook-xsl", "corosync-dev"]: ensure => installed, }
 		}
 		'RedHat': {
-			package { ["pkgconfig", "openssl-devel", "libxslt", "libxml2-devel", "lksctp-tools-devel", "docbook-style-xsl", "corosync-devel"]: ensure => installed, }
+			package { ["pkgconfig", "openssl-devel", "libxslt", "libxml2-devel", "lksctp-tools-devel", "docbook-style-xsl", "corosynclib-devel"]: ensure => installed, }
 		}
 		default: { fail("\"${module_name}\" is probably not supported for OSfamily \"${::osfamily}\"") }
 	}
