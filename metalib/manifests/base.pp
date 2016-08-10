@@ -38,6 +38,11 @@ class metalib::base {
                 timeout => 900;
 	}
 
+        file { "/etc/hosts":
+                content => template("${module_name}/etc/hosts.erb"),
+                owner => "root", group => "root", mode => "0644",
+        }
+
 	service { "puppet":
 		ensure => stopped,
 		enable => false,

@@ -47,8 +47,4 @@ class securitycloud::cloud() {
 		}
 	}
 
-	file { "/etc/hosts":
-		content => template("${module_name}/etc/hosts.erb"),
-		owner => "root", group => "root", mode => "0644",
-	}
 }
