@@ -28,10 +28,10 @@ case "$(facter osfamily)" in
     "RedHat")	
 	TGT="rpm"
 	PKGMANAGER="rpm"
-	PATH="${PATH}:/usr/lib64/openmpi/bin"
 	DEPENDS=""
 	RESULT="libnf-${VER}-${PKGITER}.$(facter architecture).${TGT}"
 	LIBDIR="/usr/lib64/"
+	module load mpi/mpich-x86_64
 	;;
 esac
 

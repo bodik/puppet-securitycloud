@@ -32,11 +32,11 @@ case "$(facter osfamily)" in
     "RedHat")	
 	TGT="rpm"
 	PKGMANAGER="rpm"
-	PATH="${PATH}:/usr/lib64/openmpi/bin"
 	DEPENDS="--depends libxml2 --depends openssl --depends lzo"
 	RESULT1="ipfixcol-buildstub-${VER}-${PKGITER}.$(facter architecture).${TGT}"
 	RESULT2="ipfixcol-${VER}-${PKGITER}.$(facter architecture).${TGT}"
 	LIBDIR="/usr/lib64/"
+	module load mpi/mpich-x86_64
 	;;
 esac
 
