@@ -72,6 +72,9 @@ class securitycloud::dev() {
 		'Debian': {
 			package { ["python-setuptools", "python-lxml"]: ensure => installed }
 		}
+		'RedHat': {
+			notice("INFO: pcs is not being build for Redhat platforms")
+		}
 		default: { fail("\"${module_name}\" is probably not supported for OSfamily \"${::osfamily}\"") }
 	}
 }
