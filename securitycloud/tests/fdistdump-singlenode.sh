@@ -6,8 +6,8 @@ case "$(facter osfamily)" in
 	MPICMD="mpirun"
 	;;
     "RedHat")	
-	PATH="${PATH}:/usr/lib64/openmpi/bin"
-	MPICMD="mpirun --allow-run-as-root"
+	MPICMD="mpirun"
+	module load mpi/mpich-x86_64
 	;;
 esac
 
