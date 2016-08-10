@@ -12,8 +12,6 @@ class securitycloud::cloud() {
 	package { "corosync": ensure => installed, }
 	package { "pcs": ensure => installed, }
 
-
-
 	case $::osfamily {
 		'Debian': {
 			if !defined(Class['apt']) { class { 'apt': } }
@@ -47,5 +45,10 @@ class securitycloud::cloud() {
 		default: {
 			fail("\"${module_name}\" provides no repository information for OSfamily \"${::osfamily}\"")
 		}
+	}
+
+	file { "/etc/hosts":
+		content => template("${module_name}/etc/hosts.erb"),
+		owner => "root", group => "root", mode => "0644",
 	}
 }
