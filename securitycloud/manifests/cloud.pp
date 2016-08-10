@@ -32,6 +32,7 @@ class securitycloud::cloud() {
 			}
 
 			package {"glusterfs-server": ensure => installed, }
+			package {"libxml2-utils": ensure => installed, }
 
 		}
 		'RedHat': {
