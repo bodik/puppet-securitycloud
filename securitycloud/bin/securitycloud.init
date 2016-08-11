@@ -87,6 +87,16 @@ case "$1" in
 
 
 
+	# used for a cloud setup
+	trustmesh)
+		for all in $(securitycloud.init list| awk '{print $1}'); do
+			cat /dev/shm/sshkey | VMNAME=$all securitycloud.init ssh 'cat > /dev/shm/sshkey; chmod 600 /dev/shm/sshkey; ln -sf /dev/shm/sshkey /root/.ssh/id_rsa'
+			cat /root/.ssh/known_hosts | VMNAME=$all securitycloud.init ssh 'cat > /root/.ssh/known_hosts'
+		done
+	;;
+
+
+
 	*)
 		rreturn 1 "$0 wrong command"
 	;;
