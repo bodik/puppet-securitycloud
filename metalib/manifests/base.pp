@@ -43,12 +43,13 @@ class metalib::base {
                 content => template("${module_name}/etc/hosts.erb"),
                 owner => "root", group => "root", mode => "0644",
         }
+	# enforcing fqdn hostname is for Debian, but we will run it on all systems to be sure
 	file { "/etc/hostname":
 		content => "${fqdn}\n",
 		owner => "root", group => "root", mode => "0644",
 		notify => Exec["enforce hostname as fqdn"],
 	}
-	exec { "enforce hostname as fqdn",
+	exec { "enforce hostname as fqdn":
 		command => "hostname -F /etc/hostname",
 		path => "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
 		refreshonly => true,
