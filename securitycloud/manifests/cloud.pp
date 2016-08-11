@@ -8,12 +8,15 @@
 #
 class securitycloud::cloud() {
 
-	# cloud infrastructure
+	# cloud infrastructure packages
 	package { "corosync": ensure => installed, }
+	# TODO: there should be securitycloud package repo requirement, but it's installed through securitycloud::cluster
 	package { "pcs": ensure => installed, }
 
 	case $::osfamily {
 		'Debian': {
+		
+			#pacemaker must come from jessie-backports
 			if !defined(Class['apt']) { class { 'apt': } }
 			apt::source { 'jessie-backports':
 			        location   => 'http://http.debian.net/debian',
@@ -23,7 +26,6 @@ class securitycloud::cloud() {
 
 				before => Exec["install pacemaker jessie-backports"],
 			}
-
 			#package { "pacemaker": ensure => installed, }
 			exec { "install pacemaker jessie-backports":
 				command => "/usr/bin/apt-get install -y -t jessie-backports pacemaker",
@@ -47,5 +49,21 @@ class securitycloud::cloud() {
 			fail("\"${module_name}\" provides no repository information for OSfamily \"${::osfamily}\"")
 		}
 	}
+
+
+
+	# bootstrap config suite
+	exec { "clone SecurityCloud.git":
+		command => "/usr/bin/git clone https://github.com/CESNET/SecurityCloud.git /usr/local/SecurityCloud; /bin/chown root:root /usr/local/SecurityCloud; /bin/chmod g-s /usr/local/SecurityCloud",
+		creates => "/usr/local/SecurityCloud/README.md",
+	}
+	$nodes_proxy = []
+	$nodes_subcollector = split(myexec("/usr/bin/curl -s 'http://${fqdn}:39200/_cat/nodes?h=host'"), "\n")
+	file { "/usr/local/SecurityCloud/install/install.conf":
+		content => template("${module_name}/usr/local/SecurityCloud/install/install.conf.erb"),
+		owner => "root", group => "root", mode => "0644",
+		require => Exec["clone SecurityCloud.git"],
+	}
+
 
 }

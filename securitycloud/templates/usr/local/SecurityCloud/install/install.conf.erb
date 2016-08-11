@@ -1,0 +1,35 @@
+### Definition of the nodes. ###
+# Only possible value is fully qualified domain name. Mapping from domain name
+# to the IP address has to be consistent across all the nodes, i.e. local
+# address must not map to the localhost IP!
+#node_proxy=proxy1.example.org
+#node_subcollector=sub1.example.org
+#node_subcollector=sub2.example.org
+#node_subcollector=sub3.example.org
+
+<% @nodes_proxy.each do |val| -%>
+node_proxy=<%= val %>
+<% end -%>
+
+<% @nodes_subcollector.each do |val| -%>
+node_subcollector=<%= val %>
+<% end -%>
+
+
+#### Configuration of the GlusterFS ###
+# configuration volume storage
+gfs_conf_brick=/data/glusterfs/conf/brick/
+# flow volume primary storage
+gfs_flow_primary_brick=/data/glusterfs/flow/brick1/
+# flow volume backup storage
+gfs_flow_backup_brick=/data/glusterfs/flow/brick2/
+
+# configuration volume mount point
+gfs_conf_mount=/data/conf/
+# flow volume mount point
+gfs_flow_mount=/data/flow/
+
+
+### Other configuration options ###
+# IPv4 address of the virtual interface
+virtual_ip=192.168.1.123
