@@ -17,7 +17,6 @@ class metalib::base {
 	package { ["nfs-common","rpcbind"]: ensure => absent, }
 	package { ["joe","nano", "pico"]: ensure => absent, }
 	package { ["mc", "git", "puppet", "screen", "psmisc"]: ensure => installed, }
-
 	case $::osfamily {
 		'Debian': {
 			package { ["vim", "augeas-lenses", "nagios-plugins-basic"]: ensure => installed, }
@@ -32,16 +31,29 @@ class metalib::base {
 		}
 	}
 
+
 	metalib::wget::download { "/etc/krb5.conf":
                 uri => "https://download.zcu.cz/public/config/krb5/krb5.conf",
                 owner => "root", group => "root", mode => "0644",
                 timeout => 900;
 	}
 
+
         file { "/etc/hosts":
                 content => template("${module_name}/etc/hosts.erb"),
                 owner => "root", group => "root", mode => "0644",
         }
+	file { "/etc/hostname":
+		content => "${fqdn}\n",
+		owner => "root", group => "root", mode => "0644",
+		notify => Exec["enforce hostname as fqdn"],
+	}
+	exec { "enforce hostname as fqdn",
+		command => "hostname -F /etc/hostname",
+		path => "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+		refreshonly => true,
+	}
+
 
 	service { "puppet":
 		ensure => stopped,
