@@ -34,7 +34,7 @@ OptionParser.new do |opts|
 	opts.on("-s", "--syslog", "log to syslog") do |v| 		$options["syslog"] = v end
 	opts.on("-d", "--debug", "debug mode") do |v| 			$options["debug"] = v end
 
-	opts.on("-q", "--query QUERY", "query disco -- myrole|proxy|collectors|show[default]") do |v| 		$options["query"] = v end
+	opts.on("-q", "--query QUERY", "query disco -- myrole|proxy|collectors|allnodes|show[default]") do |v| 		$options["query"] = v end
 end.parse!
 if $options["syslog"]
 	$logger = Syslog::Logger.new(Thread.current["name"])
@@ -107,6 +107,14 @@ def proxy()
 	if masterip then puts masterip end
 end
 
+def allnodes()
+	allnodes = []
+	$nodes["nodes"].each do |k,v|
+		allnodes << v["host"]
+	end
+	puts allnodes.join(" ")
+end
+
 def myrole()
 	masterip = /inet\[\/(.*):[0-9]+\]/.match($nodes["nodes"][$cluster_state["master_node"]]["transport_address"])[1]
 	if (Facter.value("ipaddress") == masterip)
@@ -129,7 +137,9 @@ case $options["query"]
 		proxy()
 	when "collectors"
 		collectors()
-  	else
+  	when "allnodes"
+		allnodes()
+	else
 		show_nodes()
 end
 
