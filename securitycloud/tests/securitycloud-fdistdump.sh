@@ -15,7 +15,7 @@ esac
 
 
 # fdistdump
-whereis fdistdump-ha | grep fdistdump-ha
+whereis fdistdump-ha | grep bin/fdistdump-ha
 if [ $? -ne 0 ]; then
 	rreturn 1 "$0 fdistdump-ha missing"
 fi
