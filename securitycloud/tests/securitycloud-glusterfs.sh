@@ -38,7 +38,7 @@ if [ $NUMBER_OF_CONNECTIONS -lt 10 ]; then
 	rreturn 1 "$0 gluster connections"
 fi
 
-NUMBER_OF_NODES=$(/usr/bin/curl -s "http://$(facter fqdn):39200/_cat/nodes?h=host" | wc -l)
+NUMBER_OF_NODES=$(securitycloud.init allnodes | wc -w)
 NUMBER_OF_NODES_CONNECTED=$(gluster pool list | grep Connected | wc -l)
 if [ $NUMBER_OF_NODES -ne $NUMBER_OF_NODES_CONNECTED ]; then
 	rreturn 1 "$0 gluster connected nodes"
