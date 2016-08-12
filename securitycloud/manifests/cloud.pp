@@ -6,7 +6,9 @@
 #
 #   class { "securitycloud::cloud": }
 #
-class securitycloud::cloud() {
+class securitycloud::cloud(
+	$virtual_ip = undef,
+) {
 
 	# cloud infrastructure packages
 	package { "corosync": ensure => installed, }
@@ -58,12 +60,21 @@ class securitycloud::cloud() {
 		creates => "/usr/local/SecurityCloud/README.md",
 	}
 	$nodes_proxy = []
-	$nodes_subcollector = split(myexec("/usr/bin/curl -s 'http://${fqdn}:39200/_cat/nodes?h=host'"), "\n")
+	$nodes_subcollector = securitycloud_discover_allnodes()
+
+	if ( $virtual_ip ) {
+		$virtual_ip_real = $virtual_ip
+	} else {
+		$virtual_ip_real = myexec("/usr/local/bin/securitycloud.init virtualip")
+	}
+	file { "/etc/ipfixcol/virtual_ip.conf":
+		content => "${virtual_ip_real}\n",
+		owner => "root", group => "root", mode => "0644",
+	}
+
 	file { "/usr/local/SecurityCloud/install/install.conf":
 		content => template("${module_name}/usr/local/SecurityCloud/install/install.conf.erb"),
 		owner => "root", group => "root", mode => "0644",
 		require => Exec["clone SecurityCloud.git"],
 	}
-
-
 }
