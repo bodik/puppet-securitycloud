@@ -1,6 +1,8 @@
 # == Class: securitycloud::install
 #
-# Class will ensure installation of fdistdump and ipfixcol binaries/packages from SecurityCloud repository.
+# Class will ensure installation of fdistdump and ipfixcol binaries/packages
+# from SecurityCloud repository and also cloud infrastructure packages such as
+# corosync, peacemaker, pcs and GlusterFS.
 #
 # === Examples
 #
@@ -8,7 +10,7 @@
 #
 class securitycloud::install() {
 
-	#repo, might be seaparate class
+	# packages repository
 	case $::osfamily {
 		'Debian': {
 			if !defined(Class['apt']) { class { 'apt': } }
@@ -20,7 +22,7 @@ class securitycloud::install() {
 			        key_source => 'http://esb.metacentrum.cz/puppet-securitycloud-packages/securitycloud.asc',
 				include_src => false,
 
-				before => Package["fdistdump", "libnf", "ipfixcol"],
+				before => Package["fdistdump", "libnf", "ipfixcol", "pcs"],
 			}
 		}
 		'RedHat': {
@@ -40,8 +42,51 @@ class securitycloud::install() {
 	}
 
 
-	#install
+	# main software 
 	package { ["fdistdump", "libnf", "ipfixcol"]:
 		ensure => installed,
 	}
+
+
+
+
+	# cloud infrastructure packages
+	package { "corosync": ensure => installed, }
+	package { "pcs": ensure => installed, }
+
+	case $::osfamily {
+		'Debian': {
+			#pacemaker must come from jessie-backports
+			if !defined(Class['apt']) { class { 'apt': } }
+			apt::source { 'jessie-backports':
+			        location   => 'http://http.debian.net/debian',
+			        release => 'jessie-backports',
+			        repos => 'main',
+				include_src => false,
+
+				before => Exec["install pacemaker jessie-backports"],
+			}
+			#package { "pacemaker": ensure => installed, }
+			exec { "install pacemaker jessie-backports":
+				command => "/usr/bin/apt-get install -y -t jessie-backports pacemaker",
+				timeout => 600,
+				unless => "/usr/bin/dpkg -l pacemaker",
+			}
+
+			package {"glusterfs-server": ensure => installed, }
+			package {"libxml2-utils": ensure => installed, }
+		}
+		'RedHat': {
+			package { "centos-release-gluster38": ensure => installed, }
+			package { ["glusterfs-server", "glusterfs-resource-agents"]: 
+				ensure => installed,
+				require => Package["centos-release-gluster38"],
+			}
+			package { "pacemaker": ensure => installed, }
+		}
+		default: {
+			fail("\"${module_name}\" provides no repository information for OSfamily \"${::osfamily}\"")
+		}
+	}
+
 }

@@ -10,58 +10,17 @@ class securitycloud::cloud(
 	$virtual_ip = undef,
 ) {
 
-	# cloud infrastructure packages
-	package { "corosync": ensure => installed, }
-	# TODO: there should be securitycloud package repo requirement, but it's installed through securitycloud::cluster
-	package { "pcs": ensure => installed, }
-
-	case $::osfamily {
-		'Debian': {
-		
-			#pacemaker must come from jessie-backports
-			if !defined(Class['apt']) { class { 'apt': } }
-			apt::source { 'jessie-backports':
-			        location   => 'http://http.debian.net/debian',
-			        release => 'jessie-backports',
-			        repos => 'main',
-				include_src => false,
-
-				before => Exec["install pacemaker jessie-backports"],
-			}
-			#package { "pacemaker": ensure => installed, }
-			exec { "install pacemaker jessie-backports":
-				command => "/usr/bin/apt-get install -y -t jessie-backports pacemaker",
-				timeout => 600,
-				unless => "/usr/bin/dpkg -l pacemaker",
-			}
-
-			package {"glusterfs-server": ensure => installed, }
-			package {"libxml2-utils": ensure => installed, }
-
-		}
-		'RedHat': {
-			package { "centos-release-gluster38": ensure => installed, }
-			package { ["glusterfs-server", "glusterfs-resource-agents"]: 
-				ensure => installed,
-				require => Package["centos-release-gluster38"],
-			}
-			package { "pacemaker": ensure => installed, }
-		}
-		default: {
-			fail("\"${module_name}\" provides no repository information for OSfamily \"${::osfamily}\"")
-		}
-	}
-
-
 
 	# bootstrap config suite
 	exec { "clone SecurityCloud.git":
 		command => "/usr/bin/git clone https://github.com/CESNET/SecurityCloud.git /usr/local/SecurityCloud; /bin/chown root:root /usr/local/SecurityCloud; /bin/chmod g-s /usr/local/SecurityCloud",
 		creates => "/usr/local/SecurityCloud/README.md",
 	}
+
+
+	# prepare install.conf
 	$nodes_proxy = []
 	$nodes_subcollector = securitycloud_discover_allnodes()
-
 	if ( $virtual_ip ) {
 		$virtual_ip_real = $virtual_ip
 	} else {
@@ -71,10 +30,23 @@ class securitycloud::cloud(
 		content => "${virtual_ip_real}\n",
 		owner => "root", group => "root", mode => "0644",
 	}
-
 	file { "/usr/local/SecurityCloud/install/install.conf":
 		content => template("${module_name}/usr/local/SecurityCloud/install/install.conf.erb"),
 		owner => "root", group => "root", mode => "0644",
 		require => Exec["clone SecurityCloud.git"],
 	}
+
+
+
+	file { "/etc/sysctl.d/ipfixcol-netbuffers.conf":
+		source => "puppet:///modules/${module_name}/etc/sysctl.d/ipfixcol-netbuffers.conf",
+		owner => "root", group => "root", mode => "0644",
+		notify => Exec["sysctl read ipfixcol-netbuffers.conf"],
+	}
+	exec { "sysctl read ipfixcol-netbuffers.conf":
+		command => "/sbin/sysctl --load=/etc/sysctl.d/ipfixcol-netbuffers.conf",
+		refreshonly => true,
+		require => File["/etc/sysctl.d/ipfixcol-netbuffers.conf"],
+	}
+
 }
