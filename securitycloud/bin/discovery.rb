@@ -80,13 +80,13 @@ def show_nodes()
 		if $cluster_state["master_node"] == k then esrole = "master" else esrole = "data" end
 		fstorage_size = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "du -shL /scratch/fdistdump/data | awk '{print $1}'")
 		fstorage_part = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "df -h | grep '/scratch' | awk '{print $5\"/\"$2}'")
-		istorage_size = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "du -shL /var/lib/ipfixcol | awk '{print $1}'")
-		istorage_part = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "df -h | head -2 | tail -1 | awk '{print $5\"/\"$2}'")
+		gstorage_size = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "du -shL /data/flow/$(facter fqdn) | awk '{print $1}'")
+		gstorage_part = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "df -h | grep 'localhost:/flow' | awk '{print $5\"/\"$2}'")
 		ipfixcol_running = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "pidof ipfixcol")
 		ipfixcol_vsz = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "ps h -o vsz -p $(pidof ipfixcol)")
 		if ipfixcol_running == false then irunning = "istopped" else irunning = "irunning" end
 		if ipfixcol_vsz == false then ipfixcol_vsz = 0 end
-		puts "#{k} #{v["host"]} #{v["name"]} #{v["transport_address"]} #{v["os"]["load_average"]} heap #{v["jvm"]["mem"]["heap_used_percent"]}%/#{as_size(v["jvm"]["mem"]["heap_max_in_bytes"])} #{esrole} fstorage #{fstorage_size} #{fstorage_part} istorage #{istorage_size} #{istorage_part} procs #{irunning} vsz #{as_size(ipfixcol_vsz)}"
+		puts "#{k} #{v["host"]} #{v["name"]} #{v["transport_address"]} #{v["os"]["load_average"]} heap #{v["jvm"]["mem"]["heap_used_percent"]}%/#{as_size(v["jvm"]["mem"]["heap_max_in_bytes"])} #{esrole} fstor #{fstorage_size} #{fstorage_part} gstor #{gstorage_size} #{gstorage_part} procs #{irunning} vsz #{as_size(ipfixcol_vsz)}"
 	end
 end
 
