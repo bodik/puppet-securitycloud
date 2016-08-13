@@ -76,16 +76,8 @@ case "$1" in
 	collectors)
 		ruby /puppet/securitycloud/bin/discovery.rb --query collectors
 	;;
-	allnodes)
-		ruby /puppet/securitycloud/bin/discovery.rb --query allnodes
-	;;
-	makeroles)
-		vm_all 'cd /puppet && sh securitycloud-ipfixcol_node.install.sh'
-	;;
 	idrop)
-		vm_all "service ipfixcol stop"
-		vm_all "rm -r /var/lib/ipfixcol/*"
-		vm_all "service ipfixcol start"
+		echo "ERROR: not implemented"
 	;;
 
 	
@@ -117,6 +109,9 @@ case "$1" in
 	;;
 	virtualip)
 		vm_virtualip
+	;;
+	allnodes)
+		ruby /puppet/securitycloud/bin/discovery.rb --query allnodes
 	;;
 
 
