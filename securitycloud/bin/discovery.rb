@@ -80,7 +80,7 @@ def show_nodes()
 		if $cluster_state["master_node"] == k then esrole = "master" else esrole = "data" end
 		fstorage_size = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "du -shL /scratch/fdistdump/data | awk '{print $1}'")
 		fstorage_part = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "df -h | grep '/scratch' | awk '{print $5\"/\"$2}'")
-		gstorage_size = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "du -shL /data/flow/$(facter fqdn) | awk '{print $1}'")
+		gstorage_size = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "if [ -d /data/flow/$(facter fqdn) ]; then du -shL /data/flow/$(facter fqdn) | awk '{print $1}'; else echo 0; fi")
 		gstorage_part = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "df -h | grep 'localhost:/flow' | awk '{print $5\"/\"$2}'")
 		ipfixcol_running = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "pidof ipfixcol")
 		ipfixcol_vsz = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "ps h -o vsz -p $(pidof ipfixcol)")
