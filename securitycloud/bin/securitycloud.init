@@ -77,7 +77,11 @@ case "$1" in
 		ruby /puppet/securitycloud/bin/discovery.rb --query collectors
 	;;
 	idrop)
-		echo "ERROR: not implemented"
+		pcs resource disable ipfixcol-subcollector-clone
+		pcs resource disable ipfixcol-proxy-clone
+		find /data/flow/ -mindepth 1 -maxdepth 1 -type d ! -name .Filesystem_status -exec rm -rf {} \;
+		pcs resource enable ipfixcol-subcollector-clone
+		pcs resource enable ipfixcol-proxy-clone
 	;;
 
 	
