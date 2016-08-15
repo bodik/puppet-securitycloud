@@ -90,6 +90,7 @@ Configure trust between all hosts in cluster[https://github.com/CESNET/SecurityC
 
 Configure the cloud from the existing cluster using SecurityCloud.git[https://github.com/CESNET/SecurityCloud]
 
+  sh securitycloud-cloud.install.sh
   cd /usr/local/SecurityCloud/install
   ./install.sh check
   ./install.sh glusterfs

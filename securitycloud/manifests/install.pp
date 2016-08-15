@@ -83,6 +83,11 @@ class securitycloud::install() {
 				require => Package["centos-release-gluster38"],
 			}
 			package { "pacemaker": ensure => installed, }
+			package { "python34": ensure => installed, }
+			service { "glusterd":
+				enable => true,
+				ensure => running,
+			}
 		}
 		default: {
 			fail("\"${module_name}\" provides no repository information for OSfamily \"${::osfamily}\"")
