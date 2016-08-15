@@ -59,11 +59,9 @@ Following will install basic fdistdump and ipfixcol binaries with runtime requir
 
 === Cluster/Cloud installation
 
-Security Cloud cluster can be managed by standard puppet using module
-securitycloud (see securitycloud[link:securitycloud/README.rdoc]).
-
-Deploy all basic software needed for SecurityCloud with following commands on
-every managed node
+Security Cloud cluster can be managed by puppet using module securitycloud (see
+securitycloud[link:securitycloud/README.rdoc]). Deploy all basic software
+needed for SecurityCloud with following commands on every managed node
 
   wget http://esb.metacentrum.cz/puppet-securitycloud.git/bootstrap.install.sh && sh bootstrap.install.sh
   cd /puppet && ls -l
