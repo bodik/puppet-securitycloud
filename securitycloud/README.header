@@ -31,6 +31,8 @@ tools based on elasticsearch multicast discovery.
   * securitycloud.init trustmesh		... distributes current key to all nodes in cluster
   * securitycloud.init virtualip		... metacloud's internal helper
   * securitycloud.init allnodes			... displays list of all nodes in the cluster
+  * securitycloud.init istart			... stops ipfixcol resources through pacemaker
+  * securitycloud.init istop			... starts ipfixcol resources through pacemaker
   * securitycloud.init idrop			... removes all ipfixcol data from GlusterFS storage
 
 

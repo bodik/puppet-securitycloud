@@ -1,22 +1,23 @@
-#!/bin/sh
+#!/bin/sha
+
+. /puppet/metalib/bin/lib.sh
 
 echo "INFO: gstor cleanup"
 securitycloud.init idrop
-sleep 10
+
 echo "INFO: cluster list"
 securitycloud.init list
-sleep 10
 
-for all in $(seq 1 5); do
-	echo "INFO: begin stream and query round $all"
-	echo "INFO: stream example01"
-	sh securitycloud/tests/ipfixcol-stream-example01.sh
-	echo "INFO: query data 1"
-	sh securitycloud/tests/ipfixcol-fdistdump.sh
-	echo "INFO: sleep 300"
-	sleep 300
-	echo "INFO: query data 2"
-	sh securitycloud/tests/ipfixcol-fdistdump.sh
-	echo "INFO: end stream and query round $all"
-done
+echo "INFO: stream example01"
+sh /puppet/securitycloud/tests/ipfixcol-stream-example01.sh
+
+echo "INFO: restarting ipfixcol services to flush streamed data"
+securitycloud.init istop
+securitycloud.init istart
+
+echo "INFO: querying data"
+sh /puppet/securitycloud/tests/ipfixcol-fdistdump.sh | grep 'processed data summary: 4.0 k flows, 56.7 k packets, 49.0 M bytes'
+if [ $? -ne 0 ]; then
+	rreturn 1 "$0 results not correct"
+fi
 
