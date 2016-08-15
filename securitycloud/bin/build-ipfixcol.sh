@@ -51,16 +51,6 @@ make
 mkdir -p ${BUILD_AREA}/ipfixcol-install
 make DESTDIR="${BUILD_AREA}/ipfixcol-install" install
 
-mkdir -p ${BUILD_AREA}/ipfixcol-install/var/lib/ipfixcol/
-mkdir -p ${BUILD_AREA}/ipfixcol-install/var/lib/ipfixcol/lnfstore/
-mkdir -p ${BUILD_AREA}/ipfixcol-install/etc/init.d/
-mkdir -p ${BUILD_AREA}/ipfixcol-install/lib/systemd/system
-cp /puppet/securitycloud/files/packaging/ipfixcol/ipfixcol.init ${BUILD_AREA}/ipfixcol-install/etc/init.d/ipfixcol
-cp /puppet/securitycloud/files/packaging/ipfixcol/ipfixcol.service ${BUILD_AREA}/ipfixcol-install/lib/systemd/system
-mv ${BUILD_AREA}/ipfixcol-install/etc/ipfixcol/startup.xml ${BUILD_AREA}/ipfixcol-install/etc/ipfixcol/startup.xml.example
-cp /puppet/securitycloud/files/packaging/ipfixcol/collector.xml.example ${BUILD_AREA}/ipfixcol-install/etc/ipfixcol/
-cp /puppet/securitycloud/files/packaging/ipfixcol/proxy.xml.example ${BUILD_AREA}/ipfixcol-install/etc/ipfixcol/
-
 cd $BUILD_AREA
 fpm -f -s dir -t ${TGT} -C "${BUILD_AREA}/ipfixcol-install" --name ipfixcol-buildstub --version ${VER} --iteration ${PKGITER}  \
 	${DEPENDS} \

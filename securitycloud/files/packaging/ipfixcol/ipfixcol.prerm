@@ -33,14 +33,6 @@ case "$1" in
 esac
 
 # Stops the service
-if [ "$STOP_REQUIRED" = "true" ]; then
-
-	if command -v systemctl >/dev/null; then
-		systemctl stop ipfixcol.service > /dev/null 2>&1 || true
-	fi
-
-	if command -v invoke-rc.d >/dev/null; then
-		invoke-rc.d ipfixcol stop || true
-	fi
-fi
+#if [ "$STOP_REQUIRED" = "true" ]; then
+#fi
 
