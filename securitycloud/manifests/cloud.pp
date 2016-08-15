@@ -1,6 +1,7 @@
 # == Class: securitycloud::cloud
 #
-# Class will ensure installation of corosync, peacemaker, pcs and GlusterFS for SecurityCloud.
+# Class will initialize SecurityCloud.git suite and preconfigure install.conf
+# using informations from securitycloud.init discovery module.
 #
 # === Examples
 #
