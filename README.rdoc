@@ -27,6 +27,9 @@ queries over the stored data. IPFIXcol must be instantiated as PROXY
 Fdistdump is a command line tool that utilizes MPI to communicate with slaves
 during query execution.
 
+The main repository for cloud configuration can be found at
+SecurityCloud.git[https://github.com/CESNET/SecurityCloud]
+
 === Basic installation
 
 Following will install basic fdistdump and ipfixcol binaries with runtime requirements
@@ -54,33 +57,13 @@ Following will install basic fdistdump and ipfixcol binaries with runtime requir
   yum -y install fdistdump ipfixcol
 
 
-==== ipfixcol configuration
-
-ipfixcol package comes with examples configurations for collector and proxy
-daemon both located in /etc/ipfixcol directory.  To configure daemon
-for desired role copy selected config file to startup.xml and restart the
-ipfixcol service
-  
-  cp /etc/ipfixcol/collector.xml.example /etc/ipfixcol/startup.xml
-  service ipfixcol restart
-
-or 
-
-  cp /etc/ipfixcol/proxy.xml.example /etc/ipfixcol/startup.xml
-  # customize list of available collectors
-  edit /etc/ipfixcol/startup.xml
-  service ipfixcol restart
-
-
-=== Cluster installation
+=== Cluster/Cloud installation
 
 Security Cloud cluster can be managed by standard puppet using module
 securitycloud (see securitycloud[link:securitycloud/README.rdoc]).
-Alternatively masterless puppet approach can be used as described in the next
-sections.
 
-Deploy fdistdump, ipfixcol and cluster suite with following commands on every
-managed node
+Deploy all basic software needed for SecurityCloud with following commands on
+every managed node
 
   wget http://esb.metacentrum.cz/puppet-securitycloud.git/bootstrap.install.sh && sh bootstrap.install.sh
   cd /puppet && ls -l
@@ -97,12 +80,30 @@ Finaly you can start manage your cluster with securitycloud.init
   # perform simple fdistdump mpi query
   sh securitycloud/tests/fdistdump-cluster.sh
 
-  # enforce ipfixcol roles (proxy/collector)
-  securitycloud.init makeroles
-  # fetch ipfixcol test data
-  sh securitycloud/bin/testdata-ipfixcol-get.sh
-  # stream data to cloud through proxy
-  sh securitycloud/tests/ipfixcol-stream.sh
+Configure trust between all hosts in cluster[https://github.com/CESNET/SecurityCloud/wiki/Setup%20the%20cluster#ssh-keys]
+
+  # create auth keys or delegate them from rsyslog2.git Jenkins component
+  TODO
+  # distribute keys and fingerprints on the cluster
+  securitycloud.init trustmesh
+
+Configure the cloud from the existing cluster using SecurityCloud.git[https://github.com/CESNET/SecurityCloud]
+
+  cd /usr/local/SecurityCloud/install
+  ./install.sh check
+  ./install.sh glusterfs
+  ./install.sh ipfixcol
+  ./install.sh fdistdump
+  ./install.sh stack
+  # test if installation went ok
+  cd /puppet
+  sh securitycloud/tests/securitycloud-glusterfs.sh
+  sh securitycloud/tests/securitycloud-ipfixcol.sh
+  sh securitycloud/tests/securitycloud-fdistdump.sh
+  sh securitycloud/tests/securitycloud-stack.sh
+
+  # stream example01 data to proxy
+  sh securitycloud/tests/ipfixcol-stream-example01.sh
   # perform simple fdistdump mpi query over ipfixcol dataset
   sh securitycloud/tests/ipfixcol-fdistdump.sh
 
@@ -117,4 +118,24 @@ Following commands will ensure installation of full devops environment.
   sh securitycloud-dev.install.sh
   sh securitycloud/bin/build.sh
   sh securitycloud/tests/fdistdump-singlenode.sh
+
+==== ipfixcol configuration
+
+*DEPRECATED: whole suite should be configured by
+SecurityCloud.git[https://github.com/CESNET/SecurityCloud]*
+
+ipfixcol package comes with examples configurations for collector and proxy
+daemon both located in /etc/ipfixcol directory.  To configure daemon
+for desired role copy selected config file to startup.xml and restart the
+ipfixcol service
+  
+  cp /etc/ipfixcol/collector.xml.example /etc/ipfixcol/startup.xml
+  service ipfixcol restart
+
+or 
+
+  cp /etc/ipfixcol/proxy.xml.example /etc/ipfixcol/startup.xml
+  # customize list of available collectors
+  edit /etc/ipfixcol/startup.xml
+  service ipfixcol restart
 
