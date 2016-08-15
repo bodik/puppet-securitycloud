@@ -121,23 +121,3 @@ Following commands will ensure installation of full devops environment.
   sh securitycloud/bin/build.sh
   sh securitycloud/tests/fdistdump-singlenode.sh
 
-==== ipfixcol configuration
-
-*DEPRECATED: whole suite should be configured by
-SecurityCloud.git[https://github.com/CESNET/SecurityCloud]*
-
-ipfixcol package comes with examples configurations for collector and proxy
-daemon both located in /etc/ipfixcol directory.  To configure daemon
-for desired role copy selected config file to startup.xml and restart the
-ipfixcol service
-  
-  cp /etc/ipfixcol/collector.xml.example /etc/ipfixcol/startup.xml
-  service ipfixcol restart
-
-or 
-
-  cp /etc/ipfixcol/proxy.xml.example /etc/ipfixcol/startup.xml
-  # customize list of available collectors
-  edit /etc/ipfixcol/startup.xml
-  service ipfixcol restart
-
