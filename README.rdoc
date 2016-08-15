@@ -10,6 +10,9 @@ LM2010005 and the CERIT-SC under the program Centre CERIT Scientific Cloud,
 part of the Operational Program Research and Development for Innovations, Reg.
 no. CZ.1.05/3.2.00/08.0144.
 
+Very special thanks to Boris Parak[https://github.com/arax] for supporting and
+solving all the issues with OpenNebula.
+
 === Introduction
 
 SecurityCloud is a distributed flow-based processing software based on master,
