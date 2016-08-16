@@ -78,7 +78,7 @@ def show_nodes()
 	$nodes["nodes"].each do |k,v|
 		#puts "#{k} #{v}"
 		if $cluster_state["master_node"] == k then esrole = "master" else esrole = "data" end
-		fstorage_size = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "du -shL /scratch/fdistdump/data | awk '{print $1}'")
+		fstorage_size = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "if [ -d /scratch/fdistdump/data ]; then du -shL /scratch/fdistdump/data | awk '{print $1}'; else echo 0; fi")
 		fstorage_part = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "df -h | grep '/scratch' | awk '{print $5\"/\"$2}'")
 		gstorage_size = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "if [ -d /data/flow/$(facter fqdn) ]; then du -shL /data/flow/$(facter fqdn) | awk '{print $1}'; else echo 0; fi")
 		gstorage_part = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "df -h | grep 'localhost:/flow' | awk '{print $5\"/\"$2}'")
