@@ -51,6 +51,8 @@ make
 mkdir -p ${BUILD_AREA}/ipfixcol-install
 make DESTDIR="${BUILD_AREA}/ipfixcol-install" install
 
+mv ${BUILD_AREA}/ipfixcol-install/etc/ipfixcol/startup.xml ${BUILD_AREA}/ipfixcol-install/etc/ipfixcol/startup.xml.example
+
 cd $BUILD_AREA
 fpm -f -s dir -t ${TGT} -C "${BUILD_AREA}/ipfixcol-install" --name ipfixcol-buildstub --version ${VER} --iteration ${PKGITER}  \
 	${DEPENDS} \
@@ -76,7 +78,7 @@ make DESTDIR="${BUILD_AREA}/ipfixcol-install" install
 #JSON storage plugin (optional, for flow streaming in JSON)
 cd ${BUILD_AREA}/ipfixcol/plugins/storage/json
 autoreconf -i
-./configure
+./configure --prefix=/usr/ --libdir=$LIBDIR --sysconfdir=/etc/
 make
 make DESTDIR="${BUILD_AREA}/ipfixcol-install" install
 
