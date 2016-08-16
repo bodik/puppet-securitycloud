@@ -111,12 +111,12 @@ case "$1" in
 		ruby /puppet/securitycloud/bin/discovery.rb --query allnodes
 	;;
 	istop)
-		pcs resource disable ipfixcol-subcollector-clone
-		pcs resource disable ipfixcol-proxy-clone
+		pcs resource disable ipfixcol-proxy-clone --wait
+		pcs resource disable ipfixcol-subcollector-clone --wait
 	;;
 	istart)
-		pcs resource enable ipfixcol-subcollector-clone
-		pcs resource enable ipfixcol-proxy-clone
+		pcs resource enable ipfixcol-subcollector-clone --wait
+		pcs resource enable ipfixcol-proxy-clone --wait
 	;;
 	idrop)
 		$0 istop

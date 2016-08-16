@@ -2,6 +2,5 @@
 
 . /puppet/metalib/bin/lib.sh
 
-fdistdump-ha -f "-s srcport" $(date +%Y)
-
+fdistdump-ha --fdistdump-args "-s srcport --output-volume-conv=none" $(date +%Y)
 rreturn $? "$0"
