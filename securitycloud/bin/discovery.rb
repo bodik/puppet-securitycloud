@@ -84,10 +84,10 @@ def show_nodes()
 		gstorage_size = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "if [ -d /data/flow/$(facter fqdn) ]; then du -shL /data/flow/$(facter fqdn) | awk '{print $1}'; else echo 0; fi")
 		gstorage_part = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "df -h | grep 'localhost:/flow' | awk '{print $5\"/\"$2}'")
 
-		ipfixcol_proxy_running = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "pgrep -f 'ipfixcol -d -c /data/conf//ipfixcol/startup-proxy.xml -p /var/run/ipfixcol-proxy.pid'")
-		ipfixcol_proxy_vsz = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "ps h -o vsz -p $(pgrep -f 'ipfixcol -d -c /data/conf//ipfixcol/startup-proxy.xml -p /var/run/ipfixcol-proxy.pid')")
-		ipfixcol_subcollector_running = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "pgrep -f 'ipfixcol -d -c /data/conf//ipfixcol/startup-subcollector.xml -p /var/run/ipfixcol-subcollector.pid'")
-		ipfixcol_subcollector_vsz = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "ps h -o vsz -p $(pgrep -f 'ipfixcol -d -c /data/conf//ipfixcol/startup-subcollector.xml -p /var/run/ipfixcol-subcollector.pid')")
+		ipfixcol_proxy_running = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "ps faxu | grep 'ipfixcol.*-c /data/conf//ipfixcol/startup-proxy.xml' | grep -v grep")
+		ipfixcol_proxy_vsz = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "ps h -o vsz -p $(ps faxu | grep 'ipfixcol.*-c /data/conf//ipfixcol/startup-proxy.xml' | grep -v grep | awk '{print $2}')")
+		ipfixcol_subcollector_running = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "ps faxu | grep 'ipfixcol.*-c /data/conf//ipfixcol/startup-subcollector.xml' | grep -v grep")
+		ipfixcol_subcollector_vsz = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "ps h -o vsz -p $(ps faxu | grep 'ipfixcol.*-c /data/conf//ipfixcol/startup-subcollector.xml' | grep -v grep | awk '{print $2}')")
 		irunning = []
 		if ipfixcol_proxy_vsz == false then ipfixcol_proxy_vsz = 0 end
 		if ipfixcol_subcollector_vsz == false then ipfixcol_subcollector_vsz = 0 end
