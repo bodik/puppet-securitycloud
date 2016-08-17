@@ -80,13 +80,22 @@ def show_nodes()
 		if $cluster_state["master_node"] == k then esrole = "master" else esrole = "data" end
 		fstorage_size = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "if [ -d /scratch/fdistdump/data ]; then du -shL /scratch/fdistdump/data | awk '{print $1}'; else echo 0; fi")
 		fstorage_part = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "df -h | grep '/scratch' | awk '{print $5\"/\"$2}'")
+
 		gstorage_size = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "if [ -d /data/flow/$(facter fqdn) ]; then du -shL /data/flow/$(facter fqdn) | awk '{print $1}'; else echo 0; fi")
 		gstorage_part = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "df -h | grep 'localhost:/flow' | awk '{print $5\"/\"$2}'")
-		ipfixcol_running = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "pidof ipfixcol")
-		ipfixcol_vsz = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "ps h -o vsz -p $(pidof ipfixcol)")
-		if ipfixcol_running == false then irunning = "istopped" else irunning = "irunning" end
-		if ipfixcol_vsz == false then ipfixcol_vsz = 0 end
-		puts "#{k} #{v["host"]} #{v["name"]} #{v["transport_address"]} #{v["os"]["load_average"]} heap #{v["jvm"]["mem"]["heap_used_percent"]}%/#{as_size(v["jvm"]["mem"]["heap_max_in_bytes"])} #{esrole} fstor #{fstorage_size} #{fstorage_part} gstor #{gstorage_size} #{gstorage_part} procs #{irunning} vsz #{as_size(ipfixcol_vsz)}"
+
+		ipfixcol_proxy_running = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "pgrep -f 'ipfixcol -d -c /data/conf//ipfixcol/startup-proxy.xml -p /var/run/ipfixcol-proxy.pid'")
+		ipfixcol_proxy_vsz = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "ps h -o vsz -p $(pgrep -f 'ipfixcol -d -c /data/conf//ipfixcol/startup-proxy.xml -p /var/run/ipfixcol-proxy.pid')")
+		ipfixcol_subcollector_running = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "pgrep -f 'ipfixcol -d -c /data/conf//ipfixcol/startup-subcollector.xml -p /var/run/ipfixcol-subcollector.pid'")
+		ipfixcol_subcollector_vsz = syscall1("/usr/bin/ssh", "root@#{v["host"]}", "ps h -o vsz -p $(pgrep -f 'ipfixcol -d -c /data/conf//ipfixcol/startup-subcollector.xml -p /var/run/ipfixcol-subcollector.pid')")
+		irunning = []
+		if ipfixcol_proxy_vsz == false then ipfixcol_proxy_vsz = 0 end
+		if ipfixcol_subcollector_vsz == false then ipfixcol_subcollector_vsz = 0 end
+		if ipfixcol_proxy_running != false then irunning << "iproxy(#{as_size(ipfixcol_proxy_vsz)})" end
+		if ipfixcol_subcollector_running != false then irunning << "isub(#{as_size(ipfixcol_subcollector_vsz)})" end
+		irunning = irunning.join(" ")
+
+		puts "#{k} #{v["host"]} #{v["name"]} #{v["transport_address"]} #{v["os"]["load_average"]} heap #{v["jvm"]["mem"]["heap_used_percent"]}%/#{as_size(v["jvm"]["mem"]["heap_max_in_bytes"])} #{esrole} fstor #{fstorage_size} #{fstorage_part} gstor #{gstorage_size} #{gstorage_part} procs #{irunning}"
 	end
 end
 

@@ -91,14 +91,6 @@ Configure trust between all hosts in cluster[https://github.com/CESNET/SecurityC
 Configure the cloud from the existing cluster using SecurityCloud.git[https://github.com/CESNET/SecurityCloud]
 
   sh securitycloud-cloud.install.sh
-  cd /usr/local/SecurityCloud/install
-  ./install.sh check
-  ./install.sh glusterfs
-  ./install.sh ipfixcol
-  ./install.sh fdistdump
-  ./install.sh stack
-  # test if installation went ok
-  cd /puppet
   sh securitycloud/tests/securitycloud-glusterfs.sh
   sh securitycloud/tests/securitycloud-ipfixcol.sh
   sh securitycloud/tests/securitycloud-fdistdump.sh
@@ -108,6 +100,17 @@ Configure the cloud from the existing cluster using SecurityCloud.git[https://gi
   sh securitycloud/tests/ipfixcol-stream-example01.sh
   # perform simple fdistdump mpi query over ipfixcol dataset
   sh securitycloud/tests/ipfixcol-fdistdump.sh
+
+  # drop all data stored on glusterfs storage
+  securitycloud.init idrop
+
+  # list all nodes in the cluster ro get status of the cluster
+  securitycloud.init list
+  pcs status
+
+  # perform a more complex testing with various datasets
+  sh securitycloud/tests/ipfixcol-complex01.sh
+  sh securitycloud/tests/ipfixcol-complex02.sh
 
 
 === Development installation
