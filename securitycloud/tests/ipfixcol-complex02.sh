@@ -15,7 +15,7 @@ sh /puppet/securitycloud/bin/testdata-ipfixcol-get.sh
 
 
 echo "INFO: stream testdata"
-sh -x /puppet/securitycloud/tests/ipfixcol-stream.sh
+sh /puppet/securitycloud/tests/ipfixcol-stream.sh
 echo "INFO: restarting ipfixcol services to flush streamed data"
 securitycloud.init istop
 securitycloud.init istart
