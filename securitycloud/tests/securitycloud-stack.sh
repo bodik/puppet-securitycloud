@@ -84,7 +84,7 @@ if [ $NUMBER_OF_NODES -ne $NUMBER_OF_SUCCESSORS ]; then
 fi
 
 
-ping -c2 -w1 $(securitycloud.init virtualip)
+ping -c2 -w2 $(securitycloud.init virtualip)
 if [ $? -ne 0 ]; then
 	rreturn 1 "$0 virtualip not reachable"
 fi
