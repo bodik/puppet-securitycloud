@@ -37,17 +37,4 @@ class securitycloud::cloud(
 		require => Exec["clone SecurityCloud.git"],
 	}
 
-
-
-	file { "/etc/sysctl.d/ipfixcol-netbuffers.conf":
-		source => "puppet:///modules/${module_name}/etc/sysctl.d/ipfixcol-netbuffers.conf",
-		owner => "root", group => "root", mode => "0644",
-		notify => Exec["sysctl read ipfixcol-netbuffers.conf"],
-	}
-	exec { "sysctl read ipfixcol-netbuffers.conf":
-		command => "/sbin/sysctl --load=/etc/sysctl.d/ipfixcol-netbuffers.conf",
-		refreshonly => true,
-		require => File["/etc/sysctl.d/ipfixcol-netbuffers.conf"],
-	}
-
 }
