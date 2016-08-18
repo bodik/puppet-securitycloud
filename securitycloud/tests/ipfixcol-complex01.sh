@@ -1,4 +1,5 @@
 #!/bin/sha
+STARTTIME=$(date +%s)
 
 . /puppet/metalib/bin/lib.sh
 
@@ -11,7 +12,7 @@ securitycloud.init list
 pcs status
 
 echo "INFO: stream example01"
-sh -x /puppet/securitycloud/tests/ipfixcol-stream-example01.sh
+sh /puppet/securitycloud/tests/ipfixcol-stream-example01.sh
 echo "INFO: restarting ipfixcol services to flush streamed data"
 securitycloud.init istop
 securitycloud.init istart
@@ -19,7 +20,7 @@ echo "INFO: querying data"
 FLOWS=3979
 PACKETS=56695
 BYTES=49001404
-sh /puppet/securitycloud/tests/ipfixcol-fdistdump.sh | grep "$FLOWS flows, $PACKETS packets, $BYTES bytes"
+sh /puppet/securitycloud/tests/ipfixcol-fdistdump.sh 2>/dev/null | grep "$FLOWS flows, $PACKETS packets, $BYTES bytes"
 if [ $? -ne 0 ]; then
 	rreturn 1 "$0 results not correct"
 fi
@@ -49,7 +50,7 @@ echo "INFO: querying data"
 FLOWS=$(( $REPS * $FLOWS))
 PACKETS=$(( $REPS * $PACKETS))
 BYTES=$(( $REPS * $BYTES))
-sh /puppet/securitycloud/tests/ipfixcol-fdistdump.sh | grep "$FLOWS flows, $PACKETS packets, $BYTES bytes"
+sh /puppet/securitycloud/tests/ipfixcol-fdistdump.sh 2>/dev/null | grep "$FLOWS flows, $PACKETS packets, $BYTES bytes"
 if [ $? -ne 0 ]; then
 	rreturn 1 "$0 repetition test results not correct"
 fi
@@ -57,4 +58,7 @@ fi
 echo "INFO: end repetition test"
 
 
-rreturn 0 "$0"
+ENDTIME=$(date +%s)
+SECONDS=$(( $ENDTIME - $STARTTIME))
+DURATION=$(date -u -d @${SECONDS} +"%T")
+rreturn 0 "$0 duration $DURATION seconds $SECONDS"

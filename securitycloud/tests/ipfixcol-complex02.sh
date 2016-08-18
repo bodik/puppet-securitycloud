@@ -1,4 +1,5 @@
 #!/bin/sha
+STARTTIME=$(date +%s)
 
 . /puppet/metalib/bin/lib.sh
 
@@ -23,7 +24,7 @@ echo "INFO: querying data"
 FLOWS=3192195
 PACKETS=90920552
 BYTES=97051395875
-sh /puppet/securitycloud/tests/ipfixcol-fdistdump.sh | grep "$FLOWS flows, $PACKETS packets, $BYTES bytes"
+sh /puppet/securitycloud/tests/ipfixcol-fdistdump.sh 2>/dev/null | grep "$FLOWS flows, $PACKETS packets, $BYTES bytes"
 if [ $? -ne 0 ]; then
 	rreturn 1 "$0 results not correct"
 fi
@@ -53,12 +54,14 @@ echo "INFO: querying data"
 FLOWS=$(( $REPS * $FLOWS))
 PACKETS=$(( $REPS * $PACKETS))
 BYTES=$(( $REPS * $BYTES))
-sh /puppet/securitycloud/tests/ipfixcol-fdistdump.sh | grep "$FLOWS flows, $PACKETS packets, $BYTES bytes"
+sh /puppet/securitycloud/tests/ipfixcol-fdistdump.sh 2>/dev/null | grep "$FLOWS flows, $PACKETS packets, $BYTES bytes"
 if [ $? -ne 0 ]; then
 	rreturn 1 "$0 repetition test results not correct"
 fi
 
 echo "INFO: end repetition test"
 
-
-rreturn 0 "$0"
+ENDTIME=$(date +%s)
+SECONDS=$(( $ENDTIME - $STARTTIME))
+DURATION=$(date -u -d @${SECONDS} +"%T")
+rreturn 0 "$0 duration $DURATION seconds $SECONDS"
