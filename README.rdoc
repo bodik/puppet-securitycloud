@@ -112,6 +112,9 @@ Configure the cloud from the existing cluster using SecurityCloud.git[https://gi
   sh securitycloud/tests/ipfixcol-complex01.sh
   sh securitycloud/tests/ipfixcol-complex02.sh
 
+  # perform a long running performance test
+  sh securitycloud/bin/perftest.sh
+
 
 === Development installation
 

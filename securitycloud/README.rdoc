@@ -9,6 +9,8 @@ tools based on elasticsearch multicast discovery.
   scripts for building packages for release
 [discovery.rb]
   used internally by clustersuite to display cluster state
+[perftest.sh]
+  repeating complex tests for basic performance testing
 [pkgs-upload-repo-*.sh]
   creates testing repository
 [securitycloud.init]
@@ -31,6 +33,8 @@ tools based on elasticsearch multicast discovery.
   * securitycloud.init trustmesh		... distributes current key to all nodes in cluster
   * securitycloud.init virtualip		... metacloud's internal helper
   * securitycloud.init allnodes			... displays list of all nodes in the cluster
+  * securitycloud.init istart			... stops ipfixcol resources through pacemaker
+  * securitycloud.init istop			... starts ipfixcol resources through pacemaker
   * securitycloud.init idrop			... removes all ipfixcol data from GlusterFS storage
 
 
@@ -42,22 +46,6 @@ tools based on elasticsearch multicast discovery.
   fetches or distributes build testdata
 [testdata-ipfixcol-get.sh]
   fetches or distributes build testdata
-
-== Class: securitycloud::cluster
-
-Class will ensure installation of SecurityCloud distributed test clustering suite.
-
-=== Examples
-
-  class { "securitycloud::cluster": }
-
-== Class: securitycloud::dev
-
-Class will ensure installation of fdistdump and ipfixcol build and packaging requirements.
-
-=== Examples
-
-  class { "securitycloud::dev": }
 
 == Class: securitycloud::install
 
@@ -77,4 +65,20 @@ using informations from securitycloud.init discovery module.
 === Examples
 
   class { "securitycloud::cloud": }
+
+== Class: securitycloud::cluster
+
+Class will ensure installation of SecurityCloud distributed test clustering suite.
+
+=== Examples
+
+  class { "securitycloud::cluster": }
+
+== Class: securitycloud::dev
+
+Class will ensure installation of fdistdump and ipfixcol build and packaging requirements.
+
+=== Examples
+
+  class { "securitycloud::dev": }
 

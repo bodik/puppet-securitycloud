@@ -9,6 +9,8 @@ tools based on elasticsearch multicast discovery.
   scripts for building packages for release
 [discovery.rb]
   used internally by clustersuite to display cluster state
+[perftest.sh]
+  repeating complex tests for basic performance testing
 [pkgs-upload-repo-*.sh]
   creates testing repository
 [securitycloud.init]
